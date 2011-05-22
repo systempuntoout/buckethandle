@@ -1,0 +1,86 @@
+$def with (posts, selected_tags = [], selected_category = '', pagination = None)
+$def render_catqs(selected_category, front_char):
+    $if selected_category : $(front_char)category=$selected_category
+
+<div id="box_tags">
+     <form action = "/tag/$('/'.join(selected_tags))" method="post">  
+       <p>
+       <b>Tags:</b>
+       $for tag in selected_tags:
+           <a class="tag dark" href="/tag/$('/'.join(selected_tags))?removetag=$(tag)$(render_catqs(selected_category,"&"))">$tag x</a>&raquo;
+       <input id="search" type="text" name="addtag"/>
+       </p>
+       <p>
+       <input type="radio" name="category" $:(selected_category == '' and 'checked="checked"' or "") value="" onclick="this.form.submit()" />All
+       $for category in settings.CATEGORIES:
+           <input type="radio" name="category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.submit()"/>$category
+       </p>
+       
+     </form>
+</div>
+<div>      
+      <table class="result">          
+      $for post in posts:
+            <tr>
+                  <td>
+                    <div style="float:left">
+                        <p>$post.created.strftime("%m %B, %Y")</p>  
+                        <p><span class="main_link"><a href="$post.link">$(post.title)</a></span> | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a></p>
+                        <p><a href="$(post.link)">$(post.link)</a></p>
+                        <p>$(post.description)</p>
+                    </div>
+                    <div style="float:right">
+                        <p style="text-align:right;">
+                            <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" alt="Image"/>
+                        </p>
+                    </div>
+                    <div class="meta">
+                        <span>
+                            <a class="category" href="/?category=$(post.category)">$(post.category)</a>
+                        </span>
+                        <span class="tags">
+                            $for tag in post.tags:
+                                  $if tag in selected_tags:
+                                      <a class="tag dark" href="/tag/$('/'.join(selected_tags))$(render_catqs(selected_category,"?"))">$(tag)</a>
+                                  $else:
+                                      <a class="tag" href="/tag/$('/'.join(selected_tags))?addtag=$(tag)$(render_catqs(selected_category,"&"))">$(tag)</a>
+                        </span>
+                    </div>
+                  </td>
+             </tr>
+             $if loop.last:
+                    </table>
+                    <table class="pagination">
+                        <tr>
+                            <td class="pagination_page">
+                                $if pagination.has_previous_entries():
+                        	        <a href="?page=$(pagination.page-1)$(render_catqs(selected_category,"&"))">&laquo; prev&nbsp;&nbsp;</a>
+                                $for page in pagination.get_pretty_pagination():
+                                    $if page != -1:
+                                        <a href="?page=$(page)$(render_catqs(selected_category,"&"))">
+                                            $if page == pagination.page:|$(page)|    
+                                            $else: $page 
+                                        </a>
+                                    $else:
+                                        $pagination.separator
+                                $if pagination.has_more_entries():
+                        	           <a href="?page=$(pagination.page+1)$(render_catqs(selected_category,"&"))">&nbsp;&nbsp;next &raquo;</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="pagination_found">Posts: $commify(pagination.total)</td>
+                        </tr>
+                    </table>
+        $else:
+            $if len(posts) == 0:
+                <tr>
+                    <td>
+                   <p id="not_found">
+                       No posts found
+                    </p>
+                    </td>
+                </tr>
+                </table>
+        
+
+ </div>

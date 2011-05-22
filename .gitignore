@@ -1,0 +1,4 @@
+*.pyc
+web
+markdown
+.DS_Store

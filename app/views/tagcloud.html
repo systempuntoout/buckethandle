@@ -1,0 +1,8 @@
+$def with (tag_cloud)
+
+<p>Tags found: <b>$len(tag_cloud)</b></p>
+<div id="main_tag_cloud">
+    $for tag in tag_cloud:
+            <a href="/tag/$(tag.name)">$(tag.name)</a>($(tag.counter))&nbsp;
+
+</div>

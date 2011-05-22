@@ -1,0 +1,45 @@
+$def with (result, posts = None)
+ <div>
+     <p>ADMIN CONSOLE</p>
+     <ul>
+          <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
+          <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
+          <li>Filter:<br>
+              <form action = "/admin" method="POST">  
+              <input type="hidden" name="action" value="filter"/>
+              tags:<input type="text" name="tags" /><br>
+              <input type="submit" value="Filter"/>
+            </form>
+          </li>
+      </ul>
+     <ul>
+         <li>Create:<br>
+             <form action = "/admin" method="POST" enctype="multipart/form-data">  
+             <input type="hidden" name="action" value="create"/>
+             <p>title:<input type="text" name="title"/></p>
+             <p>link: <input type="text" name="link" value="http://www.google.com"/></p>
+             <p>description :<input type="text" name="description"/></p>
+             <p>tags:<input type="text" name="tags"/> </p>
+             <p>categories:<select name="category">
+                 $for category in settings.CATEGORIES:
+                    <option  value="$category">$category</option>
+             </select>
+             <p>img:<input type="file" name="img"/></p>
+             
+             <p>body :<textarea name="body"></textarea></p>
+             <p><input type="submit" value="Create post"/></p>
+           </form>
+         </li>
+     </ul>
+     <hr>    
+     $for number,post in enumerate(posts):
+          Number: $number<br>
+          Title: $(post.title)<br>
+          Tags: $(' '.join(post.tags))<br>
+          Description:$(post.description)
+          Body:$:safemarkdown(post.body)
+          <hr>
+     <p><b>Result:</b></p>
+     $for key in result.keys():
+         * $("%s - %s" % (key, result[key]))<br>                        
+ </div>

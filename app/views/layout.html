@@ -1,0 +1,115 @@
+$def with (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, admin = None)
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
+<head>
+    <link rel="alternate" type="application/atom+xml" href="/index.xml" />
+    <meta http-equiv="content-type" content="$settings.HTML_MIME_TYPE"/>
+    <meta name="description" content="$(settings.META_DESCRIPTION)"/>
+    <meta name="keywords" content="$settings.META_KEYWORDS"/>
+    <title> $(title) - $settings.CMS_NAME</title> 
+    <link rel="stylesheet" href="/stylesheets/screen.css"/>
+    <link rel="stylesheet" href="/stylesheets/jquery.autocomplete.css"/>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <script type="text/javascript" src="/javascripts/jquery-1.4.2.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.autocomplete.min.js"></script>
+    <script type="text/javascript" src="/javascripts/jquery.stacktack.min.js"></script>
+    <script type="text/javascript" src="/javascripts/main.js"></script>
+</head>
+<body>
+<div id="header">
+    <h1>$settings.CMS_NAME <img src="/images/lab.png" alt="Lab"/></h1>
+    <h2>$(settings.SLOGAN)</h2>
+    <ul>
+        <li><a href="/" $:(title=='Home' and 'class="active"' or '')>Home</a></li>
+        <li><a href="/post" $:((title not in ('Home','Tag cloud','About','Admin')) and 'class="active"' or '')>Posts</a></li>
+        <li><a href="/tagcloud" $:(title=='Tag cloud' and 'class="active"' or '')>Tag cloud</a></li>
+        <li><a href="/about" $:(title=='About' and 'class="active"' or '')>About</a></li>
+        $if admin:
+            <li><a href="/admin" $:(title=='Admin' and 'class="active"' or '')>Admin</a></li>
+    </ul>
+        
+        <form id="form" action="http://www.google.com/cse" method="get">
+          <p id="layoutdims">  
+        	<input type="hidden" name="cx" value="$settings.GOOGLE_CSE" />
+            <input type="hidden" name="ie" value="UTF-8" />
+        	<input id="search_box" name="q" tabindex="1" onfocus="if (this.value=='search') this.value = ''" type="text" maxlength="140" size="32" value="search"/>
+            </p>
+        </form>
+        
+    
+</div>
+$if navbar:
+    <div class="colmask rightmenu">
+        <div class="colleft">
+            <div class="col1">
+                $:content
+            </div>    
+            <div class="col2">
+                <div id="logo">
+                    <a href="http://code.google.com/appengine/">
+                        <img src="/images/google-app-engine.png" width="100" height="100" alt="Google App Engine" />
+                    </a>
+                </div>
+                <div>
+                    $:safemarkdown(settings.DESCRIPTION)
+                </div>
+                <p>Posts: <span class="summarycount">$commify(posts_total_count)</span></p> 
+                <h2>Categories</h2>
+                <ul>
+                $for category in categories:
+                    <li><a href="/?category=$category.name">$category.name</a>($(category.counter))</li>
+                </ul>
+                <h2>Tags</h2>
+                <p>
+                    $for tag in tag_cloud:
+                            <a href="/tag/$(tag.name)">$(tag.name)</a>($(tag.counter))&nbsp;
+
+                    $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
+                        <a href="/tagcloud">more »</a>
+                </p>
+                <div id="img" style="margin-top:40px">
+                    <p>
+                    <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>
+                    </p>
+                    <p>
+                    <a href="http://webpy.org"><img width="80" height="30" src="/images/webpy.jpg" alt="Webpy"/></a>
+                    </p>
+                    <p>
+                    <a href="http://code.google.com/appengine/"><img width="100" height="30" src="/images/appengine.png" alt="Appengine"/></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+$else:
+    <div class="colmask fullpage">
+        <div class="col1">
+            $:content
+        </div>
+    </div>
+    
+<div id="footer">
+    <p>© $settings.AUTHOR_NAME | Powered by Google App Engine
+    | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://validator.w3.org/check/referer">XHTML</a></p>
+</div>
+
+$if settings.ANALYTICS_ID and not DEVEL and not admin:
+  <script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+  <script type="text/javascript">
+  try {
+  var pageTracker = _gat._getTracker("$settings.ANALYTICS_ID");
+  pageTracker._trackPageview();
+  } catch(err) {}</script>
+
+$if settings.CLICKY_ID and not DEVEL and not admin:
+  <script src="http://static.getclicky.com/js" type="text/javascript"></script>
+  <script type="text/javascript">clicky.init($settings.CLICKY_ID);</script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/250663ns.gif" /></p></noscript>
+
+
+
+</body>
+</html>
