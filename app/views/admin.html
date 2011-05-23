@@ -1,45 +1,51 @@
-$def with (result, posts = None)
+$def with (result, title = '', link = '', description = '', tags = [], category = '', img_path ='', body = '', post_id ='')
  <div>
      <p>ADMIN CONSOLE</p>
      <ul>
-          <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
-          <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
-          <li>Filter:<br>
-              <form action = "/admin" method="POST">  
-              <input type="hidden" name="action" value="filter"/>
-              tags:<input type="text" name="tags" /><br>
-              <input type="submit" value="Filter"/>
-            </form>
-          </li>
-      </ul>
+           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
+           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
+     </ul>
+     <p><b>Result:</b></p>
+      $for key in result.keys():
+          * $("%s - %s" % (key, result[key]))<br>
      <ul>
-         <li>Create:<br>
-             <form action = "/admin" method="POST" enctype="multipart/form-data">  
-             <input type="hidden" name="action" value="create"/>
-             <p>title:<input type="text" name="title"/></p>
-             <p>link: <input type="text" name="link" value="http://www.google.com"/></p>
-             <p>description :<input type="text" name="description"/></p>
-             <p>tags:<input type="text" name="tags"/> </p>
-             <p>categories:<select name="category">
-                 $for category in settings.CATEGORIES:
-                    <option  value="$category">$category</option>
+         <li>Post:<br>
+             <form action = "/admin" method="POST" enctype="multipart/form-data"> 
+             $if post_id: 
+                <input type="hidden" name="action" value="editpost"/>
+                <p>Id: $post_id</p>
+             $else:
+                <input type="hidden" name="action" value="newpost"/>
+             <input type="hidden" name="post_id" value="$post_id"/>
+             <p>title:<br><input type="text" name="title" value="$title"/></p>
+             <p>link:<br> <input type="text" name="link" value="$link"/></p>
+             <p>description :<br><input type="text" name="description" maxlenght="500" value="$description"/></p>
+             <p>tags:<br><input type="text" name="tags" value = "$' '.join(tags)"/> </p>
+             <p>categories:<br>
+             <select name="category">
+                 $for category_tmp in settings.CATEGORIES:
+                    <option $:(category_tmp==category and 'selected="selected"')  value="$category_tmp">$category_tmp</option>
              </select>
-             <p>img:<input type="file" name="img"/></p>
+             <p>img:<input type="file" name="img"/>
+             $if img_path:
+                <img src="$img_path" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" title="$category" alt="Image"/><br>
+                delete image:<input type="checkbox" name="delete_img">    
+                
+             </p>
              
-             <p>body :<textarea name="body"></textarea></p>
-             <p><input type="submit" value="Create post"/></p>
+             <p>body :<br><textarea name="body" cols="40" rows="20">$body</textarea></p>
+             <p><input type="submit" value="Submit"/></p>
            </form>
          </li>
+         
+         $if post_id:
+             <li>Delete:
+                <form action = "/admin" method="POST"> 
+                    <input type="hidden" name="action" value="deletepost"/>
+                    <input type="hidden" name="post_id" value="$post_id"/>
+                    <p><input type="submit" value="Delete"/></p>
+                </form>
+            </il>
      </ul>
-     <hr>    
-     $for number,post in enumerate(posts):
-          Number: $number<br>
-          Title: $(post.title)<br>
-          Tags: $(' '.join(post.tags))<br>
-          Description:$(post.description)
-          Body:$:safemarkdown(post.body)
-          <hr>
-     <p><b>Result:</b></p>
-     $for key in result.keys():
-         * $("%s - %s" % (key, result[key]))<br>                        
+                            
  </div>

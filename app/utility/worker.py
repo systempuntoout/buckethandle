@@ -1,10 +1,9 @@
 import logging
 import app.db.models as models
 
-def deferred_update_tags_counter(tags):
-    for tag in set(tags):
-        models.Tag.update_tag(tag)
+def deferred_update_tags_counter(tags_new , tags_old = []):
+    models.Tag.update_tags(tags_new, tags_old)
 
 
-def deferred_update_category_counter(category):
-    models.Category.update_category(category)
+def deferred_update_category_counter(category_new, category_old = None ):
+    models.Category.update_category(category_new, category_old)

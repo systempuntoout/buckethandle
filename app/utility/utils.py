@@ -6,29 +6,25 @@ import logging
 
 
 def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
-	"""
-	 Cache to memcache
-	"""
-	def wrap(func):
-		def cached_func(*args, **kw):
-			key_with_suffix = key
+    """
+     Cache to memcache
+    """
+    def wrap(func):
+        def cached_func(*args, **kw):
+            key_with_suffix = key
 
-			if key_suffix_calc_func:
-				key_suffix = key_suffix_calc_func(*args, **kw)
-				if key_suffix:
-					key_with_suffix = '%s:%s' % (key, key_suffix)
+            if key_suffix_calc_func:
+                key_suffix = key_suffix_calc_func(*args, **kw)
+                if key_suffix:
+                    key_with_suffix = '%s:%s' % (key, key_suffix)
 
-			value = memcache.get(key_with_suffix, namespace)
-			if value:
-			    logging.debug(key_with_suffix)
-			    logging.debug("Cached")
-			    
-			if not value:
-				value = func(*args, **kw)
-				memcache.set(key_with_suffix, value, cache_time, namespace)
-			return value
-		return cached_func
-	return wrap
+            value = memcache.get(key_with_suffix, namespace)
+            if not value:
+                value = func(*args, **kw)
+                memcache.set(key_with_suffix, value, cache_time, namespace)
+            return value
+        return cached_func
+    return wrap
 
 def slugify(value):
     """ Slugify a string, to make it URL friendly. """
@@ -85,6 +81,10 @@ def get_predefined_image_link(link, category):
         return '/images/predefined/stackoverflow.png'
     if link.startswith('http://www.youtube.com'):
         return '/images/predefined/youtube.png'
+    if link.startswith('https://github.com'):
+        return '/images/predefined/github.png'
+    if link.startswith('http://code.google.com'):
+        return '/images/predefined/googlecode.png'
     #Categories
     return '/images/predefined/%s.png' % category.lower()
 
@@ -98,7 +98,7 @@ class ContentDiscoverer():
                 re_so = re.compile('http://stackoverflow\.com/questions/(\d+)/.*')
                 return re_so.match(self.link).group(1)
             elif self.link.startswith('http://www.youtube.com'):
-                re_yt = re.compile('http://www\.youtube\.com/watch\?v=(.+)&.*')
+                re_yt = re.compile('http://www\.youtube\.com/watch\?v=([^&]*)')
                 return re_yt.match(self.link).group(1)    
             else: return None
         except:

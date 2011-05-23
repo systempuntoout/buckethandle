@@ -31,7 +31,7 @@ app.notfound = notfound
 app.internalerror = internalerror
 
 def main():
-    logging.getLogger().setLevel(logging.DEBUG)
+    logging.getLogger().setLevel(logging.ERROR)
     application = app.wsgifunc()
     run_wsgi_app(application)
 

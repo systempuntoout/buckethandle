@@ -24,14 +24,17 @@ $def render_catqs(selected_category, front_char):
             <tr>
                   <td>
                     <div style="float:left">
-                        <p>$post.created.strftime("%m %B, %Y")</p>  
+                        <p>$post.created.strftime("%m %B, %Y")
+                        $if admin:
+                            <a href="/admin?action=editpost_init&amp;post_id=$post.key().id()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
+                        </p>
                         <p><span class="main_link"><a href="$post.link">$(post.title)</a></span> | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a></p>
                         <p><a href="$(post.link)">$(post.link)</a></p>
                         <p>$(post.description)</p>
                     </div>
                     <div style="float:right">
                         <p style="text-align:right;">
-                            <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" alt="Image"/>
+                            <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" title="$post.category" alt="Image"/>
                         </p>
                     </div>
                     <div class="meta">

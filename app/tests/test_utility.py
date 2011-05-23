@@ -36,7 +36,7 @@ class ContentDiscovererCase(unittest.TestCase):
     def test_discovery(self):
         self.assertEquals(ContentDiscoverer("http://stackoverflow.com/questions/6085551/iis-7-5-self-signed").get_id(), '6085551')
         self.assertEquals(ContentDiscoverer("http://www.youtube.com/watch?v=ZAkQJOlcrbI&feature=aso").get_id(), 'ZAkQJOlcrbI')
-
+        self.assertEquals(ContentDiscoverer("http://www.youtube.com/watch?v=tcbpTQXNwac").get_id(), 'tcbpTQXNwac')
        
 if __name__ == '__main__':
     unittest.main()
