@@ -65,7 +65,7 @@ $if navbar:
                             <a href="/tag/$(tag.name)">$(tag.name)</a>($(tag.counter))&nbsp;
 
                     $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
-                        <a href="/tagcloud">more »</a>
+                        <br><span class="more_tag"><a  href="/tagcloud">more »</a></span>
                 </p>
                 <div id="img" style="margin-top:40px">
                     <p>

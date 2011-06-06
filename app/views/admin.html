@@ -4,6 +4,7 @@ $def with (result, title = '', link = '', description = '', tags = [], category 
      <ul>
            <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
            <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
+           <li><a href="/admin?action=populate">Populate </a></li>
      </ul>
      <p><b>Result:</b></p>
       $for key in result.keys():
@@ -17,23 +18,23 @@ $def with (result, title = '', link = '', description = '', tags = [], category 
              $else:
                 <input type="hidden" name="action" value="newpost"/>
              <input type="hidden" name="post_id" value="$post_id"/>
-             <p>title:<br><input type="text" name="title" value="$title"/></p>
-             <p>link:<br> <input type="text" name="link" value="$link"/></p>
-             <p>description :<br><input type="text" name="description" maxlenght="500" value="$description"/></p>
-             <p>tags:<br><input type="text" name="tags" value = "$' '.join(tags)"/> </p>
+             <p>title:<br><input type="text" size="100" name="title" value="$title"/></p>
+             <p>link:<br> <input type="text" size="100" name="link" value="$link"/></p>
+             <p>description :<br><input type="text" size="150" name="description" maxlenght="500" value="$description"/></p>
+             <p>tags:<br><input type="text" name="tags" size="100" value = "$' '.join(tags)"/> </p>
              <p>categories:<br>
              <select name="category">
                  $for category_tmp in settings.CATEGORIES:
                     <option $:(category_tmp==category and 'selected="selected"')  value="$category_tmp">$category_tmp</option>
              </select>
-             <p>img:<input type="file" name="img"/>
+             <p>img:<input type="file" size="100" name="img"/>
              $if img_path:
                 <img src="$img_path" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" title="$category" alt="Image"/><br>
                 delete image:<input type="checkbox" name="delete_img">    
                 
              </p>
              
-             <p>body :<br><textarea name="body" cols="40" rows="20">$body</textarea></p>
+             <p>body :<br><textarea name="body" cols="100" rows="20">$body</textarea></p>
              <p><input type="submit" value="Submit"/></p>
            </form>
          </li>

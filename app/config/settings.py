@@ -15,7 +15,7 @@ What I dislike about blog platforms is that they lack a drill-down tag exploring
 I still have to think an easy way to collect all the data, I'm planning to code a smart bookmarklet that should help me in this task.  
 This tool is a work in progress, so expect errors and other nasty things.  
 
-[Source code on Github [soon..ish]](http://github.com/systempuntoout/ "github")
+[Source code on Github](http://github.com/systempuntoout/buckethandle "github")
 
 ![test](/images/systempuntooutmail.jpg "mail")
 """
@@ -24,10 +24,12 @@ This tool is a work in progress, so expect errors and other nasty things.
 HTML_MIME_TYPE = "text/html; charset=UTF-8"
 THUMBNAIL_WIDTH= 70
 THUMBNAIL_HEIGHT= 70
-PAGESIZE = 15
+POSTS_PER_PAGE = 15
 NAVBAR_CLOUDSIZE = 30
 RECENT_POST_NUM = 10
 NO_LIMIT = 10000
+MAX_NUMBER_OF_TAGS_USING_INDEXES = 3
+MAX_NUMBER_OF_TAGS_FILTERS = 6
 
 #Services
 DISQUS = "firsttestblog"

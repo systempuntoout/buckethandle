@@ -224,6 +224,11 @@ table.result td {
  color:#000000;
 }
 
+.pagination_page a:hover {
+ background:#fff;
+ text-decoration:underline;
+}
+
 .pagination_page a:visited {
  text-decoration: none;
  color:#000000;
@@ -253,7 +258,7 @@ td.pagination_page a:hover {
 
 #main_tag_cloud{
     margin:0 auto;
-    width:60%;
+    width:90%;
     border-top:40px;
 }
 
@@ -311,6 +316,7 @@ td.pagination_page a:hover {
     height: 25px;
     padding: 5px 5px;
     width: 290px;
+    font-family: Arial,Liberation Sans,DejaVu Sans,sans-serif;
 }
 
 .meta{
@@ -320,4 +326,14 @@ td.pagination_page a:hover {
 .tags {
     float:right;
 
+}
+
+.more_tag a:link {
+ text-decoration: none;
+ color:#000000;
+}
+
+.more_tag a:hover {
+ background:#eee;
+ text-decoration:underline;
 }

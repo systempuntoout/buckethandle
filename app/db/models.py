@@ -32,36 +32,49 @@ class Post(db.Model):
     @staticmethod
     @memcached('get_posts', 3600, lambda limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
     def get_posts(limit, offset, tags_filter = [], category_filter = ''):
-        posts =  Post.all()
+        if len(tags_filter) > MAX_NUMBER_OF_TAGS_USING_INDEXES:
+            keys_only = True
+        else:
+            keys_only = False
+        posts =  Post.all(keys_only = keys_only)
+        
         if category_filter:
             posts.filter('category', category_filter )
         for tag in tags_filter:
           if tag:
               posts.filter('tags', tag)
-        return posts.fetch(limit = limit, offset = offset)
+        
+        if keys_only:
+            keys = posts.fetch(limit = NO_LIMIT)
+            sorted_keys = sorted(keys, reverse = True)
+            logging.debug(sorted_keys)
+            return Post.get(sorted_keys[offset:offset+limit])
+        else:
+            posts.order("-created")    
+            return posts.fetch(limit = limit, offset = offset)
     
     @staticmethod
     @memcached('get_recent_posts', 3600*24)
     def get_recent_posts():
-        posts =  Post.all().fetch(RECENT_POST_NUM)
+        posts =  Post.all().order("-created").fetch(RECENT_POST_NUM)
         return posts
     
     @staticmethod
     @memcached('get_post', 3600*24, lambda post_id: post_id)
     def get_post(post_id):
-        return Post.get_by_id(post_id)
+        return Post.get_by_key_name(post_id)
         
     def get_image_path(self):
         if self.thumbnail is not None:
-            return "/img?id=%s" % self.key().id()
+            return "/img?id=%s" % self.key().name()
         else:
             return utils.get_predefined_image_link(self.link, self.category)
     
     def get_path(self):
-        return "%s/%s" % (self.key().id(), self.slug)
+        return "%s/%s" % (self.key().name(), self.slug)
             
     @staticmethod
-    @memcached('get_prev_next', 3600*24, lambda post: post.key().id())
+    @memcached('get_prev_next', 3600*24, lambda post: post.key().name())
     def get_prev_next(post):
       """Chronologically previous and next post for the passed post"""
 

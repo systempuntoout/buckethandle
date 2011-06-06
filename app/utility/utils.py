@@ -32,6 +32,8 @@ def slugify(value):
     value = unicode(re.sub('[^\w\s-]', '', value).strip().lower())
     return re.sub('[-\s]+','-',value)
 
+def generate_key_name():
+    return now().strftime("%Y%m%d%H%M%S")
 
 def now():
     return datetime.utcnow() + timedelta(hours =+ 8)

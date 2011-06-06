@@ -36,9 +36,9 @@ class Index:
         category = web.input(category = '')['category']
         
         posts_count = models.Post.get_posts_count(category_filter= category)
-        posts = models.Post.get_posts(limit = PAGESIZE, offset = PAGESIZE * (int(page) - 1), category_filter= category)
+        posts = models.Post.get_posts(limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (int(page) - 1), category_filter= category)
         
-        return render_template(render.index(posts, selected_category = category, pagination = utils.Pagination(posts_count, page, PAGESIZE)),title ='Home')
+        return render_template(render.index(posts, selected_category = category, pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE)),title ='Home')
 
 
 class Post:
@@ -47,7 +47,7 @@ class Post:
     """
     def GET(self, post_id = None):
         if post_id:
-            post = models.Post.get_post(int(post_id))
+            post = models.Post.get_post(post_id)
         else:
             post = models.Post.get_latest_post()
         
@@ -76,7 +76,7 @@ class Tags:
         page = web.input(page = 1)['page']
         category = web.input(category = '')['category']
         
-        if add_tag in tags  or len(tags)> 6:
+        if add_tag in tags  or len(tags)> MAX_NUMBER_OF_TAGS_FILTERS:
             add_tag = None
         
         if add_tag:
@@ -93,9 +93,9 @@ class Tags:
                 web.redirect('/tag/%s' % ('/'.join(tags)))
         
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
-        posts = models.Post.get_posts(limit = PAGESIZE, offset = PAGESIZE * (int(page) - 1), tags_filter = tags, category_filter= category)
+        posts = models.Post.get_posts(limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (int(page) - 1), tags_filter = tags, category_filter= category)
         
-        return render_template(render.index(posts, tags, category, pagination = utils.Pagination(posts_count, page, PAGESIZE)),
+        return render_template(render.index(posts, tags, category, pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE)),
                              title = 'Home')
         
 
@@ -131,7 +131,7 @@ class Image:
      """
      def GET(self):
          post_id = web.input(post_id = None)['id']
-         post = models.Post.get_post(int(post_id))
+         post = models.Post.get_post(post_id)
 
          if post.thumbnail:
              web.header('Content-type', 'image/png')
