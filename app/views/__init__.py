@@ -284,12 +284,12 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'            <h2>Categories</h2>\n'])
         extend_([u'            <ul>\n'])
         for category in loop.setup(categories):
-            extend_(['            ', u'<li><a href="/?category=', escape_(category.name, True), u'">', escape_(category.name, True), u'</a>(', escape_((category.counter), True), u')</li>\n'])
+            extend_(['            ', u'<li><a href="/?category=', escape_(category.name, True), u'">', escape_(category.name, True), u'</a>(', escape_(commify(category.counter), True), u')</li>\n'])
         extend_([u'            </ul>\n'])
         extend_([u'            <h2>Tags</h2>\n'])
         extend_([u'            <p>\n'])
         for tag in loop.setup(tag_cloud):
-            extend_(['                ', u'    <a href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_((tag.counter), True), u')&nbsp;\n'])
+            extend_(['                ', u'    <a href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_(commify(tag.counter), True), u')&nbsp;\n'])
             extend_(['                ', u'\n'])
         if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
             extend_(['                ', u'<br><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
@@ -435,7 +435,7 @@ def tagcloud (tag_cloud):
     extend_([u'<p>Tags found: <b>', escape_(len(tag_cloud), True), u'</b></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
-        extend_(['    ', u'    <a href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_((tag.counter), True), u')&nbsp;\n'])
+        extend_(['    ', u'    <a href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_(commify(tag.counter), True), u')&nbsp;\n'])
         extend_(['    ', u'\n'])
     extend_([u'</div>\n'])
 

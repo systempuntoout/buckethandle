@@ -3,7 +3,7 @@
 CMS_NAME = u"GAE_cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
-DESCRIPTION = u"""Collection of useful stuff for Google App Engine."""             
+DESCRIPTION = u"""Google App Engine Hot stuff"""             
 META_DESCRIPTION = "GAEcupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = "Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = ["Libraries", "Questions", "Tutorials", "Videos", "Applications","Articles","Books"]
@@ -29,7 +29,7 @@ NAVBAR_CLOUDSIZE = 30
 RECENT_POST_NUM = 10
 NO_LIMIT = 10000
 MAX_NUMBER_OF_TAGS_USING_INDEXES = 3
-MAX_NUMBER_OF_TAGS_FILTERS = 6
+MAX_NUMBER_OF_TAGS_FILTERS = 5
 
 #Services
 DISQUS = "firsttestblog"

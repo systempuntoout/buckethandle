@@ -76,7 +76,7 @@ class Tags:
         page = web.input(page = 1)['page']
         category = web.input(category = '')['category']
         
-        if add_tag in tags  or len(tags)> MAX_NUMBER_OF_TAGS_FILTERS:
+        if add_tag in tags  or len(tags)>= MAX_NUMBER_OF_TAGS_FILTERS:
             add_tag = None
         
         if add_tag:

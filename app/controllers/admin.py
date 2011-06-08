@@ -40,7 +40,7 @@ class Admin:
             body = "test"
             tags = ""
             for tag in range(random.randint(1,5)):
-                tagindex = random.randint(1,300)
+                tagindex = random.randint(1,50)
                 tags = tags + " foo%s" % tagindex
             tags = [tag.lower() for tag in tags.split()]
             category = CATEGORIES[random.randint(0,6)]
@@ -61,7 +61,7 @@ class Admin:
             taskqueue.add(url='/admin?action=populate', 
                           method = 'GET', 
                           queue_name = 'populate',
-                          countdown = 10)
+                          countdown = 5)
             
         elif action =='newpost_init':
             title = web.input(title = '')['title']

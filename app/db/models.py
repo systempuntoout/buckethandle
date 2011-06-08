@@ -152,6 +152,6 @@ class Category(db.Model):
     @staticmethod
     @memcached('get_categories', 3600, lambda limit = NO_LIMIT : limit )
     def get_categories(limit = NO_LIMIT ):
-        category =  Category.all().filter('counter > ', 0)
+        category =  Category.all().filter('counter > ', 0).order('-counter')
 
         return category.fetch(limit = limit)

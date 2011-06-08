@@ -57,12 +57,12 @@ $if navbar:
                 <h2>Categories</h2>
                 <ul>
                 $for category in categories:
-                    <li><a href="/?category=$category.name">$category.name</a>($(category.counter))</li>
+                    <li><a href="/?category=$category.name">$category.name</a>($commify(category.counter))</li>
                 </ul>
                 <h2>Tags</h2>
                 <p>
                     $for tag in tag_cloud:
-                            <a href="/tag/$(tag.name)">$(tag.name)</a>($(tag.counter))&nbsp;
+                            <a href="/tag/$(tag.name)">$(tag.name)</a>($commify(tag.counter))&nbsp;
 
                     $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
                         <br><span class="more_tag"><a  href="/tagcloud">more »</a></span>
