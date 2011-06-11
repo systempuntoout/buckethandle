@@ -5,6 +5,7 @@ from google.appengine.ext import deferred
 import app.utility.worker as worker
 from google.appengine.api.taskqueue import taskqueue
 import app.db.models as models
+import app.db.counter as counter
 import app.utility.utils as utils
 from google.appengine.ext import db
 from google.appengine.api import users
@@ -56,6 +57,7 @@ class Admin:
                                body = body  )
             
             post.put()
+            counter.increment("Posts_Count")
             deferred.defer(worker.deferred_update_tags_counter,tags)
             deferred.defer(worker.deferred_update_category_counter,category)
             taskqueue.add(url='/admin?action=populate', 
@@ -98,6 +100,7 @@ class Admin:
                                body = body  )
             
             result['newpost'] = post.put()
+            counter.increment("Posts_Count")
             deferred.defer(worker.deferred_update_tags_counter,tags)
             deferred.defer(worker.deferred_update_category_counter,category)
         elif action =='editpost_init':
@@ -158,6 +161,7 @@ class Admin:
                 entity = models.Post.get_by_key_name(post_id)
                 if entity:
                     result['delete_post'] = entity.delete()
+                    counter.decrement("Posts_Count")
                     worker.deferred_update_tags_counter([],entity.tags)
                     worker.deferred_update_category_counter(None, entity.category)
         

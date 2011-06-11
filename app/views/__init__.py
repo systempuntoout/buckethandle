@@ -122,7 +122,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
     def render_catqs(selected_category, front_char):
         self = TemplateResult(); extend_ = self.extend
         if selected_category :
-            extend_([escape_((front_char), True), u'category=', escape_(selected_category, True), u'\n'])
+            extend_([escape_((front_char), False), u'category=', escape_(selected_category, True), u'\n'])
         extend_([u'\n'])
         return self
     extend_([u'<div id="box_tags">\n'])
@@ -184,16 +184,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
             extend_(['         ', u'           <td class="pagination_page">\n'])
             if pagination.has_previous_entries():
                 extend_(['                        ', u'    <a href="?page=', escape_((pagination.page-1), True), escape_((render_catqs(selected_category,"&")), True), u'">&laquo; prev&nbsp;&nbsp;</a>\n'])
-            for page in loop.setup(pagination.get_pretty_pagination()):
-                if page != -1:
-                    extend_(['                        ', u'<a href="?page=', escape_((page), True), escape_((render_catqs(selected_category,"&")), True), u'">\n'])
-                    if page == pagination.page:
-                        extend_(['                            ', u'|', escape_((page), True), u'|    \n'])
-                    else:
-                        extend_(['                            ', escape_(page, True), u' \n'])
-                    extend_(['                        ', u'</a>\n'])
-                else:
-                    extend_(['                        ', escape_(pagination.separator, True), u'\n'])
+            extend_(['         ', u'               [ ', escape_(pagination.page, True), u' ]\n'])
             if pagination.has_more_entries():
                 extend_(['                        ', u'       <a href="?page=', escape_((pagination.page+1), True), escape_((render_catqs(selected_category,"&")), True), u'">&nbsp;&nbsp;next &raquo;</a>\n'])
             extend_(['         ', u'           </td>\n'])
@@ -292,7 +283,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
             extend_(['                ', u'    <a href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_(commify(tag.counter), True), u')&nbsp;\n'])
             extend_(['                ', u'\n'])
         if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
-            extend_(['                ', u'<br><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
+            extend_(['                ', u'<br/><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
         extend_([u'            </p>\n'])
         extend_([u'            <div id="img" style="margin-top:40px">\n'])
         extend_([u'                <p>\n'])

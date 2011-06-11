@@ -1,6 +1,6 @@
 $def with (posts, selected_tags = [], selected_category = '', pagination = None)
 $def render_catqs(selected_category, front_char):
-    $if selected_category : $(front_char)category=$selected_category
+    $if selected_category : $:(front_char)category=$selected_category
 
 <div id="box_tags">
      <form action = "/tag/$('/'.join(selected_tags))" method="post">  
@@ -61,14 +61,7 @@ $def render_catqs(selected_category, front_char):
                             <td class="pagination_page">
                                 $if pagination.has_previous_entries():
                         	        <a href="?page=$(pagination.page-1)$(render_catqs(selected_category,"&"))">&laquo; prev&nbsp;&nbsp;</a>
-                                $for page in pagination.get_pretty_pagination():
-                                    $if page != -1:
-                                        <a href="?page=$(page)$(render_catqs(selected_category,"&"))">
-                                            $if page == pagination.page:|$(page)|    
-                                            $else: $page 
-                                        </a>
-                                    $else:
-                                        $pagination.separator
+                                [ $pagination.page ]
                                 $if pagination.has_more_entries():
                         	           <a href="?page=$(pagination.page+1)$(render_catqs(selected_category,"&"))">&nbsp;&nbsp;next &raquo;</a>
                             </td>

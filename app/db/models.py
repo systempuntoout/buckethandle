@@ -1,7 +1,9 @@
 from google.appengine.ext import db
+from google.appengine.api import memcache
 from app.utility.utils import memcached
 from app.config.settings import *
 import app.utility.utils as utils
+import app.db.counter as counter
 import logging
 
 class Post(db.Model):
@@ -21,6 +23,10 @@ class Post(db.Model):
     @staticmethod
     @memcached('get_posts_count', 3600, lambda tags_filter = [], category_filter= '': "%s_%s" % ('.'.join(sorted(tags_filter)), category_filter))
     def get_posts_count(tags_filter = [], category_filter = ''):
+        #Use the sharded counter for the unfiltered number of posts count
+        if not tags_filter and not category_filter:
+            return counter.get_count("Posts_Count")
+        
         posts =  Post.all(keys_only = True)
         if category_filter:
             posts.filter('category', category_filter )
@@ -30,8 +36,8 @@ class Post(db.Model):
         return posts.count(limit = None)
 
     @staticmethod
-    @memcached('get_posts', 3600, lambda limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
-    def get_posts(limit, offset, tags_filter = [], category_filter = ''):
+    @memcached('get_posts', 3600, lambda page, limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
+    def get_posts(page, limit, offset, tags_filter = [], category_filter = ''):
         if len(tags_filter) > MAX_NUMBER_OF_TAGS_USING_INDEXES:
             keys_only = True
         else:
@@ -47,11 +53,17 @@ class Post(db.Model):
         if keys_only:
             keys = posts.fetch(limit = NO_LIMIT)
             sorted_keys = sorted(keys, reverse = True)
-            logging.debug(sorted_keys)
             return Post.get(sorted_keys[offset:offset+limit])
         else:
-            posts.order("-created")    
-            return posts.fetch(limit = limit, offset = offset)
+            posts.order("-created")
+            bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page-1,'.'.join(sorted(tags_filter)), category_filter))
+            if bookmark:
+                posts.with_cursor(start_cursor = bookmark)
+                fetched_post = posts.fetch(limit = limit)
+            else:
+                fetched_post = posts.fetch(limit = limit, offset = offset)
+            memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
+            return fetched_post
     
     @staticmethod
     @memcached('get_recent_posts', 3600*24)
@@ -135,19 +147,21 @@ class Category(db.Model):
 
     @staticmethod
     def update_category(category_new, category_old):
-        if category_new != category_old:
-            if category_new:
-                category_entity = Category.get_by_key_name(category_new)
-                if category_entity:
-                    category_entity.counter +=1
-                else:
-                    category_entity = Category(key_name= category_new, name = category_new, counter = 1)
-                category_entity.put()
-            if category_old:
-                category_entity = Category.get_by_key_name(category_old)
-                if category_entity and category_entity.counter > 0:
-                   category_entity.counter -=1
-                   category_entity.put()
+        def _tx():
+            if category_new != category_old:
+                if category_new:
+                    category_entity = Category.get_by_key_name(category_new)
+                    if category_entity:
+                        category_entity.counter +=1
+                    else:
+                        category_entity = Category(key_name= category_new, name = category_new, counter = 1)
+                    category_entity.put()
+                if category_old:
+                    category_entity = Category.get_by_key_name(category_old)
+                    if category_entity and category_entity.counter > 0:
+                       category_entity.counter -=1
+                       category_entity.put()
+        return db.run_in_transaction(_tx)
 
     @staticmethod
     @memcached('get_categories', 3600, lambda limit = NO_LIMIT : limit )

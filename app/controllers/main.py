@@ -32,11 +32,11 @@ class Index:
     Homepage
     """
     def GET(self):
-        page = web.input(page = 1)['page']
+        page = int(web.input(page = 1)['page'])
         category = web.input(category = '')['category']
         
         posts_count = models.Post.get_posts_count(category_filter= category)
-        posts = models.Post.get_posts(limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (int(page) - 1), category_filter= category)
+        posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), category_filter= category)
         
         return render_template(render.index(posts, selected_category = category, pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE)),title ='Home')
 
@@ -73,7 +73,7 @@ class Tags:
             
         add_tag = web.input(addtag = None)['addtag']
         remove_tag = web.input(removetag = None)['removetag']
-        page = web.input(page = 1)['page']
+        page = int(web.input(page = 1)['page'])
         category = web.input(category = '')['category']
         
         if add_tag in tags  or len(tags)>= MAX_NUMBER_OF_TAGS_FILTERS:
@@ -93,7 +93,7 @@ class Tags:
                 web.redirect('/tag/%s' % ('/'.join(tags)))
         
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
-        posts = models.Post.get_posts(limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (int(page) - 1), tags_filter = tags, category_filter= category)
+        posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
         
         return render_template(render.index(posts, tags, category, pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE)),
                              title = 'Home')
