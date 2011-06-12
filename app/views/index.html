@@ -11,10 +11,20 @@ $def render_catqs(selected_category, front_char):
        <input id="search" type="text" name="addtag"/>
        </p>
        <p>
-       <input type="radio" name="category" $:(selected_category == '' and 'checked="checked"' or "") value="" onclick="this.form.submit()" />All
-       $for category in settings.CATEGORIES:
-           <input type="radio" name="category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.submit()"/>$category
-       </p>
+        <ul id="category_list">
+        <li>
+          <label $:(selected_category == '' and 'id="selected_category"' or "") for="All">
+          <input type="radio" id="All" name="category" $:(selected_category == '' and 'checked="checked"' or "") value="" onclick="this.form.submit()" />
+          All</label>
+        </li>
+          $for category in settings.CATEGORIES:
+              <li>
+              <label $:(selected_category != "" and category == selected_category and 'id="selected_category"' or "") for="$category">
+              <input type="radio" name="category" id="$category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.submit()"/>
+              $category</label>
+              </li>              
+        </ul>
+        </p>
        
      </form>
 </div>

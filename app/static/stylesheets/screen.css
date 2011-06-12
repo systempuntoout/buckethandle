@@ -357,3 +357,15 @@ td.pagination_page a:hover {
  background:#eee;
  text-decoration:underline;
 }
+
+#category_list li
+{
+display: inline;
+list-style-type: none;
+padding-right: 20px;
+}
+
+#selected_category 
+{
+font-weight:bold;
+}

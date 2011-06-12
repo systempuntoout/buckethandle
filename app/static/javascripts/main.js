@@ -11,6 +11,5 @@ jQuery(
 
 jQuery(document).ready(function() {
             jQuery(document).stacktack();
+            jQuery("input:radio").uniform();
 });
-
-
