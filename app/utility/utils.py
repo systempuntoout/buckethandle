@@ -3,6 +3,7 @@ from google.appengine.api import memcache
 import unicodedata
 import re
 import logging
+import time
 
 
 def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
@@ -77,6 +78,15 @@ class Pagination(object):
                 pagination.append(-1)
         pagination.append(self.total_pages)
         return pagination
+
+def inverse_microsecond_str(): #gives string of 8 characters from ascii 23 to 'z' which sorts in reverse temporal order
+    t = datetime.now()
+    inv_us = int(1e16 - (time.mktime(t.timetuple()) * 1e6 + t.microsecond)) #no y2k for >100 yrs
+    base_100_str = ""
+    while inv_us:
+        digit, inv_us = inv_us % 100, inv_us / 100
+        base_100_str = chr(23 + digit) + base_100_str
+    return base_100_str
 
 def get_predefined_image_link(link, category):
     if link.startswith('http://stackoverflow.com'):

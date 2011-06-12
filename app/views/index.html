@@ -27,7 +27,7 @@ $def render_catqs(selected_category, front_char):
                     <div style="float:left;width:90%">
                         <p>$post.created.strftime("%m %B, %Y")
                         $if admin:
-                            <a href="/admin?action=editpost_init&amp;post_id=$post.key().name()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
+                            <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
                         </p>
                         <p><span class="main_link"><a href="$post.link">$(post.title)</a></span> | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a></p>
                         <p><a href="$(post.link)">$(post.link)</a></p>

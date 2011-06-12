@@ -28,10 +28,11 @@ $def with (content, title = None , tag_cloud = [], categories = [], navbar = Tru
             <li><a href="/admin" $:(title=='Admin' and 'class="active"' or '')>Admin</a></li>
     </ul>
         
-        <form id="form" action="http://www.google.com/cse" method="get">
+        <form id="form" action="/search" method="get">
           <p id="layoutdims">  
-        	<input type="hidden" name="cx" value="$settings.GOOGLE_CSE" />
             <input type="hidden" name="ie" value="UTF-8" />
+            <input type="hidden" name="cref" value="$(curdomain)/cse.xml" />
+            <input type="hidden" name="cof" value="FORID:11" />
         	<input id="search_box" name="q" tabindex="1" onfocus="if (this.value=='search') this.value = ''" type="text" maxlength="140" size="32" value="search"/>
             </p>
         </form>

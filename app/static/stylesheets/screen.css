@@ -262,6 +262,22 @@ td.pagination_page a:hover {
     border-top:40px;
 }
 
+.tag_cloud_1{
+    font-size:10px;
+}
+.tag_cloud_2{
+    font-size:12px;
+}
+.tag_cloud_3{
+    font-size:14px;
+}
+.tag_cloud_4{
+    font-size:16px;
+}
+.tag_cloud_5{
+    font-size:20px;
+}
+
 #oops{
     margin:0 auto;
     width:60%;
@@ -325,10 +341,14 @@ td.pagination_page a:hover {
 }
 .tags {
     float:right;
-
 }
 
 .more_tag a:link {
+ text-decoration: none;
+ color:#000000;
+}
+
+.more_tag a:visited {
  text-decoration: none;
  color:#000000;
 }

@@ -80,6 +80,36 @@ admin = CompiledTemplate(admin, 'app/views/admin.html')
 join_ = admin._join; escape_ = admin._escape
 
 # coding: utf-8
+def cse():
+    __lineoffset__ = -5
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<?xml version="1.0" encoding="UTF-8" ?>\n'])
+    extend_([u'<GoogleCustomizations>\n'])
+    extend_([u'  <CustomSearchEngine volunteers="false" visible="false" encoding="utf-8">\n'])
+    extend_([u'    <Title>', escape_((settings.CMS_NAME), True), u'</Title>\n'])
+    extend_([u'    <Description>', escape_((settings.SLOGAN), True), u'</Description>\n'])
+    extend_([u'    <Context>\n'])
+    extend_([u'      <BackgroundLabels>\n'])
+    extend_([u'        <Label name="cse_include" mode="FILTER" />\n'])
+    extend_([u'        <Label name="cse_exclude" mode="ELIMINATE" />\n'])
+    extend_([u'      </BackgroundLabels>\n'])
+    extend_([u'    </Context>\n'])
+    extend_([u'    <LookAndFeel nonprofit="false" />\n'])
+    extend_([u'  </CustomSearchEngine>  \n'])
+    extend_([u'  <Annotations>\n'])
+    extend_([u'    <Annotation about="http://', escape_((curdomain), True), u'/*">\n'])
+    extend_([u'      <Label name="cse_include" />\n'])
+    extend_([u'    </Annotation>\n'])
+    extend_([u'  </Annotations>\n'])
+    extend_([u'</GoogleCustomizations>\n'])
+
+    return self
+
+cse = CompiledTemplate(cse, 'app/views/cse.xml')
+join_ = cse._join; escape_ = cse._escape
+
+# coding: utf-8
 def feed (posts, site_updated):
     __lineoffset__ = -4
     loop = ForLoop()
@@ -97,7 +127,7 @@ def feed (posts, site_updated):
         extend_([u'<entry>\n'])
         extend_([u'    <title>', escape_((post.title), True), u' - ', escape_((post.category), True), u'</title>\n'])
         extend_([u'    <link rel="alternate" type="text/html" href="http://', escape_((curdomain), True), u'/post/', escape_(post.get_path(), True), u'" />\n'])
-        extend_([u'    <id>tag:', escape_((curdomain), True), u',', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u':/post/', escape_((post.key().name()), True), u'</id>\n'])
+        extend_([u'    <id>tag:', escape_((curdomain), True), u',', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u':/post/', escape_((post.key()), True), u'</id>\n'])
         extend_([u'    <published>', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u'</published>\n'])
         extend_([u'    <updated>', escape_((post.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u'</updated>\n'])
         extend_([u'    <author>\n'])
@@ -150,7 +180,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
         extend_(['      ', u'              <p>', escape_(post.created.strftime("%m %B, %Y"), True), u'\n'])
         if admin:
-            extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key().name(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
+            extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p><span class="main_link"><a href="', escape_(post.link, True), u'">', escape_((post.title), True), u'</a></span> | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a></p>\n'])
         extend_(['      ', u'              <p><a href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
@@ -246,10 +276,11 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_(['        ', u'<li><a href="/admin" ', escape_((title=='Admin' and 'class="active"' or ''), False), u'>Admin</a></li>\n'])
     extend_([u'    </ul>\n'])
     extend_([u'        \n'])
-    extend_([u'        <form id="form" action="http://www.google.com/cse" method="get">\n'])
+    extend_([u'        <form id="form" action="/search" method="get">\n'])
     extend_([u'          <p id="layoutdims">  \n'])
-    extend_([u'                <input type="hidden" name="cx" value="', escape_(settings.GOOGLE_CSE, True), u'" />\n'])
     extend_([u'            <input type="hidden" name="ie" value="UTF-8" />\n'])
+    extend_([u'            <input type="hidden" name="cref" value="', escape_((curdomain), True), u'/cse.xml" />\n'])
+    extend_([u'            <input type="hidden" name="cof" value="FORID:11" />\n'])
     extend_([u'                <input id="search_box" name="q" tabindex="1" onfocus="if (this.value==\'search\') this.value = \'\'" type="text" maxlength="140" size="32" value="search"/>\n'])
     extend_([u'            </p>\n'])
     extend_([u'        </form>\n'])
@@ -382,7 +413,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = ''):
     extend_([u'          </div>\n'])
     extend_([u'          <p>', escape_(post.created.strftime("%m %B, %Y"), True), u'\n'])
     if admin:
-        extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key().name(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
+        extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
     extend_([u'          </p>\n'])
     extend_([u'          <p><a class="category" href="/?category=', escape_((post.category), True), u'">', escape_((post.category), True), u'</a>\n'])
     for tag in loop.setup(post.tags):
@@ -418,15 +449,37 @@ post = CompiledTemplate(post, 'app/views/post.html')
 join_ = post._join; escape_ = post._escape
 
 # coding: utf-8
+def search():
+    __lineoffset__ = -5
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'\n'])
+    extend_([u'<div id="cse-search-results"></div>\n'])
+    extend_([u'  <script type="text/javascript">\n'])
+    extend_([u'    var googleSearchIframeName = "cse-search-results";\n'])
+    extend_([u'    var googleSearchFormName = "cse-search-box";\n'])
+    extend_([u'    var googleSearchFrameWidth = 649;\n'])
+    extend_([u'    var googleSearchDomain = "www.google.com";\n'])
+    extend_([u'    var googleSearchPath = "/cse";\n'])
+    extend_([u'  </script>\n'])
+    extend_([u'  <script type="text/javascript" src="http://www.google.com/afsonline/show_afs_search.js"></script>\n'])
+
+    return self
+
+search = CompiledTemplate(search, 'app/views/search.html')
+join_ = search._join; escape_ = search._escape
+
+# coding: utf-8
 def tagcloud (tag_cloud):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
+    max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     extend_([u'\n'])
     extend_([u'<p>Tags found: <b>', escape_(len(tag_cloud), True), u'</b></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
-        extend_(['    ', u'    <a href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_(commify(tag.counter), True), u')&nbsp;\n'])
+        extend_(['    ', u'    <a class="tag_cloud_', escape_(min(1+int(tag.counter)*5/max_occurrencies, 5), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a>(', escape_(commify(tag.counter), True), u')&nbsp;\n'])
         extend_(['    ', u'\n'])
     extend_([u'</div>\n'])
 

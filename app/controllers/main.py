@@ -116,6 +116,13 @@ class About:
     def GET(self):
         return render_template(render.about(), title = 'About')
 
+class Search:
+    """
+    Search
+    """
+    def GET(self):
+        return render_template(render.search(), title = 'Search')
+
 class Feed:
      """
      Feed
@@ -124,6 +131,13 @@ class Feed:
          posts = models.Post.get_recent_posts()
          web.header('Content-type', 'application/atom+xml')
          return render.feed(posts, utils.now().strftime("%Y-%m-%dT%H:%M:%SZ") )
+
+class Cse:
+     """
+     Google Cse
+     """
+     def GET(self):
+         return render.cse()
                              
 class Image:
      """

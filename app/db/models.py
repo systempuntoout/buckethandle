@@ -20,6 +20,8 @@ class Post(db.Model):
     last_modified = db.DateTimeProperty(required = True, auto_now = True)
     created = db.DateTimeProperty(required = True, auto_now_add = True)
     
+    
+    
     @staticmethod
     @memcached('get_posts_count', 3600, lambda tags_filter = [], category_filter= '': "%s_%s" % ('.'.join(sorted(tags_filter)), category_filter))
     def get_posts_count(tags_filter = [], category_filter = ''):
@@ -55,7 +57,6 @@ class Post(db.Model):
             sorted_keys = sorted(keys, reverse = True)
             return Post.get(sorted_keys[offset:offset+limit])
         else:
-            posts.order("-created")
             bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page-1,'.'.join(sorted(tags_filter)), category_filter))
             if bookmark:
                 posts.with_cursor(start_cursor = bookmark)
@@ -74,19 +75,19 @@ class Post(db.Model):
     @staticmethod
     @memcached('get_post', 3600*24, lambda post_id: post_id)
     def get_post(post_id):
-        return Post.get_by_key_name(post_id)
+        return Post.get(post_id)
         
     def get_image_path(self):
         if self.thumbnail is not None:
-            return "/img?id=%s" % self.key().name()
+            return "/img?id=%s" % self.key()
         else:
             return utils.get_predefined_image_link(self.link, self.category)
     
     def get_path(self):
-        return "%s/%s" % (self.key().name(), self.slug)
+        return "%s/%s" % (self.key(), self.slug)
             
     @staticmethod
-    @memcached('get_prev_next', 3600*24, lambda post: post.key().name())
+    @memcached('get_prev_next', 3600*24, lambda post: post.key())
     def get_prev_next(post):
       """Chronologically previous and next post for the passed post"""
 

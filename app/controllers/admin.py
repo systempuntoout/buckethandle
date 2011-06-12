@@ -34,18 +34,18 @@ class Admin:
         elif action =='memcacheflush':
             result['result'] = memcache.flush_all()
         elif action =='populate':
-            key_name = utils.generate_key_name()
-            title= u"Title test %s" % key_name
+            timestamp = utils.generate_key_name()
+            title= u"Title test %s" % timestamp
             link = "http://www.foo.it"
-            description= "Description test %s" % key_name
+            description= "Description test %s" % timestamp
             body = "test"
             tags = ""
             for tag in range(random.randint(1,5)):
-                tagindex = random.randint(1,50)
+                tagindex = random.randint(1,500)
                 tags = tags + " foo%s" % tagindex
             tags = [tag.lower() for tag in tags.split()]
             category = CATEGORIES[random.randint(0,6)]
-            post = models.Post(key_name = key_name,
+            post = models.Post(key_name = utils.inverse_microsecond_str(),
                                title = title,
                                link = db.Link(link),
                                description = description,
@@ -88,7 +88,7 @@ class Admin:
             
             tags = [tag.lower() for tag in tags.split()]
             
-            post = models.Post(key_name = utils.generate_key_name(),
+            post = models.Post(key_name = utils.inverse_microsecond_str(),
                                title = title,
                                link = db.Link(link),
                                description = description,
@@ -106,7 +106,7 @@ class Admin:
         elif action =='editpost_init':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
-                entity = models.Post.get_by_key_name(post_id)
+                entity = models.Post.get(post_id)
                 if entity:
                     return render.layout(render.admin(result,
                                                       entity.title,
@@ -122,7 +122,7 @@ class Admin:
         elif action =='editpost':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
-                entity_post = models.Post.get_by_key_name(post_id)
+                entity_post = models.Post.get(post_id)
                 tags_old = entity_post.tags
                 category_old = entity_post.category
                 title = web.input(title = None)['title']
@@ -158,7 +158,7 @@ class Admin:
         elif action =='deletepost':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
-                entity = models.Post.get_by_key_name(post_id)
+                entity = models.Post.get(post_id)
                 if entity:
                     result['delete_post'] = entity.delete()
                     counter.decrement("Posts_Count")
