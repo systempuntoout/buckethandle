@@ -8,8 +8,8 @@ import logging
 
 class Post(db.Model):
     title = db.StringProperty(required = True)
-    link = db.LinkProperty(required = True)
-    description = db.StringProperty(required = True)
+    link = db.LinkProperty()
+    description = db.StringProperty()
     tags = db.ListProperty(str)
     category = db.StringProperty(choices = CATEGORIES)
     body = db.TextProperty()
@@ -19,8 +19,6 @@ class Post(db.Model):
     featured = db.BooleanProperty(default = False)
     last_modified = db.DateTimeProperty(required = True, auto_now = True)
     created = db.DateTimeProperty(required = True, auto_now_add = True)
-    
-    
     
     @staticmethod
     @memcached('get_posts_count', 3600, lambda tags_filter = [], category_filter= '': "%s_%s" % ('.'.join(sorted(tags_filter)), category_filter))
@@ -40,31 +38,20 @@ class Post(db.Model):
     @staticmethod
     @memcached('get_posts', 3600, lambda page, limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
     def get_posts(page, limit, offset, tags_filter = [], category_filter = ''):
-        if len(tags_filter) > MAX_NUMBER_OF_TAGS_USING_INDEXES:
-            keys_only = True
-        else:
-            keys_only = False
-        posts =  Post.all(keys_only = keys_only)
-        
+        posts =  Post.all()
         if category_filter:
             posts.filter('category', category_filter )
         for tag in tags_filter:
           if tag:
               posts.filter('tags', tag)
-        
-        if keys_only:
-            keys = posts.fetch(limit = NO_LIMIT)
-            sorted_keys = sorted(keys, reverse = True)
-            return Post.get(sorted_keys[offset:offset+limit])
+        bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page-1,'.'.join(sorted(tags_filter)), category_filter))
+        if bookmark:
+            posts.with_cursor(start_cursor = bookmark)
+            fetched_post = posts.fetch(limit = limit)
         else:
-            bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page-1,'.'.join(sorted(tags_filter)), category_filter))
-            if bookmark:
-                posts.with_cursor(start_cursor = bookmark)
-                fetched_post = posts.fetch(limit = limit)
-            else:
-                fetched_post = posts.fetch(limit = limit, offset = offset)
-            memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
-            return fetched_post
+            fetched_post = posts.fetch(limit = limit, offset = offset)
+        memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
+        return fetched_post
     
     @staticmethod
     @memcached('get_recent_posts', 3600*24)

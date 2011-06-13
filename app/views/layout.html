@@ -7,15 +7,21 @@ $def with (content, title = None , tag_cloud = [], categories = [], navbar = Tru
     <meta name="description" content="$(settings.META_DESCRIPTION)"/>
     <meta name="keywords" content="$settings.META_KEYWORDS"/>
     <title> $(title) - $settings.CMS_NAME</title> 
-    <link rel="stylesheet" href="/stylesheets/screen.css"/>
-    <link rel="stylesheet" href="/stylesheets/jquery.autocomplete.css"/>
-    <link rel="stylesheet" href="/stylesheets/uniform.default.css"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/uniform.default.css"/>
+    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/skins/markitup/style.css" />
+    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/sets/markdown/style.css" />
     <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
     <script type="text/javascript" src="/javascripts/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.autocomplete.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.stacktack.min.js"></script>
     <script type="text/javascript" src="/javascripts/jquery.uniform.min.js" ></script>
     <script type="text/javascript" src="/javascripts/main.js"></script>
+    <script type="text/javascript" src="/javascripts/markitup/jquery.markitup.js"></script>
+    <script type="text/javascript" src="/javascripts/markitup/sets/markdown/set.js"></script>
+    <!-- markItUp! skin -->
+    
     
     
 </head>
@@ -59,11 +65,12 @@ $if navbar:
                     $:safemarkdown(settings.DESCRIPTION)
                 </div>
                 <p>Posts: <span class="summarycount">$commify(posts_total_count)</span></p> 
-                <h2>Categories</h2>
-                <ul>
-                $for category in categories:
-                    <li><a href="/?category=$category.name">$category.name</a>($commify(category.counter))</li>
-                </ul>
+                $if settings.CATEGORIES:
+                    <h2>Categories</h2>
+                    <ul>
+                    $for category in categories:
+                        <li><a href="/?category=$category.name">$category.name</a>($commify(category.counter))</li>
+                    </ul>
                 <h2>Tags</h2>
                 <p>
                     $for tag in tag_cloud:

@@ -86,11 +86,16 @@ class Admin:
             else:
                 blob_thumbnail= None
             
-            tags = [tag.lower() for tag in tags.split()]
+            if link:
+                link_for_db = db.Link(link)
+            else:
+                link_for_db= None
+            
+            tags = list(set([tag.lower() for tag in tags.split()]))
             
             post = models.Post(key_name = utils.inverse_microsecond_str(),
                                title = title,
-                               link = db.Link(link),
+                               link = link_for_db,
                                description = description,
                                tags = tags,
                                category = category,
@@ -138,11 +143,16 @@ class Admin:
                     blob_thumbnail= db.Blob(thumbnail)
                 else:
                     blob_thumbnail= None
-            
-                tags = [tag.lower() for tag in tags.split()]
+                
+                if link:
+                    link_for_db = db.Link(link)
+                else:
+                    link_for_db= None
+                
+                tags = list(set([tag.lower() for tag in tags.split()]))
             
                 entity_post.title = title
-                entity_post.link = db.Link(link)
+                entity_post.link = link_for_db
                 entity_post.description = description
                 entity_post.tags = tags
                 entity_post.category = category

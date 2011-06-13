@@ -4,9 +4,9 @@ CMS_NAME = u"GAE_cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
 DESCRIPTION = u"""Google App Engine Hot stuff"""             
-META_DESCRIPTION = "GAEcupboard - Ingredients for your Google App Engine recipes"
-META_KEYWORDS = "Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
-CATEGORIES = ["Libraries", "Questions", "Tutorials", "Videos", "Applications","Articles","Books"]
+META_DESCRIPTION = u"GAEcupboard - Ingredients for your Google App Engine recipes"
+META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
+CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Tutorials",u"Books"]
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
 Being forced to rest and having some time to spare, I've tried to implement something useful to store and organize all the public knowledge around Google App Engine.  
@@ -28,8 +28,8 @@ POSTS_PER_PAGE = 15
 NAVBAR_CLOUDSIZE = 30
 RECENT_POST_NUM = 10
 NO_LIMIT = 10000
-MAX_NUMBER_OF_TAGS_USING_INDEXES = 5
 MAX_NUMBER_OF_TAGS_FILTERS = 5
+MEMCACHE_ENABLED = True #Disable it just for testing
 
 #Services
 DISQUS = "firsttestblog"

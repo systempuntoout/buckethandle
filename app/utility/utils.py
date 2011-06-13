@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from google.appengine.api import memcache
+from app.config.settings import *
 import unicodedata
 import re
 import logging
@@ -12,18 +13,22 @@ def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
     """
     def wrap(func):
         def cached_func(*args, **kw):
-            key_with_suffix = key
+            if MEMCACHE_ENABLED:
+                key_with_suffix = key
 
-            if key_suffix_calc_func:
-                key_suffix = key_suffix_calc_func(*args, **kw)
-                if key_suffix:
-                    key_with_suffix = '%s:%s' % (key, key_suffix)
+                if key_suffix_calc_func:
+                    key_suffix = key_suffix_calc_func(*args, **kw)
+                    if key_suffix:
+                        key_with_suffix = '%s:%s' % (key, key_suffix)
 
-            value = memcache.get(key_with_suffix, namespace)
-            if not value:
+                value = memcache.get(key_with_suffix, namespace)
+                if not value:
+                    value = func(*args, **kw)
+                    memcache.set(key_with_suffix, value, cache_time, namespace)
+                return value
+            else:
                 value = func(*args, **kw)
-                memcache.set(key_with_suffix, value, cache_time, namespace)
-            return value
+                return value
         return cached_func
     return wrap
 
@@ -79,7 +84,8 @@ class Pagination(object):
         pagination.append(self.total_pages)
         return pagination
 
-def inverse_microsecond_str(): #gives string of 8 characters from ascii 23 to 'z' which sorts in reverse temporal order
+def inverse_microsecond_str(): 
+    """gives string of 8 characters from ascii 23 to 'z' which sorts in reverse temporal order"""
     t = datetime.now()
     inv_us = int(1e16 - (time.mktime(t.timetuple()) * 1e6 + t.microsecond)) #no y2k for >100 yrs
     base_100_str = ""
@@ -89,16 +95,20 @@ def inverse_microsecond_str(): #gives string of 8 characters from ascii 23 to 'z
     return base_100_str
 
 def get_predefined_image_link(link, category):
-    if link.startswith('http://stackoverflow.com'):
-        return '/images/predefined/stackoverflow.png'
-    if link.startswith('http://www.youtube.com'):
-        return '/images/predefined/youtube.png'
-    if link.startswith('https://github.com'):
-        return '/images/predefined/github.png'
-    if link.startswith('http://code.google.com'):
-        return '/images/predefined/googlecode.png'
-    #Categories
-    return '/images/predefined/%s.png' % category.lower()
+    #By link
+    if link:
+        if link.startswith('http://stackoverflow.com'):
+            return '/images/predefined/stackoverflow.png'
+        if link.startswith('http://www.youtube.com'):
+            return '/images/predefined/youtube.png'
+        if link.startswith('https://github.com'):
+            return '/images/predefined/github.png'
+        if link.startswith('http://code.google.com'):
+            return '/images/predefined/googlecode.png'
+    #By category
+    if category:
+        return '/images/predefined/%s.png' % category.lower()
+    return '/images/predefined/predefined_nocategory.png' 
 
 
 class ContentDiscoverer():
@@ -117,12 +127,12 @@ class ContentDiscoverer():
             return None    
         
     def get_content_block(self):
-        if self.link.startswith('http://stackoverflow.com'):
+        if self.link is None:
+            return ""
+        elif self.link.startswith('http://stackoverflow.com'):
             id = self.get_id()
             if id:
                 return """<div id="stacktack-%s"></div>""" % id
-            else:
-                return ""
         elif self.link.startswith('http://www.youtube.com'):  
             id = self.get_id()
             if id:
@@ -130,8 +140,6 @@ class ContentDiscoverer():
                 <div id="youtube">
                     <iframe width="560" height="349" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
                 </div>""" % id
-            else:
-                return ""
-        else: return ""
+        return ""
             
     

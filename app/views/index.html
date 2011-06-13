@@ -10,22 +10,22 @@ $def render_catqs(selected_category, front_char):
            <a class="tag dark" href="/tag/$('/'.join(selected_tags))?removetag=$(tag)$(render_catqs(selected_category,"&"))">$tag x</a>&raquo;
        <input id="search" type="text" name="addtag"/>
        </p>
-       <p>
-        <ul id="category_list">
-        <li>
-          <label $:(selected_category == '' and 'id="selected_category"' or "") for="All">
-          <input type="radio" id="All" name="category" $:(selected_category == '' and 'checked="checked"' or "") value="" onclick="this.form.submit()" />
-          All</label>
-        </li>
-          $for category in settings.CATEGORIES:
-              <li>
-              <label $:(selected_category != "" and category == selected_category and 'id="selected_category"' or "") for="$category">
-              <input type="radio" name="category" id="$category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.submit()"/>
-              $category</label>
-              </li>              
-        </ul>
-        </p>
-       
+       $if settings.CATEGORIES:
+           <div>
+            <ul id="category_list">
+            <li>
+              <label $:(selected_category == '' and 'id="selected_category"' or "") for="All">
+              <input type="radio" id="All" name="category" $:(selected_category == '' and 'checked="checked"' or "") value="" onclick="this.form.submit()" />
+              All</label>
+            </li>
+              $for category in settings.CATEGORIES:
+                  <li>
+                  <label $:(selected_category != "" and category == selected_category and 'id="selected_category"' or "") for="$category">
+                  <input type="radio" name="category" id="$category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.submit()"/>
+                  $category</label>
+                  </li>              
+            </ul>
+            </div>
      </form>
 </div>
 <div>      
@@ -39,7 +39,12 @@ $def render_catqs(selected_category, front_char):
                         $if admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
                         </p>
-                        <p><span class="main_link"><a href="$post.link">$(post.title)</a></span> | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a></p>
+                        <p>
+                        $if post.link:
+                            <span class="main_link"><a href="$post.link">$(post.title)</a></span>
+                        $else:
+                            <span class="main_title">$(post.title)</span>
+                        | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a></p>
                         <p><a href="$(post.link)">$(post.link)</a></p>
                         <p>$(post.description)</p>
                     </div>
@@ -51,9 +56,10 @@ $def render_catqs(selected_category, front_char):
                     
                     </div>
                     <div class="meta">
-                        <span>
-                            <a class="category" href="/?category=$(post.category)">$(post.category)</a>
-                        </span>
+                        $if settings.CATEGORIES:
+                            <span>
+                                <a class="category" href="/?category=$(post.category)">$(post.category)</a>
+                            </span>
                         <span class="tags">
                             $for tag in post.tags:
                                   $if tag in selected_tags:

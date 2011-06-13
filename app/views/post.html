@@ -24,7 +24,9 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '')
               $if admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
           </p>
-          <p><a class="category" href="/?category=$(post.category)">$(post.category)</a>
+          <p>
+              $if settings.CATEGORIES:
+                    <a class="category" href="/?category=$(post.category)">$(post.category)</a>
               $for tag in post.tags:
                     <a class="tag" href="/tag/$tag">$(tag)</a> 
           </p>

@@ -209,6 +209,10 @@ table.result td {
     border-top:1px #474747 solid;
 }
 
+.main_title {
+ font-size:160%;
+}
+
 .main_link a:link {
  text-decoration: none;
  font-size:160%;
@@ -362,7 +366,7 @@ td.pagination_page a:hover {
 {
 display: inline;
 list-style-type: none;
-padding-right: 20px;
+padding-right: 10px;
 }
 
 #selected_category 

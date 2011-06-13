@@ -2,7 +2,7 @@ jQuery(
     function()
     {   
         jQuery("#search").focus();
-        jQuery("#search").autocomplete('/ajax/tags', {
+        jQuery("#search, #tags").autocomplete('/ajax/tags', {
                 multiple: true,
                 matchContains: true,
                 multipleSeparator:' '});
@@ -11,5 +11,6 @@ jQuery(
 
 jQuery(document).ready(function() {
             jQuery(document).stacktack();
+            jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
 });

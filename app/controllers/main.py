@@ -13,7 +13,7 @@ render = web.render
 
 def render_template(content, **kwargs):
     """
-     Renders the layout template with the content page and dynamic navbar values
+     Renders the layout template with the content page and the dynamic navbar values
     """
     posts_total_count = models.Post.get_posts_count()  
     tag_cloud = models.Tag.get_tags(limit = NAVBAR_CLOUDSIZE)
