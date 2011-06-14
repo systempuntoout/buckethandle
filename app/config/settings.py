@@ -3,7 +3,7 @@
 CMS_NAME = u"GAE_cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
-DESCRIPTION = u"""Google App Engine Hot stuff"""             
+DESCRIPTION = u"""Google App Engine knowledge collections"""             
 META_DESCRIPTION = u"GAEcupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Tutorials",u"Books"]

@@ -28,11 +28,11 @@ class Links:
         web.header('Content-type', 'application/json')
         link = web.input(check = None)['check']
         if link:
-            link_is_stored = models.Post.get_post_by_link(link.trim())
+            link_is_stored = models.Post.get_post_by_link(link.strip())
             if link_is_stored:    
-                return '{"result":"[Link is already there]","clazz":"link_KO"}' 
+                return '{"result":"[ Link is already there ]","clazz":"link_KO"}' 
             else:
-                return '{"result":"[Link looks ok]","clazz":"link_OK"}'    
+                return '{"result":"[ Link looks ok ]","clazz":"link_OK"}'    
         else:
             return '{"result":"","clazz":""}'
             
