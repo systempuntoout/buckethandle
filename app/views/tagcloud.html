@@ -4,6 +4,6 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 <p>Tags found: <b>$len(tag_cloud)</b></p>
 <div id="main_tag_cloud">
     $for tag in tag_cloud:
-            <a class="tag_cloud_$min(1+int(tag.counter)*5/max_occurrencies, 5)" href="/tag/$(tag.name)">$(tag.name)</a>($commify(tag.counter))&nbsp;
+            <a class="tag_cloud_$min(1+int(tag.counter)*5/max_occurrencies, 5)" href="/tag/$(tag.name)">$(tag.name)</a><span class="counter">($commify(tag.counter))</span>&nbsp;
 
 </div>
