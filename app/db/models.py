@@ -93,7 +93,11 @@ class Post(db.Model):
     def get_latest_post():
       post =  Post.all().order('-created').get()
       return post   
-        
+      
+    @staticmethod
+    def get_post_by_link(link):
+      return Post.all().filter('link =', link).get()
+              
         
 class Tag(db.Model):
     name = db.StringProperty(required = True)

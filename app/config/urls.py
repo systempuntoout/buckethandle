@@ -11,6 +11,7 @@ urls = (
   '/search', 'app.controllers.main.Search',
   '/img', 'app.controllers.main.Image',
   '/ajax/tags','app.controllers.ajax.Tags',
+  '/ajax/links','app.controllers.ajax.Links',
   '/admin','app.controllers.admin.Admin',
   '/index.xml', 'app.controllers.main.Feed',
   '/cse.xml', 'app.controllers.main.Cse',

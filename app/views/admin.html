@@ -19,7 +19,7 @@ $def with (result, title = '', link = '', description = '', tags = [], category 
                 <input type="hidden" name="action" value="newpost"/>
              <input type="hidden" name="post_id" value="$post_id"/>
              <p>title:<br><input type="text" size="100" name="title" value="$title"/></p>
-             <p>link:<br> <input type="text" size="100" name="link" value="$link"/></p>
+             <p>link:<br> <input type="text" size="100" id = "link" name="link" value="$link"/> <span id="link_check"/></p>
              <p>description :<br><input type="text" size="150" name="description" maxlenght="500" value="$description"/></p>
              <p>tags:<br><input type="text" id="tags" name="tags" size="100" value = "$' '.join(tags)"/> </p>
              $if settings.CATEGORIES:

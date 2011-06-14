@@ -42,7 +42,7 @@ def admin (result, title = '', link = '', description = '', tags = [], category 
         extend_(['             ', u'<input type="hidden" name="action" value="newpost"/>\n'])
     extend_([u'             <input type="hidden" name="post_id" value="', escape_(post_id, True), u'"/>\n'])
     extend_([u'             <p>title:<br><input type="text" size="100" name="title" value="', escape_(title, True), u'"/></p>\n'])
-    extend_([u'             <p>link:<br> <input type="text" size="100" name="link" value="', escape_(link, True), u'"/></p>\n'])
+    extend_([u'             <p>link:<br> <input type="text" size="100" id = "link" name="link" value="', escape_(link, True), u'"/> <span id="link_check"/></p>\n'])
     extend_([u'             <p>description :<br><input type="text" size="150" name="description" maxlenght="500" value="', escape_(description, True), u'"/></p>\n'])
     extend_([u'             <p>tags:<br><input type="text" id="tags" name="tags" size="100" value = "', escape_(' '.join(tags), True), u'"/> </p>\n'])
     if settings.CATEGORIES:
@@ -286,6 +286,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.autocomplete.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.stacktack.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.uniform.min.js" ></script>\n'])
+    extend_([u'    <script type="text/javascript" src="/javascripts/typewatch.js" ></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/main.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/jquery.markitup.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/sets/markdown/set.js"></script>\n'])

@@ -373,3 +373,13 @@ padding-right: 10px;
 {
 font-weight:bold;
 }
+
+.link_KO{
+    color:red;
+    font-weight:bold;
+}
+
+.link_OK{
+    color:green;
+    font-weight:bold;
+}
