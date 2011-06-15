@@ -27,5 +27,5 @@ jQuery(document).ready(function() {
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
             linkCheck();
-            jQuery("#link").typeWatch( {wait: 500,captureLength: 7, callback:linkCheck } );
+            jQuery("#link").typeWatch( {wait: 500,captureLength: -1, callback:linkCheck } );
 });

@@ -27,6 +27,20 @@ class Post(db.Model):
         if not tags_filter and not category_filter:
             return counter.get_count("Posts_Count")
         
+        #Use the counter of the tag
+        if len(tags_filter) == 1 and not category_filter:
+            tag = Tag.get_tag(tags_filter[0])
+            if tag:
+                return tag.counter
+            else:
+                return 0
+        #Use the counter of the category
+        if category_filter and not tags_filter:
+            category = Category.get_category(category_filter)
+            if category:
+                return category.counter
+            else:
+                return 0    
         posts =  Post.all(keys_only = True)
         if category_filter:
             posts.filter('category', category_filter )
@@ -130,7 +144,11 @@ class Tag(db.Model):
         tags =  Tag.all().filter('counter > ', 0).order('-counter')
 
         return tags.fetch(limit = limit)
-        
+    
+    @staticmethod
+    @memcached('get_tag', 3600*24, lambda name: name)
+    def get_tag(name):
+        return Tag.all().filter('name =', name).get()    
         
 class Category(db.Model):
     name = db.StringProperty(required = True)
@@ -159,5 +177,9 @@ class Category(db.Model):
     @memcached('get_categories', 3600, lambda limit = NO_LIMIT : limit )
     def get_categories(limit = NO_LIMIT ):
         category =  Category.all().filter('counter > ', 0).order('-counter')
-
         return category.fetch(limit = limit)
+        
+    @staticmethod
+    @memcached('get_category', 3600*24, lambda name: name)
+    def get_category(name):
+        return Category.all().filter('name =', name).get()

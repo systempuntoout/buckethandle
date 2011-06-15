@@ -56,7 +56,7 @@ class Post:
         else:
             return render_error(NOT_FOUND_ERROR)
         
-        return render_template(render.post(post, prev_post, next_post, utils.ContentDiscoverer(post.link).get_content_block()), title = post.title)
+        return render_template(render.post(post, prev_post, next_post, utils.ContentDiscoverer(post.link, post.category).get_content_block()), title = post.title)
 
 class Tags:
     """

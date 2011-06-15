@@ -5,6 +5,7 @@ import unicodedata
 import re
 import logging
 import time
+import urlparse
 
 
 def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
@@ -44,6 +45,13 @@ def generate_key_name():
 def now():
     return datetime.utcnow() + timedelta(hours =+ 8)
 
+def get_base_link(link):
+    if link:
+        parsed_link = urlparse.urlparse(link)
+        return parsed_link.scheme + "://" + parsed_link.netloc
+    else:
+        return None
+
 class Pagination(object):
     def __init__(self, total, page, pagesize):
         self.total = int(total)
@@ -51,38 +59,11 @@ class Pagination(object):
         self.pagesize = int(pagesize)
         self.total_pages = 0 if self.total==0 else 1 if (self.total / self.pagesize == 0) else (self.total / self.pagesize) \
                              if (self.total % self.pagesize == 0) else (self.total / self.pagesize) + 1
-        self.separator = "..."
 
     def has_more_entries(self):
         return (self.page < self.total_pages)
     def has_previous_entries(self):
         return (self.page > 1)
-    def get_pretty_pagination(self):
-        """
-            Return a list of int representing page index like:
-            [1, -1 , 6 ,  7 , 8 , -1 , 20]
-            -1 is where separator will be placed
-        """
-        pagination = []
-        if self.total_pages == 1:
-            return pagination
-        pagination.append(1)
-        if self.page > 2:
-            if ( self.total_pages > 3 and self.page > 3 ):
-                pagination.append(-1)
-            if self.page == self.total_pages and self.total_pages > 3 :
-                pagination.append(self.page - 2)
-            pagination.append(self.page - 1)
-        if self.page != 1 and self.page != self.total_pages :
-            pagination.append(self.page)
-        if self.page < self.total_pages - 1 :
-            pagination.append(self.page + 1)
-            if  self.page == 1 and self.total_pages > 3:
-                pagination.append(self.page + 2)
-            if ( self.total_pages > 3 and self.page < self.total_pages - 2 ):
-                pagination.append(-1)
-        pagination.append(self.total_pages)
-        return pagination
 
 def inverse_microsecond_str(): 
     """gives string of 8 characters from ascii 23 to 'z' which sorts in reverse temporal order"""
@@ -96,15 +77,9 @@ def inverse_microsecond_str():
 
 def get_predefined_image_link(link, category):
     #By link
-    if link:
-        if link.startswith('http://stackoverflow.com'):
-            return '/images/predefined/stackoverflow.png'
-        if link.startswith('http://www.youtube.com'):
-            return '/images/predefined/youtube.png'
-        if link.startswith('https://github.com'):
-            return '/images/predefined/github.png'
-        if link.startswith('http://code.google.com'):
-            return '/images/predefined/googlecode.png'
+    base_link = get_base_link(link)
+    if base_link in AUTO_CONTENT_BY_LINK and 'image' in AUTO_CONTENT_BY_LINK[base_link] :
+        return '/images/predefined/%s' % AUTO_CONTENT_BY_LINK[base_link]['image']
     #By category
     if category:
         return '/images/predefined/%s.png' % category.lower()
@@ -112,34 +87,24 @@ def get_predefined_image_link(link, category):
 
 
 class ContentDiscoverer():
-    def __init__(self,link):
+    def __init__(self,link, category = ''):
         self.link = link
+        self.category = category
     def get_id(self):
+        base_link = get_base_link(self.link)
         try:
-            if self.link.startswith('http://stackoverflow.com'):
-                re_so = re.compile('http://stackoverflow\.com/questions/(\d+)/.*')
-                return re_so.match(self.link).group(1)
-            elif self.link.startswith('http://www.youtube.com'):
-                re_yt = re.compile('http://www\.youtube\.com/watch\?v=([^&]*)')
-                return re_yt.match(self.link).group(1)    
-            else: return None
+            if base_link in AUTO_CONTENT_BY_LINK and 'regex' in AUTO_CONTENT_BY_LINK[base_link] :
+                re_tmp = re.compile(AUTO_CONTENT_BY_LINK[base_link]['regex'])
+                return re_tmp.match(self.link).group(1)
         except:
             return None    
         
     def get_content_block(self):
-        if self.link is None:
-            return ""
-        elif self.link.startswith('http://stackoverflow.com'):
-            id = self.get_id()
-            if id:
-                return """<div id="stacktack-%s"></div>""" % id
-        elif self.link.startswith('http://www.youtube.com'):  
-            id = self.get_id()
-            if id:
-                return """
-                <div id="youtube">
-                    <iframe width="560" height="349" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
-                </div>""" % id
+        base_link = get_base_link(self.link)
+        if base_link in AUTO_CONTENT_BY_LINK and 'content_block' in AUTO_CONTENT_BY_LINK[base_link] :
+            return AUTO_CONTENT_BY_LINK[base_link]['content_block'] % self.get_id()
+        if self.category in AUTO_CONTENT_BY_CATEGORY and 'content_block' in AUTO_CONTENT_BY_CATEGORY[self.category]:
+            return AUTO_CONTENT_BY_CATEGORY[self.category]['content_block'] % self.link
         return ""
             
     

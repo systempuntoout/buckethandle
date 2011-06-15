@@ -196,13 +196,14 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_(['      ', u'              <p>', escape_(post.created.strftime("%m %B, %Y"), True), u'\n'])
         if admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
+            extend_(['                    ', u'| <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p>\n'])
         if post.link:
             extend_(['                    ', u'<span class="main_link"><a href="', escape_(post.link, True), u'">', escape_((post.title), True), u'</a></span>\n'])
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
-        extend_(['      ', u'              | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a></p>\n'])
+        extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p><a href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         extend_(['      ', u'              <p>', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])

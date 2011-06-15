@@ -388,3 +388,16 @@ font-weight:bold;
     font-size:0.7em;
     padding-left:2px; 
 }
+
+#frame {
+    width: 800px;
+    height: 520px;
+    border: none;
+    -moz-transform: scale(0.8);
+    -moz-transform-origin: 0 0;
+    -o-transform: scale(0.8);
+    -o-transform-origin: 0 0;
+    -webkit-transform: scale(0.8);
+    -webkit-transform-origin: 0 0;
+    margin-left:40px;
+}

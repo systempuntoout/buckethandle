@@ -1,4 +1,5 @@
 import logging, web, re
+import urlparse
 from google.appengine.api import urlfetch
 from google.appengine.api import memcache
 from google.appengine.ext import deferred
@@ -70,7 +71,15 @@ class Admin:
             link = web.input(link = '')['link']
             description = web.input(description = '')['description']
             tags = web.input(tags = '')['tags']
-            return render.layout(render.admin(result, title, link, description, tags.split()), title ='Admin', navbar = False, admin = users.get_current_user())
+            base_link = utils.get_base_link(link)
+            if base_link in AUTO_CONTENT_BY_LINK:
+                if 'category' in AUTO_CONTENT_BY_LINK[base_link]:
+                    selected_category = AUTO_CONTENT_BY_LINK[base_link]['category']
+                else:
+                    selected_category = ''
+            else: 
+                selected_category = ''
+            return render.layout(render.admin(result, title, link, description, tags.split(), selected_category), title ='Admin', navbar = False, admin = users.get_current_user())
         elif action =='newpost':
             title = web.input(title = None)['title']
             link = web.input(link = None)['link']

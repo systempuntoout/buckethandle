@@ -42,3 +42,36 @@ GENERIC_ERROR = "Ooooops, it works on my machine. Please try again later."
 NOT_FOUND_ERROR = "Not found!"
 SERVER_ERROR = "Server problem"
 
+#Mapping Discovery
+AUTO_CONTENT_BY_LINK = {
+'http://stackoverflow.com':{
+                            'regex':'http://stackoverflow\.com/questions/(\d+)/.*',
+                            'image':'stackoverflow.png',
+                            'category':'Questions',
+                            'content_block':"""<div id="stacktack-%s"></div>"""
+                            
+                            },
+'http://www.youtube.com':{
+                            'regex':'http://www\.youtube\.com/watch\?v=([^&]*)',
+                            'image':'youtube.png',
+                            'category':'Videos',
+                            'content_block':"""
+                            <div id="youtube">
+                                <iframe width="560" height="349" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
+                            </div>"""
+                            },
+'http://github.com':{
+                            'image':'github.png',
+                            'category:':'Libraries'
+                            },
+'http://code.google.com':{
+                            'image':'googlecode.png',
+                            'category:':'Libraries'
+                            }
+}
+
+AUTO_CONTENT_BY_CATEGORY = {
+'Applications':{
+            'content_block':'<iframe id="frame" src="%s"></iframe>'
+        }
+}
