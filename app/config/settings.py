@@ -60,7 +60,7 @@ AUTO_CONTENT_BY_LINK = {
                                 <iframe width="560" height="349" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
                             </div>"""
                             },
-'http://github.com':{
+'https://github.com':{
                             'image':'github.png',
                             'category:':'Libraries'
                             },
