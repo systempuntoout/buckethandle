@@ -20,7 +20,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '')
                 <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" alt="Image"/>
               </div>
           </div>
-          <p>$post.created.strftime("%m %B, %Y")
+          <p>$post.created.strftime("%d %B, %Y")
               $if admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
           </p>

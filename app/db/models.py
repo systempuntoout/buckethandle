@@ -10,7 +10,7 @@ class Post(db.Model):
     title = db.StringProperty(required = True)
     link = db.LinkProperty()
     description = db.StringProperty()
-    tags = db.ListProperty(str)
+    tags = db.ListProperty(str, required = True)
     category = db.StringProperty(choices = CATEGORIES)
     body = db.TextProperty()
     slug = db.StringProperty()
@@ -157,21 +157,19 @@ class Category(db.Model):
 
     @staticmethod
     def update_category(category_new, category_old):
-        def _tx():
-            if category_new != category_old:
-                if category_new:
-                    category_entity = Category.get_by_key_name(category_new)
-                    if category_entity:
-                        category_entity.counter +=1
-                    else:
-                        category_entity = Category(key_name= category_new, name = category_new, counter = 1)
-                    category_entity.put()
-                if category_old:
-                    category_entity = Category.get_by_key_name(category_old)
-                    if category_entity and category_entity.counter > 0:
-                       category_entity.counter -=1
-                       category_entity.put()
-        return db.run_in_transaction(_tx)
+        if category_new != category_old:
+            if category_new:
+                category_entity = Category.get_by_key_name(category_new)
+                if category_entity:
+                    category_entity.counter +=1
+                else:
+                    category_entity = Category(key_name= category_new, name = category_new, counter = 1)
+                category_entity.put()
+            if category_old:
+                category_entity = Category.get_by_key_name(category_old)
+                if category_entity and category_entity.counter > 0:
+                   category_entity.counter -=1
+                   category_entity.put()
 
     @staticmethod
     @memcached('get_categories', 3600, lambda limit = NO_LIMIT : limit )

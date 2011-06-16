@@ -24,7 +24,7 @@ def admin (result, title = '', link = '', description = '', tags = [], category 
     self = TemplateResult(); extend_ = self.extend
     extend_([u' <div>\n'])
     extend_([u'     <p>ADMIN CONSOLE</p>\n'])
-    extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://gaecupboard.appspot.com/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\'%20\'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
+    extend_([u'     <ul>  <li><a href="javascript:(function(){vars=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://gaecupboard.appspot.com/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglista,#eow-tagsa,.post-infoa\').not(\'#edit-tags\'),function(x){returnencodeURIComponent(x.text)}).join(\'\'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=populate">Populate </a></li>\n'])
@@ -193,7 +193,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_(['      ', u'        <td>\n'])
         extend_(['      ', u'          <div style="overflow: hidden;">\n'])
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
-        extend_(['      ', u'              <p>', escape_(post.created.strftime("%m %B, %Y"), True), u'\n'])
+        extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
         if admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
             extend_(['                    ', u'| <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
@@ -445,7 +445,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = ''):
     extend_([u'                <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" alt="Image"/>\n'])
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
-    extend_([u'          <p>', escape_(post.created.strftime("%m %B, %Y"), True), u'\n'])
+    extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
     if admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
     extend_([u'          </p>\n'])

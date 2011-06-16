@@ -35,7 +35,7 @@ $def render_catqs(selected_category, front_char):
                   <td>
                     <div style="overflow: hidden;">
                     <div style="float:left;width:90%">
-                        <p>$post.created.strftime("%m %B, %Y")
+                        <p>$post.created.strftime("%d %B, %Y")
                         $if admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
                             | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>

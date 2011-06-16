@@ -79,6 +79,8 @@ class Admin:
                     selected_category = ''
             else: 
                 selected_category = ''
+                
+            tags = list(set(tags) - set(TAGS_BLACK_LIST))
             return render.layout(render.admin(result, title, link, description, tags.split(), selected_category), title ='Admin', navbar = False, admin = users.get_current_user())
         elif action =='newpost':
             title = web.input(title = None)['title']
@@ -100,7 +102,7 @@ class Admin:
             else:
                 link_for_db= None
             
-            tags = list(set([tag.lower() for tag in tags.split()]))
+            tags = list(set([tag.lower() for tag in tags.split()])- set(TAGS_BLACK_LIST))
             
             post = models.Post(key_name = utils.inverse_microsecond_str(),
                                title = title,
@@ -158,7 +160,7 @@ class Admin:
                 else:
                     link_for_db= None
                 
-                tags = list(set([tag.lower() for tag in tags.split()]))
+                tags = list(set([tag.lower() for tag in tags.split()])- set(TAGS_BLACK_LIST))
             
                 entity_post.title = title
                 entity_post.link = link_for_db
