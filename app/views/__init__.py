@@ -24,10 +24,11 @@ def admin (result, title = '', link = '', description = '', tags = [], category 
     self = TemplateResult(); extend_ = self.extend
     extend_([u' <div>\n'])
     extend_([u'     <p>ADMIN CONSOLE</p>\n'])
-    extend_([u'     <ul>  <li><a href="javascript:(function(){vars=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://gaecupboard.appspot.com/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglista,#eow-tagsa,.post-infoa\').not(\'#edit-tags\'),function(x){returnencodeURIComponent(x.text)}).join(\'\'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
+    extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://gaecupboard.appspot.com/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglista,#eow-tagsa,.post-infoa\').not(\'#edit-tags\'),function(x){returnencodeURIComponent(x.text)}).join(\'\'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
-    extend_([u'           <li><a href="/admin?action=populate">Populate </a></li>\n'])
+    extend_([u'           <li><a href="/admin?action=start_import">Import </a></li>\n'])
+    extend_([u'           \n'])
     extend_([u'     </ul>\n'])
     extend_([u'     <p><b>Result:</b></p>\n'])
     for key in loop.setup(result.keys()):

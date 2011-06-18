@@ -34,6 +34,26 @@ class Admin:
             result = memcache.get_stats()        
         elif action =='memcacheflush':
             result['result'] = memcache.flush_all()
+        elif action =='start_import':
+            taskqueue.add(url='/admin?action=import',
+                          method = 'GET', 
+                          queue_name = 'populate',
+                          countdown = 5)
+        elif action =='import':
+            fi = open('app/data/import.txt')
+            for line in fi:
+                splitted_data = line.strip().split(';')
+                taskqueue.add(url='/admin',
+                              method = 'POST', 
+                              queue_name = 'populate',
+                              countdown = 5,
+                              params = {
+                                'action' : 'newpost',
+                                'title': splitted_data[0],
+                                'link' : splitted_data[1],
+                                'category' : splitted_data[2],
+                                'tags' : splitted_data[3].strip()
+                              })
         elif action =='populate':
             timestamp = utils.generate_key_name()
             title= u"Title test %s" % timestamp
@@ -80,8 +100,8 @@ class Admin:
             else: 
                 selected_category = ''
                 
-            tags = list(set(tags) - set(TAGS_BLACK_LIST))
-            return render.layout(render.admin(result, title, link, description, tags.split(), selected_category), title ='Admin', navbar = False, admin = users.get_current_user())
+            tags = list(set(tags.split()) - set(TAGS_BLACK_LIST))
+            return render.layout(render.admin(result, title, link, description, tags, selected_category), title ='Admin', navbar = False, admin = users.get_current_user())
         elif action =='newpost':
             title = web.input(title = None)['title']
             link = web.input(link = None)['link']
@@ -112,7 +132,7 @@ class Admin:
                                category = category,
                                thumbnail = blob_thumbnail,
                                slug = utils.slugify(title),
-                               author_name = users.get_current_user().nickname(),
+                               author_name = AUTHOR_NAME,
                                body = body  )
             
             result['newpost'] = post.put()

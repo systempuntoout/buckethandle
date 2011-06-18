@@ -61,15 +61,31 @@ AUTO_CONTENT_BY_LINK = {
                             },
 'https://github.com':{
                             'image':'github.png',
-                            'category:':'Libraries'
+                            'category':'Libraries',
                             },
 'http://code.google.com':{
                             'image':'googlecode.png',
-                            'category:':'Libraries'
+                            'category':'Libraries',
                             },
 'http://groups.google.com':{
                             'image':'googlegroups.png',
-                            'category:':'Articles'
+                            'category':'Articles',
+                            },
+'http://blog.notdot.net':{
+                            'image':'notdot.png',
+                            'category':'Articles',
+                            },
+'http://www.reddit.com':{
+                            'image':'reddit.png',
+                            'category':'Articles',
+                            },
+'http://googleappengine.blogspot.com':{
+                            'image':'blogappengine.png',
+                            'category':'Articles',
+                            },
+'http://news.ycombinator.com':{
+                            'image':'hackernews.png',
+                            'category':'Articles',
                             }
 }
 

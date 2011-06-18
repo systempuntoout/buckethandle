@@ -393,11 +393,11 @@ font-weight:bold;
     width: 800px;
     height: 520px;
     border: none;
-    -moz-transform: scale(0.8);
+    -moz-transform: scale(0.7);
     -moz-transform-origin: 0 0;
-    -o-transform: scale(0.8);
+    -o-transform: scale(0.7);
     -o-transform-origin: 0 0;
-    -webkit-transform: scale(0.8);
+    -webkit-transform: scale(0.7);
     -webkit-transform-origin: 0 0;
     margin-left:40px;
 }

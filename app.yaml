@@ -10,6 +10,9 @@ inbound_services:
 - warmup
 
 handlers:
+- url: /remote_api
+  script: $PYTHON_LIB/google/appengine/ext/remote_api/handler.py
+  login: admin
 - url: /test.*
   login: admin  
   script: gaeunit.py

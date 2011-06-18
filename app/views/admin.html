@@ -1,10 +1,11 @@
 $def with (result, title = '', link = '', description = '', tags = [], category = '', img_path ='', body = '', post_id ='')
  <div>
      <p>ADMIN CONSOLE</p>
-     <ul>  <li><a href="javascript:(function(){vars=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');window.document.body.appendChild(s);f='http://gaecupboard.appspot.com/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglista,#eow-tagsa,.post-infoa').not('#edit-tags'),function(x){returnencodeURIComponent(x.text)}).join(''))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>
+     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');window.document.body.appendChild(s);f='http://gaecupboard.appspot.com/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglista,#eow-tagsa,.post-infoa').not('#edit-tags'),function(x){returnencodeURIComponent(x.text)}).join(''))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>
            <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
            <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
-           <li><a href="/admin?action=populate">Populate </a></li>
+           <li><a href="/admin?action=start_import">Import </a></li>
+           
      </ul>
      <p><b>Result:</b></p>
       $for key in result.keys():

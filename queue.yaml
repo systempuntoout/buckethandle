@@ -3,5 +3,5 @@ queue:
   rate: 1/s
   bucket_size: 1
 - name: populate
-  rate: 10/s
+  rate: 1/s
   bucket_size: 1
