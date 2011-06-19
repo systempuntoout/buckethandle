@@ -28,7 +28,7 @@ RECENT_POST_NUM = 10
 NO_LIMIT = 10000
 MAX_NUMBER_OF_TAGS_FILTERS = 5
 MEMCACHE_ENABLED = True #Disable it just for testing
-TAGS_BLACK_LIST = ['appengine', 'google-app-engine', 'gae', 'app-engine','gae-datastore']
+TAGS_BLACK_LIST = ['appengine', 'google-app-engine', 'gae', 'app-engine']
 
 #Services
 DISQUS = "firsttestblog"
@@ -44,7 +44,7 @@ SERVER_ERROR = "Server problem"
 #Mapping Discovery
 AUTO_CONTENT_BY_LINK = {
 'http://stackoverflow.com':{
-                            'regex':'http://stackoverflow\.com/questions/(\d+)/.*',
+                            'regex':'http://stackoverflow\.com/questions/(\d+).*',
                             'image':'stackoverflow.png',
                             'category':'Questions',
                             'content_block':"""<div id="stacktack-%s"></div>"""

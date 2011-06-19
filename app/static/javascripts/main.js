@@ -26,6 +26,11 @@ jQuery(document).ready(function() {
             jQuery(document).stacktack();
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
-            linkCheck();
+            if (jQuery('#link').val()){linkCheck();}
             jQuery("#link").typeWatch( {wait: 500,captureLength: -1, callback:linkCheck } );
+            jQuery('#tagcloud_filter').keyup(function() {
+                jQuery('#main_tag_cloud span.tag_info').hide().filter('span.tag_info:contains("'+this.value+'")').show();
+                
+            });
+            
 });

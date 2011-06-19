@@ -1,7 +1,8 @@
 queue:
 - name: default
   rate: 1/s
+  max_concurrent_requests: 1
   bucket_size: 1
 - name: populate
-  rate: 1/s
-  bucket_size: 1
+  rate: 20/s
+  bucket_size: 40

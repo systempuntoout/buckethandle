@@ -162,11 +162,11 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_([u'\n'])
         return self
     extend_([u'<div id="box_tags">\n'])
-    extend_([u'     <form action = "/tag/', escape_(('/'.join(selected_tags)), True), u'" method="post">  \n'])
+    extend_([u'     <form action = "/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'" method="post">  \n'])
     extend_([u'       <p>\n'])
     extend_([u'       <b>Tags:</b>\n'])
     for tag in loop.setup(selected_tags):
-        extend_(['       ', u'<a class="tag dark" href="/tag/', escape_(('/'.join(selected_tags)), True), u'?removetag=', escape_((tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_(tag, True), u' x</a>&raquo;\n'])
+        extend_(['       ', u'<a class="tag dark" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'?removetag=', escape_(urlquote(tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_(tag, True), u' x</a>&raquo;\n'])
     extend_([u'       <input id="search" type="text" name="addtag"/>\n'])
     extend_([u'       </p>\n'])
     if settings.CATEGORIES:
@@ -223,9 +223,9 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_(['      ', u'              <span class="tags">\n'])
         for tag in loop.setup(post.tags):
             if tag in selected_tags:
-                extend_(['                          ', u'<a class="tag dark" href="/tag/', escape_(('/'.join(selected_tags)), True), escape_((render_catqs(selected_category,"?")), True), u'">', escape_((tag), True), u'</a>\n'])
+                extend_(['                          ', u'<a class="tag dark" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), escape_((render_catqs(selected_category,"?")), True), u'">', escape_((tag), True), u'</a>\n'])
             else:
-                extend_(['                          ', u'<a class="tag" href="/tag/', escape_(('/'.join(selected_tags)), True), u'?addtag=', escape_((tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_((tag), True), u'</a>\n'])
+                extend_(['                          ', u'<a class="tag" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'?addtag=', escape_(urlquote(tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_((tag), True), u'</a>\n'])
         extend_(['      ', u'              </span>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'        </td>\n'])
@@ -514,9 +514,10 @@ def tagcloud (tag_cloud):
     max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     extend_([u'\n'])
     extend_([u'<p>Tags found: <b>', escape_(len(tag_cloud), True), u'</b></p>\n'])
+    extend_([u'<p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
-        extend_(['    ', u'    <a class="tag_cloud_', escape_(min(1+int(tag.counter)*5/max_occurrencies, 5), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;\n'])
+        extend_(['    ', u'    <span class="tag_info"><a class="tag_cloud_', escape_(min(1+int(tag.counter)*5/max_occurrencies, 5), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
         extend_(['    ', u'\n'])
     extend_([u'</div>\n'])
 

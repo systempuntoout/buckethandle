@@ -82,15 +82,15 @@ class Tags:
         if add_tag:
             tags = tags + [tag.lower() for tag in add_tag.split()]
             if category:
-                web.redirect('/tag/%s?category=%s' % ('/'.join(tags), category))
+                web.redirect('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
             else:
-                web.redirect('/tag/%s' % ('/'.join(tags)))
+                web.redirect('/tag/%s' % web.urlquote('/'.join(tags)))
         if remove_tag:
             tags.remove(remove_tag.lower())
             if category:
-                web.redirect('/tag/%s?category=%s' % ('/'.join(tags), category))
+                web.redirect('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
             else:
-                web.redirect('/tag/%s' % ('/'.join(tags)))
+                web.redirect('/tag/%s' % web.urlquote('/'.join(tags)))
         
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
