@@ -1,7 +1,6 @@
 BucketHandle: lightweight CMS for tagging and collecting knowledge
 
-I'm using the BucketHandle engine for GAE_cupboard project (http://gaecupboard.appspot.com)
-but, when ready, I hope it could be helpful for some other project.
+I'm using the BucketHandle engine for the GAE_cupboard project (http://gaecupboard.appspot.com)
 
 INSTALL:
 Clone it 
