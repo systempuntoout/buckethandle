@@ -43,6 +43,11 @@ class Admin:
             fi = open('app/data/import.txt')
             for line in fi:
                 splitted_data = line.strip().split(';')
+                try:
+                    url_img = splitted_data[4]
+                except:
+                    url_img = None
+                logging.debug(url_img)
                 taskqueue.add(url='/admin',
                               method = 'POST', 
                               queue_name = 'populate',
@@ -52,7 +57,8 @@ class Admin:
                                 'title': splitted_data[0],
                                 'link' : splitted_data[1],
                                 'category' : splitted_data[2],
-                                'tags' : splitted_data[3].strip()
+                                'tags' : splitted_data[3].strip(),
+                                'url_img': url_img
                               })
         elif action =='populate':
             timestamp = utils.generate_key_name()
@@ -110,6 +116,13 @@ class Admin:
             category = web.input(category = None)['category']
             body = web.input(body = None)['body']
             thumbnail = web.input(img = None)['img']
+            thumbnail_url = web.input(url_img = None)['url_img']
+            logging.debug(thumbnail_url)
+            if thumbnail_url:
+                response = urlfetch.fetch(url=thumbnail_url,
+                               method=urlfetch.GET,
+                               deadline = 10)
+                thumbnail = response.content
             
             if thumbnail:
                 thumbnail = images.resize(thumbnail, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
@@ -169,6 +182,13 @@ class Admin:
                 body = web.input(body = None)['body']
                 thumbnail = web.input(img = None)['img']
                 delete_img = web.input(delete_img = None)['delete_img']
+                thumbnail_url = web.input(url_img = None)['url_img']
+
+                if thumbnail_url:
+                    response = urlfetch.fetch(url=thumbnail_url,
+                                   method=urlfetch.GET,
+                                   deadline = 10)
+                    thumbnail = response.content
                 if thumbnail:
                     thumbnail = images.resize(thumbnail, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
                     blob_thumbnail= db.Blob(thumbnail)
