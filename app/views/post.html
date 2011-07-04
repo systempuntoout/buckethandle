@@ -26,7 +26,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '')
           </p>
           <p>
               $if settings.CATEGORIES:
-                    <a class="category" href="/?category=$(post.category)">$(post.category)</a>
+                    <a class="category" href="/?category=$(post.category)">$(post.category)&nbsp;<img width="17px" height="17px" src="$(utils.get_predefined_image_link(category = post.category))"/></a>
               $for tag in post.tags:
                     <a class="tag" href="/tag/$tag">$(tag)</a> 
           </p>
@@ -42,14 +42,14 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '')
       <hr>
  </div>
  <div>
- $if settings.DISQUS and False:
+ $if settings.DISQUS:
      <h3 id="comments">Comments</h3>
      <div id="disqus_thread"></div>
      $if development:
        <script type="text/javascript">
          var disqus_developer = 1;
        </script>
-     <script type="text/javascript" src="http://disqus.com/forums/$(DISQUS)/embed.js"></script>
-     <noscript><a href="http://disqus.com/forums/$(DISQUS)/?url=ref">View the discussion thread.</a></noscript>
+     <script type="text/javascript" src="http://disqus.com/forums/$(settings.DISQUS)/embed.js"></script>
+     <noscript><a href="http://disqus.com/forums/$(settings.DISQUS)/?url=ref">View the discussion thread.</a></noscript>
      <a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
  </div>   

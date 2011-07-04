@@ -15,6 +15,7 @@ global_template = {
             'urlquote':web.net.urlquote,
             'htmlquote':web.net.htmlquote,
             'settings': settings,
+            'utils': utils,
             'development' : os.environ['SERVER_SOFTWARE'].startswith('Dev'),
             'curdomain': os.environ['HTTP_HOST'],
           }

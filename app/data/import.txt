@@ -1,7 +1,0 @@
-Programming Google App Engine: Build and Run Scalable Web Apps on Google's Infrastructure (Animal Guide);http://www.amazon.com/gp/product/059652272X/syst-20;Books;java python books;http://ecx.images-amazon.com/images/I/41f1htRZF3L._SL300_.jpg
-Using Google App Engine;http://www.amazon.com/gp/product/059680069X/syst-20;Books;java python books;http://ecx.images-amazon.com/images/I/41Q3ynMtNaL._SL300_.jpg
-Beginning Java Google App Engine;http://www.amazon.com/gp/product/143022553X/syst-20;Books;java books;http://ecx.images-amazon.com/images/I/51NcttQTTrL._SL300_.jpg
-Developing with Google App Engine (Firstpress);http://www.amazon.com/gp/product/1430218312/syst-20;Books;java python books;http://ecx.images-amazon.com/images/I/41yJt8yNzCL._SL300_.jpg
-Google App Engine Java and GWT Application Development;http://www.amazon.com/gp/product/1849690448/syst-20;Books;java gwt books;http://ecx.images-amazon.com/images/I/51T29QKDk1L._SL300_.jpg
-Professional Google App Engine Programming with Java;http://www.amazon.com/gp/product/0470464933/syst-20;Books;java books;http://ecx.images-amazon.com/images/I/51NiMYaECeL._SL300_.jpg
-Essential App Engine: Building High Performance Java Apps with Google App Engine (Developer's Library);http://www.amazon.com/gp/product/032174263X/syst-20;Books;java books;http://ecx.images-amazon.com/images/I/51ZNmfMWCeL._SL300_.jpg

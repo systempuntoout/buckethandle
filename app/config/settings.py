@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 #Meta
-CMS_NAME = u"GAE_cupboard"
+CMS_NAME = u"GAEcupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
 DESCRIPTION = u"""Google App Engine knowledge collections"""             
 META_DESCRIPTION = u"GAEcupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
-CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Tutorials",u"Books"]
+CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
-Being forced to rest and having some time to spare, I've tried to implement something useful to store and organize all the public knowledge around Google App Engine.  
-I've coded this tool that is a sort of mix between a blogging platform and Delicious; what I dislike about delicious is that there is too much noise and duplicates in the tons of links bookmarked every day.  
+Being forced to rest and having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine.  
+I've coded this tool that is a sort of mix between a blogging platform and Delicious; I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day.  
 What I dislike about blog platforms is that they lack a drill-down tag exploring feature a là delicious or Stack Overflow.  
-I still have to think an easy way to collect all the data, I'm planning to code a smart bookmarklet that should help me in this task.  
+The data is now collected through a semi-automatic process because I reviewing the taxonomy process to keep the organization clean.  
 This tool is a work in progress, so expect errors and other nasty things.  
 
 ![test](/images/systempuntooutmail.jpg "mail")
@@ -28,12 +28,12 @@ RECENT_POST_NUM = 10
 NO_LIMIT = 10000
 MAX_NUMBER_OF_TAGS_FILTERS = 5
 MEMCACHE_ENABLED = True #Disable it just for testing
-TAGS_BLACK_LIST = ['appengine', 'google-app-engine', 'gae', 'app-engine']
+TAGS_BLACK_LIST = ['appengine', 'google-app-engine', 'gae', 'app-engine','ae']
 
 #Services
-DISQUS = "firsttestblog"
+DISQUS = "gaecupboard"
 CLICKY_ID = None
-ANALYTICS_ID = None
+ANALYTICS_ID = 'UA-4276204-7'
 
 #Errors
 RELAXING_MESSAGE_ERROR = "..cumulus clouds are white, puffy clouds that look like pieces of floating cotton.. "
@@ -63,8 +63,9 @@ AUTO_CONTENT_BY_LINK = {
                             'image':'github.png',
                             'category':'Libraries',
                             },
-'http://code.google.com':{
-                            'image':'googlecode.png',
+'http://code.google.com':{  'url_paths':['/p'], #different images for different url path on the same domain
+                            'image':'googlecode_documentation.png',
+                            'image_/p':'googlecode_hosting.png',
                             'category':'Libraries',
                             },
 'http://groups.google.com':{

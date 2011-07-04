@@ -44,10 +44,10 @@ class Admin:
             for line in fi:
                 splitted_data = line.strip().split(';')
                 try:
-                    url_img = splitted_data[4]
+                    url_img = splitted_data[4].strip()
                 except:
-                    url_img = None
-                logging.debug(url_img)
+                    url_img = ''
+                    
                 taskqueue.add(url='/admin',
                               method = 'POST', 
                               queue_name = 'populate',
@@ -117,7 +117,6 @@ class Admin:
             body = web.input(body = None)['body']
             thumbnail = web.input(img = None)['img']
             thumbnail_url = web.input(url_img = None)['url_img']
-            logging.debug(thumbnail_url)
             if thumbnail_url:
                 response = urlfetch.fetch(url=thumbnail_url,
                                method=urlfetch.GET,

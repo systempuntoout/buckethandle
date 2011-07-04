@@ -221,7 +221,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_(['      ', u'          <div class="meta">\n'])
         if settings.CATEGORIES:
             extend_(['                    ', u'<span>\n'])
-            extend_(['                    ', u'    <a class="category" href="/?category=', escape_((post.category), True), u'">', escape_((post.category), True), u'</a>\n'])
+            extend_(['                    ', u'    <a class="category" href="/?category=', escape_((post.category), True), u'">', escape_((post.category), True), u'&nbsp;<img width="17px" height="17px" src="', escape_((utils.get_predefined_image_link(category = post.category)), True), u'"/></a>\n'])
             extend_(['                    ', u'</span>\n'])
         extend_(['      ', u'              <span class="tags">\n'])
         for tag in loop.setup(post.tags):
@@ -377,10 +377,10 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'\n'])
     extend_([u'<div id="footer">\n'])
     extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | Powered by Google App Engine\n'])
-    extend_([u'    | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://validator.w3.org/check/referer">XHTML</a></p>\n'])
+    extend_([u'    | <a href="http://validator.w3.org/check/referer">XHTML</a></p>\n'])
     extend_([u'</div>\n'])
     extend_([u'\n'])
-    if settings.ANALYTICS_ID and not DEVEL and not admin:
+    if settings.ANALYTICS_ID and not development and not admin:
         extend_([u'<script type="text/javascript">\n'])
         extend_([u'var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");\n'])
         extend_([u'document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));\n'])
@@ -391,10 +391,10 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'pageTracker._trackPageview();\n'])
         extend_([u'} catch(err) {}</script>\n'])
         extend_([u'\n'])
-    if settings.CLICKY_ID and not DEVEL and not admin:
+    if settings.CLICKY_ID and not development and not admin:
         extend_([u'<script src="http://static.getclicky.com/js" type="text/javascript"></script>\n'])
         extend_([u'<script type="text/javascript">clicky.init(', escape_(settings.CLICKY_ID, True), u');</script>\n'])
-        extend_([u'<noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/250663ns.gif" /></p></noscript>\n'])
+        extend_([u'<noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/', escape_((settings.CLICKY_ID), True), u'ns.gif" /></p></noscript>\n'])
         extend_([u'\n'])
         extend_([u'\n'])
         extend_([u'\n'])
@@ -455,7 +455,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = ''):
     extend_([u'          </p>\n'])
     extend_([u'          <p>\n'])
     if settings.CATEGORIES:
-        extend_(['              ', u'  <a class="category" href="/?category=', escape_((post.category), True), u'">', escape_((post.category), True), u'</a>\n'])
+        extend_(['              ', u'  <a class="category" href="/?category=', escape_((post.category), True), u'">', escape_((post.category), True), u'&nbsp;<img width="17px" height="17px" src="', escape_((utils.get_predefined_image_link(category = post.category)), True), u'"/></a>\n'])
     for tag in loop.setup(post.tags):
         extend_(['              ', u'  <a class="tag" href="/tag/', escape_(tag, True), u'">', escape_((tag), True), u'</a> \n'])
     extend_([u'          </p>\n'])
@@ -471,15 +471,15 @@ def post (post, prev_post = None, next_post = None, content_discovered = ''):
     extend_([u'      <hr>\n'])
     extend_([u' </div>\n'])
     extend_([u' <div>\n'])
-    if settings.DISQUS and False:
+    if settings.DISQUS:
         extend_([' ', u'<h3 id="comments">Comments</h3>\n'])
         extend_([' ', u'<div id="disqus_thread"></div>\n'])
         if development:
             extend_([' ', u'<script type="text/javascript">\n'])
             extend_([' ', u'  var disqus_developer = 1;\n'])
             extend_([' ', u'</script>\n'])
-        extend_([' ', u'<script type="text/javascript" src="http://disqus.com/forums/', escape_((DISQUS), True), u'/embed.js"></script>\n'])
-        extend_([' ', u'<noscript><a href="http://disqus.com/forums/', escape_((DISQUS), True), u'/?url=ref">View the discussion thread.</a></noscript>\n'])
+        extend_([' ', u'<script type="text/javascript" src="http://disqus.com/forums/', escape_((settings.DISQUS), True), u'/embed.js"></script>\n'])
+        extend_([' ', u'<noscript><a href="http://disqus.com/forums/', escape_((settings.DISQUS), True), u'/?url=ref">View the discussion thread.</a></noscript>\n'])
         extend_([' ', u'<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>\n'])
     extend_([u' </div>   \n'])
 
@@ -520,7 +520,7 @@ def tagcloud (tag_cloud):
     extend_([u'<p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
-        extend_(['    ', u'    <span class="tag_info"><a class="tag_cloud_', escape_(min(1+int(tag.counter)*5/max_occurrencies, 5), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
+        extend_(['    ', u'    <span class="tag_info"><a class="tag_cloud_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
         extend_(['    ', u'\n'])
     extend_([u'</div>\n'])
 

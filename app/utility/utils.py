@@ -6,6 +6,7 @@ import re
 import logging
 import time
 import urlparse
+import math
 
 
 def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
@@ -75,11 +76,16 @@ def inverse_microsecond_str():
         base_100_str = chr(23 + digit) + base_100_str
     return base_100_str
 
-def get_predefined_image_link(link, category):
+def get_predefined_image_link(link = None, category = None):
     #By link
-    base_link = get_base_link(link)
-    if base_link in AUTO_CONTENT_BY_LINK and 'image' in AUTO_CONTENT_BY_LINK[base_link] :
-        return '/images/predefined/%s' % AUTO_CONTENT_BY_LINK[base_link]['image']
+    if link:
+        base_link = get_base_link(link)
+        if base_link in AUTO_CONTENT_BY_LINK and 'image' in AUTO_CONTENT_BY_LINK[base_link] :
+            if 'url_paths' in AUTO_CONTENT_BY_LINK[base_link]:
+                for path in AUTO_CONTENT_BY_LINK[base_link]['url_paths']:
+                    if link.startswith(base_link+path):
+                        return '/images/predefined/%s' % AUTO_CONTENT_BY_LINK[base_link]['image_%s' % path]
+            return '/images/predefined/%s' % AUTO_CONTENT_BY_LINK[base_link]['image']
     #By category
     if category:
         return '/images/predefined/%s.png' % category.lower()
@@ -107,4 +113,5 @@ class ContentDiscoverer():
             return AUTO_CONTENT_BY_CATEGORY[self.category]['content_block'] % self.link
         return ""
             
-    
+def get_tag_weight(occurrencies, max_occurrencies):
+    return int(math.log(occurrencies)/math.log(max_occurrencies) * (5-1)+1)
