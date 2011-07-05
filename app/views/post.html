@@ -1,4 +1,4 @@
-$def with (post, prev_post = None, next_post = None, content_discovered = '')
+$def with (post, prev_post = None, next_post = None, content_discovered = '', is_user_admin = False)
 
  <div>
       <p>
@@ -21,7 +21,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '')
               </div>
           </div>
           <p>$post.created.strftime("%d %B, %Y")
-              $if admin:
+              $if is_user_admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
           </p>
           <p>
@@ -42,7 +42,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '')
       <hr>
  </div>
  <div>
- $if settings.DISQUS:
+ $if settings.DISQUS and not development:
      <h3 id="comments">Comments</h3>
      <div id="disqus_thread"></div>
      $if development:

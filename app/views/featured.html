@@ -1,0 +1,61 @@
+$def with (posts, is_user_admin = False)
+<div>      
+      <table class="result" style="margin-top:40px">          
+      $for post in posts:
+            <tr>
+                  <td>
+                    <div style="overflow: hidden;">
+                    <div style="float:left;width:90%">
+                        <p>$post.created.strftime("%d %B, %Y")
+                        $if is_user_admin:
+                            <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
+                            | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
+                        </p>
+                        <p>
+                        $if post.link:
+                            <span class="main_link"><a href="$post.link">$(post.title)</a></span>
+                        $else:
+                            <span class="main_title">$(post.title)</span>
+                        </p>
+                        <p><a href="$(post.link)">$(post.link)</a></p>
+                        <p>$(post.description)</p>
+                    </div>
+                    <div style="float:right">
+                        <p style="text-align:right;">
+                            <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" title="$post.category" alt="Image"/>
+                        </p>
+                    </div>
+                    
+                    </div>
+                    <div class="meta">
+                        $if settings.CATEGORIES:
+                            <span>
+                                <a class="category" href="/?category=$(post.category)">$(post.category)&nbsp;<img width="17px" height="17px" src="$(utils.get_predefined_image_link(category = post.category))"/></a>
+                            </span>
+                        <span class="tags">
+                            $for tag in post.tags:
+                                <a class="tag" href="/tag/$tag">$(tag)</a> 
+                        </span>
+                    </div>
+                  </td>
+             </tr>
+             $if loop.last:
+                    </table>
+                    <table class="pagination">
+                        <tr>
+                            <td class="pagination_found">Posts: $commify(len(posts))</td>
+                        </tr>
+                    </table>
+        $else:
+            $if len(posts) == 0:
+                <tr>
+                    <td>
+                   <p id="not_found">
+                       No posts found
+                    </p>
+                    </td>
+                </tr>
+                </table>
+        
+
+ </div>

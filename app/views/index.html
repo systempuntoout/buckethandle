@@ -1,4 +1,4 @@
-$def with (posts, selected_tags = [], selected_category = '', pagination = None)
+$def with (posts, selected_tags = [], selected_category = '', pagination = None, is_user_admin = False)
 $def render_catqs(selected_category, front_char):
     $if selected_category : $:(front_char)category=$selected_category
 
@@ -36,7 +36,7 @@ $def render_catqs(selected_category, front_char):
                     <div style="overflow: hidden;">
                     <div style="float:left;width:90%">
                         <p>$post.created.strftime("%d %B, %Y")
-                        $if admin:
+                        $if is_user_admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
                             | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
                         </p>

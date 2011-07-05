@@ -332,7 +332,7 @@ td.pagination_page a:hover {
     background: url("/images/search.png") no-repeat scroll left top transparent;
     border: medium none;
     color: #000;
-    font-size: 12px;
+    font-size: 14px;
     height: 25px;
     padding: 5px 5px;
     width: 290px;
@@ -374,12 +374,12 @@ padding-right: 10px;
 font-weight:bold;
 }
 
-.link_KO{
+.message_KO{
     color:red;
     font-weight:bold;
 }
 
-.link_OK{
+.message_OK{
     color:green;
     font-weight:bold;
 }
@@ -400,4 +400,46 @@ font-weight:bold;
     -webkit-transform: scale(0.7);
     -webkit-transform-origin: 0 0;
     margin-left:40px;
+}
+
+#login{
+    float:right;
+    margin-right:20px;
+    margin-top:10px;
+}
+
+.login a:link {
+ text-decoration: underline;
+ color:#000000;
+}
+
+.login a:visited {
+ text-decoration: underline;
+ color:#000000;
+}
+
+.login a:hover {
+ background:#ffffff;
+ text-decoration:underline;
+}
+
+.required {
+ color:red;
+}
+
+.help {
+ font-style: italic;
+ font-size:70%;
+}
+
+#message_box{
+    margin:0 auto;
+    text-align:center;
+    width:30%;
+    border:1px #474747 solid;
+}
+
+#link_check{
+    margin-left:10px;
+    
 }

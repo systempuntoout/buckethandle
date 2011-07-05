@@ -5,6 +5,7 @@ import logging, web, re
 from google.appengine.ext import ereporter
 from google.appengine.ext import db
 from google.appengine.api import users
+from google.appengine.api import mail
 
 ereporter.register_logger()
 
@@ -18,7 +19,15 @@ def render_template(content, **kwargs):
     posts_total_count = models.Post.get_posts_count()  
     tag_cloud = models.Tag.get_tags(limit = NAVBAR_CLOUDSIZE)
     categories = models.Category.get_categories()
-    return render.layout(content, tag_cloud = tag_cloud, posts_total_count = posts_total_count, categories = categories, admin = users.get_current_user(), **kwargs)
+    return render.layout(content, 
+                         tag_cloud = tag_cloud, 
+                         posts_total_count = posts_total_count, 
+                         categories = categories, 
+                         user = users.get_current_user(),
+                         is_user_admin = users.is_current_user_admin() ,
+                         login_url = users.create_login_url("/"),
+                         logout_url = users.create_logout_url("/"),
+                          **kwargs)
 
 def render_error(error, **kwargs):
     """
@@ -38,7 +47,10 @@ class Index:
         posts_count = models.Post.get_posts_count(category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), category_filter= category)
         
-        return render_template(render.index(posts, selected_category = category, pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE)),title ='Home')
+        return render_template(render.index(posts, 
+                                            selected_category = category, 
+                                            pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
+                                            is_user_admin = users.is_current_user_admin()),title ='Home')
 
 
 class Post:
@@ -56,7 +68,11 @@ class Post:
         else:
             return render_error(NOT_FOUND_ERROR)
         
-        return render_template(render.post(post, prev_post, next_post, utils.ContentDiscoverer(post.link, post.category).get_content_block()), title = post.title)
+        return render_template(render.post(post, 
+                                           prev_post, 
+                                           next_post, 
+                                           utils.ContentDiscoverer(post.link, post.category).get_content_block(),
+                                           is_user_admin = users.is_current_user_admin()), title = post.title)
 
 class Tags:
     """
@@ -95,8 +111,12 @@ class Tags:
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
         
-        return render_template(render.index(posts, tags, category, pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE)),
-                             title = 'Home')
+        return render_template(render.index(posts, 
+                                            tags, 
+                                            category, 
+                                            pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
+                                            is_user_admin = users.is_current_user_admin()),
+                                            title = 'Home')
         
 
 class TagCloud:
@@ -109,6 +129,15 @@ class TagCloud:
         return render_template(render.tagcloud(tag_cloud),
                                title = 'Tag cloud')
 
+class Featured:
+   """
+   Featured
+   """
+   def GET(self):
+       featured_posts = models.Post.get_featured_posts()
+
+       return render_template(render.featured(featured_posts, is_user_admin = users.is_current_user_admin()),
+                              title = 'Featured')
 class About:
     """
     About
@@ -152,3 +181,66 @@ class Image:
              return post.thumbnail
          else:
              return "No image"
+
+
+class Submit:
+     """
+     Submit
+     """
+     def POST(self):
+         return self.GET()
+
+     def GET(self):
+         result = {}
+         posts = []
+         tags_filter = []
+         action = web.input(action = None)['action']
+        
+         if action =='submit_init':
+             title = web.input(title = '')['title']
+             link = web.input(link = '')['link']
+             description = web.input(description = '')['description']
+             tags = web.input(tags = '')['tags']
+             base_link = utils.get_base_link(link)
+             if base_link in AUTO_CONTENT_BY_LINK:
+                 if 'category' in AUTO_CONTENT_BY_LINK[base_link]:
+                     selected_category = AUTO_CONTENT_BY_LINK[base_link]['category']
+                 else:
+                     selected_category = ''
+             else: 
+                 selected_category = ''
+
+             tags = list(set(tags.split()) - set(TAGS_BLACK_LIST))
+             return render_template(render.submit(False, '', title, link, description, tags, selected_category),
+                                  title = 'Posts')
+         elif action =='submit':
+             title = web.input(title = None)['title']
+             link = web.input(link = None)['link']
+             description = web.input(description = None)['description']
+             tags = web.input(tags = None)['tags']
+             category = web.input(category = None)['category']
+             
+             if title.strip() and link.strip() and tags.strip():
+                 mail.send_mail(sender="Gaecupboard <%s>" % MAIL_ADMIN,
+                               to="Admin <%s>" % MAIL_ADMIN,
+                               subject="Link submitted",
+                               body="""
+                 Link submission:
+
+                 Title: %s
+                 Link: %s
+                 Description: %s
+                 Tags: %s
+                 Category: %s
+                 User: %s
+                 """ % (title, link, description, tags, category, users.get_current_user()))
+                 title = link = description = tags = ""
+                 submitted = True
+                 message = "Thanks for your submission"
+             else:
+                 submitted = False
+                 message = "Please fill in all required fields (*)"
+             return render_template(render.submit(submitted, message, title, link , description, tags, category),
+                                   title = 'Posts')
+         else:
+            return None

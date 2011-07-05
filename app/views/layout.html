@@ -1,4 +1,4 @@
-$def with (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, admin = None)
+$def with (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '')
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
 <head>
@@ -28,14 +28,21 @@ $def with (content, title = None , tag_cloud = [], categories = [], navbar = Tru
 </head>
 <body>
 <div id="header">
+    <span id="login">
+        $if user:
+            $user | <span class="login"><a href="$logout_url">logout</a></span>
+        $else:
+            <span class="login"><a href="$login_url">login</a></span>
+    </span>
     <h1>$settings.CMS_NAME <img src="/images/lab.png" alt="Lab"/></h1>
     <h2>$(settings.SLOGAN)</h2>
     <ul>
         <li><a href="/" $:(title=='Home' and 'class="active"' or '')>Home</a></li>
-        <li><a href="/post" $:((title not in ('Home','Tag cloud','About','Admin')) and 'class="active"' or '')>Posts</a></li>
+        <li><a href="/featured" $:(title=='Featured' and 'class="active"' or '')>Featured</a></li>
+        <li><a href="/post" $:((title not in ('Home','Tag cloud','Featured','About','Admin')) and 'class="active"' or '')>Posts</a></li>
         <li><a href="/tagcloud" $:(title=='Tag cloud' and 'class="active"' or '')>Tag cloud</a></li>
         <li><a href="/about" $:(title=='About' and 'class="active"' or '')>About</a></li>
-        $if admin:
+        $if is_user_admin:
             <li><a href="/admin" $:(title=='Admin' and 'class="active"' or '')>Admin</a></li>
     </ul>
         
@@ -81,6 +88,9 @@ $if navbar:
                         <br/><span class="more_tag"><a  href="/tagcloud">more »</a></span>
                 </p>
                 <div id="img" style="margin-top:40px">
+                    <p style="text-align:center">
+                    <a href="/submit?action=submit_init"><img onmouseout="this.src='/images/submitlink.png';" onmouseover="this.src='/images/submitlink_hover.png'" src="/images/submitlink.png" alt="Submit a link"/></a>
+                    </p>
                     <p>
                     <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>
                     </p>

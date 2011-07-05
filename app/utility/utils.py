@@ -114,4 +114,7 @@ class ContentDiscoverer():
         return ""
             
 def get_tag_weight(occurrencies, max_occurrencies):
-    return int(math.log(occurrencies)/math.log(max_occurrencies) * (5-1)+1)
+    try:
+        return int(math.log(occurrencies)/math.log(max_occurrencies) * (5-1)+1)
+    except:
+        return 0

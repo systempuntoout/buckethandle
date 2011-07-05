@@ -18,13 +18,13 @@ about = CompiledTemplate(about, 'app/views/about.html')
 join_ = about._join; escape_ = about._escape
 
 # coding: utf-8
-def admin (result, title = '', link = '', description = '', tags = [], category = '', img_path ='', body = '', post_id =''):
+def admin (result, title = '', link = '', description = '', tags = [], category = '', img_path ='', body = '', post_id ='', featured = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
     extend_([u' <div>\n'])
     extend_([u'     <p>ADMIN CONSOLE</p>\n'])
-    extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://gaecupboard.appspot.com/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglista,#eow-tagsa,.post-infoa\').not(\'#edit-tags\'),function(x){returnencodeURIComponent(x.text)}).join(\'\'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
+    extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://', escape_((curdomain), True), u'/submit?action=submit_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a,#eow-tags a,.post-info a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\' \'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=start_import">Import </a></li>\n'])
@@ -46,6 +46,7 @@ def admin (result, title = '', link = '', description = '', tags = [], category 
     extend_([u'             <p>link:<br> <input type="text" size="100" id = "link" name="link" value="', escape_(link, True), u'"/> <span id="link_check"/></p>\n'])
     extend_([u'             <p>description :<br><input type="text" size="150" name="description" maxlenght="500" value="', escape_(description, True), u'"/></p>\n'])
     extend_([u'             <p>tags:<br><input type="text" id="tags" name="tags" size="100" value = "', escape_(' '.join(tags), True), u'"/> </p>\n'])
+    extend_([u'             <p>featured:<br><input type="checkbox" id="featured" name="featured" ', escape_((featured and 'checked="checked"'), False), u'/> </p>\n'])
     if settings.CATEGORIES:
         extend_(['             ', u'<p>categories:<br>\n'])
         extend_(['             ', u'<select name="category">\n'])
@@ -119,6 +120,77 @@ cse = CompiledTemplate(cse, 'app/views/cse.xml')
 join_ = cse._join; escape_ = cse._escape
 
 # coding: utf-8
+def featured (posts, is_user_admin = False):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<div>      \n'])
+    extend_([u'      <table class="result" style="margin-top:40px">          \n'])
+    for post in loop.setup(posts):
+        extend_(['      ', u'  <tr>\n'])
+        extend_(['      ', u'        <td>\n'])
+        extend_(['      ', u'          <div style="overflow: hidden;">\n'])
+        extend_(['      ', u'          <div style="float:left;width:90%">\n'])
+        extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
+        if is_user_admin:
+            extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
+            extend_(['                    ', u'| <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
+        extend_(['      ', u'              </p>\n'])
+        extend_(['      ', u'              <p>\n'])
+        if post.link:
+            extend_(['                    ', u'<span class="main_link"><a href="', escape_(post.link, True), u'">', escape_((post.title), True), u'</a></span>\n'])
+        else:
+            extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
+        extend_(['      ', u'              </p>\n'])
+        extend_(['      ', u'              <p><a href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+        extend_(['      ', u'              <p>', escape_((post.description), True), u'</p>\n'])
+        extend_(['      ', u'          </div>\n'])
+        extend_(['      ', u'          <div style="float:right">\n'])
+        extend_(['      ', u'              <p style="text-align:right;">\n'])
+        extend_(['      ', u'                  <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="Image"/>\n'])
+        extend_(['      ', u'              </p>\n'])
+        extend_(['      ', u'          </div>\n'])
+        extend_(['      ', u'\n'])
+        extend_(['      ', u'          </div>\n'])
+        extend_(['      ', u'          <div class="meta">\n'])
+        if settings.CATEGORIES:
+            extend_(['                    ', u'<span>\n'])
+            extend_(['                    ', u'    <a class="category" href="/?category=', escape_((post.category), True), u'">', escape_((post.category), True), u'&nbsp;<img width="17px" height="17px" src="', escape_((utils.get_predefined_image_link(category = post.category)), True), u'"/></a>\n'])
+            extend_(['                    ', u'</span>\n'])
+        extend_(['      ', u'              <span class="tags">\n'])
+        for tag in loop.setup(post.tags):
+            extend_(['                        ', u'<a class="tag" href="/tag/', escape_(tag, True), u'">', escape_((tag), True), u'</a> \n'])
+        extend_(['      ', u'              </span>\n'])
+        extend_(['      ', u'          </div>\n'])
+        extend_(['      ', u'        </td>\n'])
+        extend_(['      ', u'   </tr>\n'])
+        if loop.last:
+            extend_(['         ', u'   </table>\n'])
+            extend_(['         ', u'   <table class="pagination">\n'])
+            extend_(['         ', u'       <tr>\n'])
+            extend_(['         ', u'           <td class="pagination_found">Posts: ', escape_(commify(len(posts)), True), u'</td>\n'])
+            extend_(['         ', u'       </tr>\n'])
+            extend_(['         ', u'   </table>\n'])
+    else:
+        if len(posts) == 0:
+            extend_(['        ', u'<tr>\n'])
+            extend_(['        ', u'    <td>\n'])
+            extend_(['        ', u'   <p id="not_found">\n'])
+            extend_(['        ', u'       No posts found\n'])
+            extend_(['        ', u'    </p>\n'])
+            extend_(['        ', u'    </td>\n'])
+            extend_(['        ', u'</tr>\n'])
+            extend_(['        ', u'</table>\n'])
+            extend_(['        ', u'\n'])
+            extend_(['        ', u'\n'])
+    extend_([u' </div>\n'])
+
+    return self
+
+featured = CompiledTemplate(featured, 'app/views/featured.html')
+join_ = featured._join; escape_ = featured._escape
+
+# coding: utf-8
 def feed (posts, site_updated):
     __lineoffset__ = -4
     loop = ForLoop()
@@ -153,7 +225,7 @@ feed = CompiledTemplate(feed, 'app/views/feed.xml')
 join_ = feed._join; escape_ = feed._escape
 
 # coding: utf-8
-def index (posts, selected_tags = [], selected_category = '', pagination = None):
+def index (posts, selected_tags = [], selected_category = '', pagination = None, is_user_admin = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
@@ -198,7 +270,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None)
         extend_(['      ', u'          <div style="overflow: hidden;">\n'])
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
         extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
-        if admin:
+        if is_user_admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
             extend_(['                    ', u'| <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
         extend_(['      ', u'              </p>\n'])
@@ -269,7 +341,7 @@ index = CompiledTemplate(index, 'app/views/index.html')
 join_ = index._join; escape_ = index._escape
 
 # coding: utf-8
-def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, admin = None):
+def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = ''):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
@@ -302,14 +374,21 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'</head>\n'])
     extend_([u'<body>\n'])
     extend_([u'<div id="header">\n'])
+    extend_([u'    <span id="login">\n'])
+    if user:
+        extend_(['        ', escape_(user, True), u' | <span class="login"><a href="', escape_(logout_url, True), u'">logout</a></span>\n'])
+    else:
+        extend_(['        ', u'<span class="login"><a href="', escape_(login_url, True), u'">login</a></span>\n'])
+    extend_([u'    </span>\n'])
     extend_([u'    <h1>', escape_(settings.CMS_NAME, True), u' <img src="/images/lab.png" alt="Lab"/></h1>\n'])
     extend_([u'    <h2>', escape_((settings.SLOGAN), True), u'</h2>\n'])
     extend_([u'    <ul>\n'])
     extend_([u'        <li><a href="/" ', escape_((title=='Home' and 'class="active"' or ''), False), u'>Home</a></li>\n'])
-    extend_([u'        <li><a href="/post" ', escape_(((title not in ('Home','Tag cloud','About','Admin')) and 'class="active"' or ''), False), u'>Posts</a></li>\n'])
+    extend_([u'        <li><a href="/featured" ', escape_((title=='Featured' and 'class="active"' or ''), False), u'>Featured</a></li>\n'])
+    extend_([u'        <li><a href="/post" ', escape_(((title not in ('Home','Tag cloud','Featured','About','Admin')) and 'class="active"' or ''), False), u'>Posts</a></li>\n'])
     extend_([u'        <li><a href="/tagcloud" ', escape_((title=='Tag cloud' and 'class="active"' or ''), False), u'>Tag cloud</a></li>\n'])
     extend_([u'        <li><a href="/about" ', escape_((title=='About' and 'class="active"' or ''), False), u'>About</a></li>\n'])
-    if admin:
+    if is_user_admin:
         extend_(['        ', u'<li><a href="/admin" ', escape_((title=='Admin' and 'class="active"' or ''), False), u'>Admin</a></li>\n'])
     extend_([u'    </ul>\n'])
     extend_([u'        \n'])
@@ -355,6 +434,9 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
             extend_(['                ', u'<br/><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
         extend_([u'            </p>\n'])
         extend_([u'            <div id="img" style="margin-top:40px">\n'])
+        extend_([u'                <p style="text-align:center">\n'])
+        extend_([u'                <a href="/submit?action=submit_init"><img onmouseout="this.src=\'/images/submitlink.png\';" onmouseover="this.src=\'/images/submitlink_hover.png\'" src="/images/submitlink.png" alt="Submit a link"/></a>\n'])
+        extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])
         extend_([u'                </p>\n'])
@@ -424,7 +506,7 @@ oops = CompiledTemplate(oops, 'app/views/oops.html')
 join_ = oops._join; escape_ = oops._escape
 
 # coding: utf-8
-def post (post, prev_post = None, next_post = None, content_discovered = ''):
+def post (post, prev_post = None, next_post = None, content_discovered = '', is_user_admin = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
@@ -450,7 +532,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = ''):
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
     extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
-    if admin:
+    if is_user_admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
     extend_([u'          </p>\n'])
     extend_([u'          <p>\n'])
@@ -471,7 +553,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = ''):
     extend_([u'      <hr>\n'])
     extend_([u' </div>\n'])
     extend_([u' <div>\n'])
-    if settings.DISQUS:
+    if settings.DISQUS and not development:
         extend_([' ', u'<h3 id="comments">Comments</h3>\n'])
         extend_([' ', u'<div id="disqus_thread"></div>\n'])
         if development:
@@ -508,6 +590,48 @@ def search():
 
 search = CompiledTemplate(search, 'app/views/search.html')
 join_ = search._join; escape_ = search._escape
+
+# coding: utf-8
+def submit (submitted, message, title = '', link = '', description = '', tags = [], category = ''):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u' <div>\n'])
+    extend_([u'     <ul>\n'])
+    extend_([u'         <li>Save this <a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://', escape_((curdomain), True), u'/submit?action=submit_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a,#eow-tags a,.post-info a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\' \'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a> and use it to Submit a new link<br>\n'])
+    extend_([u'     </ul>\n'])
+    extend_([u'     <ul>     \n'])
+    extend_([u'         <li>Submit a link:<br>\n'])
+    extend_([u'             <form action = "/submit" method="POST"> \n'])
+    extend_([u'             <input type="hidden" name="action" value="submit"/>\n'])
+    extend_([u'             <p>title : <span class="required">*</span> <span class="help">[ex: tipfy ]<span><br><input type="text" size="100" name="title" value="', escape_(title, True), u'"/></p>\n'])
+    extend_([u'             <p>link : <span class="required">*</span> <span class="help">[ex: http://www.tipfy.org ]<span><br> <input type="text" size="100" id = "link" name="link" value="', escape_(link, True), u'"/> <span id="link_check"/></p>\n'])
+    extend_([u'             <p>description : <span class="help">[ex: tipfy is a top notch gae web-framework ]<span><br><input type="text" size="100" name="description" maxlenght="500" value="', escape_(description, True), u'"/></p>\n'])
+    extend_([u'             <p>tags : <span class="required">*</span> <span class="help">[ex: python web-frameworks ]<span><br><input type="text" id="tags" name="tags" size="100" value = "', escape_(' '.join(tags), True), u'"/> </p>\n'])
+    if settings.CATEGORIES:
+        extend_(['             ', u'<p>categories:<br>\n'])
+        extend_(['             ', u'<select name="category">\n'])
+        for category_tmp in loop.setup(settings.CATEGORIES):
+            extend_(['                 ', u'<option ', escape_((category_tmp==category and 'selected="selected"'), False), u'  value="', escape_(category_tmp, True), u'">', escape_(category_tmp, True), u'</option>\n'])
+        extend_(['             ', u'</select>\n'])
+    extend_([u'             <br/><br/>\n'])
+    extend_([u'             <p><input type="submit" value="Submit a link"/></p>\n'])
+    extend_([u'           </form>\n'])
+    extend_([u'         </li>\n'])
+    extend_([u'     </ul>\n'])
+    if message:
+        extend_(['     ', u'<div id="message_box">\n'])
+        if submitted:
+            extend_(['             ', u'<span class="message_OK">', escape_(message, True), u'</span>\n'])
+        else:
+            extend_(['             ', u'<span class="message_KO">', escape_(message, True), u'</span>\n'])
+        extend_(['     ', u' </div>\n'])
+    extend_([u' </div>\n'])
+
+    return self
+
+submit = CompiledTemplate(submit, 'app/views/submit.html')
+join_ = submit._join; escape_ = submit._escape
 
 # coding: utf-8
 def tagcloud (tag_cloud):

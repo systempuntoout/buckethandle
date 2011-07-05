@@ -3,20 +3,27 @@
 CMS_NAME = u"GAEcupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
-DESCRIPTION = u"""Google App Engine knowledge collections"""             
+DESCRIPTION = u"""Google App Engine knowledge base"""             
 META_DESCRIPTION = u"GAEcupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
+MAIL_ADMIN = u"systempuntoout@gmail.com"
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
-Being forced to rest and having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine.  
-I've coded this tool that is a sort of mix between a blogging platform and Delicious; I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day.  
-What I dislike about blog platforms is that they lack a drill-down tag exploring feature a là delicious or Stack Overflow.  
-The data is now collected through a semi-automatic process because I reviewing the taxonomy process to keep the organization clean.  
-This tool is a work in progress, so expect errors and other nasty things.  
+Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine.  
+I've coded this tool that is a sort of mix between Reddit, a blogging platform and Delicious.  
+I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day, I like reddit and it's fantastic for the hottest news but I miss a tagging feature  a là delicious or Stack Overflow.  
+The data is now collected through a semi-automatic process and hopefully with your help.  
 
+This tool is a work in progress, so expect errors and other nasty things;
+I've kept the code pretty configurable for other sites and topics and I'm planning to open-source it if it will gain some interest and traction.  
+
+
+Feedback at this address:  
 ![test](/images/systempuntooutmail.jpg "mail")
 """
+
+
 
 #Views
 HTML_MIME_TYPE = "text/html; charset=UTF-8"
@@ -24,7 +31,8 @@ THUMBNAIL_WIDTH= 70
 THUMBNAIL_HEIGHT= 70
 POSTS_PER_PAGE = 15
 NAVBAR_CLOUDSIZE = 30
-RECENT_POST_NUM = 10
+RECENT_POST_NUM = 20
+FEATURED_POST_NUM = 10
 NO_LIMIT = 10000
 MAX_NUMBER_OF_TAGS_FILTERS = 5
 MEMCACHE_ENABLED = True #Disable it just for testing

@@ -16,6 +16,7 @@ function linkCheck() {
 	        jQuery('#link').addClass('ac_loading');
 			jQuery.getJSON("/ajax/links?check="+link, function(data){
                      jQuery('#link_check').text(data.result);
+                     jQuery('#link_check').removeClass();
                      jQuery('#link_check').addClass(data.clazz);
                      jQuery('#link').removeClass('ac_loading');
             });
@@ -26,6 +27,7 @@ jQuery(document).ready(function() {
             jQuery(document).stacktack();
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
+            jQuery("#message_box").fadeOut(6000);
             if (jQuery('#link').val()){linkCheck();}
             jQuery("#link").typeWatch( {wait: 500,captureLength: -1, callback:linkCheck } );
             jQuery('#tagcloud_filter').keyup(function() {

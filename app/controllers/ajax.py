@@ -3,6 +3,7 @@ from app.config.settings import GENERIC_ERROR, NOT_FOUND_ERROR
 import logging, web
 import app.db.models as models
 from google.appengine.ext import ereporter
+import urlparse
 
 ereporter.register_logger()
 
@@ -27,12 +28,12 @@ class Links:
     def GET(self):
         web.header('Content-type', 'application/json')
         link = web.input(check = None)['check']
-        if link:
+        if link and (link.startswith('http://') or link.startswith('https://')):
             link_is_stored = models.Post.get_post_by_link(link.strip())
             if link_is_stored:    
-                return '{"result":"[ Link is already there ]","clazz":"link_KO"}' 
+                return '{"result":"[ We already know this link ]","clazz":"message_KO"}' 
             else:
-                return '{"result":"[ Link looks ok ]","clazz":"link_OK"}'    
+                return '{"result":"[ This link looks new ]","clazz":"message_OK"}'    
         else:
             return '{"result":"","clazz":""}'
             

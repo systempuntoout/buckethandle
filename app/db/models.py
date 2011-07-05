@@ -74,6 +74,12 @@ class Post(db.Model):
         return posts
     
     @staticmethod
+    @memcached('get_featured_posts', 3600*24)
+    def get_featured_posts():
+        posts =  Post.all().order("-created").filter('featured =', True).fetch(FEATURED_POST_NUM)
+        return posts
+    
+    @staticmethod
     @memcached('get_post', 3600*24, lambda post_id: post_id)
     def get_post(post_id):
         return Post.get(post_id)
@@ -109,6 +115,7 @@ class Post(db.Model):
       return post   
       
     @staticmethod
+    @memcached('get_post_by_link', 3600, lambda link: link)
     def get_post_by_link(link):
       return Post.all().filter('link =', link).get()
               

@@ -107,7 +107,7 @@ class Admin:
                 selected_category = ''
                 
             tags = list(set(tags.split()) - set(TAGS_BLACK_LIST))
-            return render.layout(render.admin(result, title, link, description, tags, selected_category), title ='Admin', navbar = False, admin = users.get_current_user())
+            return render.layout(render.admin(result, title, link, description, tags, selected_category), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
         elif action =='newpost':
             title = web.input(title = None)['title']
             link = web.input(link = None)['link']
@@ -115,6 +115,7 @@ class Admin:
             tags = web.input(tags = None)['tags']
             category = web.input(category = None)['category']
             body = web.input(body = None)['body']
+            featured = web.input(featured = False)['featured']
             thumbnail = web.input(img = None)['img']
             thumbnail_url = web.input(url_img = None)['url_img']
             if thumbnail_url:
@@ -145,6 +146,7 @@ class Admin:
                                thumbnail = blob_thumbnail,
                                slug = utils.slugify(title),
                                author_name = AUTHOR_NAME,
+                               featured = True if featured else False,
                                body = body  )
             
             result['newpost'] = post.put()
@@ -164,9 +166,9 @@ class Admin:
                                                       entity.category,
                                                       entity.get_image_path(),
                                                       entity.body,
-                                                      post_id), title ='Admin', navbar = False, admin = users.get_current_user())
+                                                      post_id, entity.featured), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
             result ={'Not_found':post_id}
-            render.layout(render.admin(result), title ='Admin', navbar = False, admin = users.get_current_user())
+            render.layout(render.admin(result), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
         elif action =='editpost':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
@@ -179,6 +181,7 @@ class Admin:
                 tags = web.input(tags = None)['tags']
                 category = web.input(category = None)['category']
                 body = web.input(body = None)['body']
+                featured = web.input(featured = False)['featured']
                 thumbnail = web.input(img = None)['img']
                 delete_img = web.input(delete_img = None)['delete_img']
                 thumbnail_url = web.input(url_img = None)['url_img']
@@ -208,6 +211,7 @@ class Admin:
                 entity_post.category = category
                 entity_post.slug = utils.slugify(title)
                 entity_post.body = body
+                entity_post.featured = True if featured else False
                 if blob_thumbnail:
                     entity_post.thumbnail = blob_thumbnail
                 if delete_img:
@@ -225,7 +229,7 @@ class Admin:
                     worker.deferred_update_tags_counter([],entity.tags)
                     worker.deferred_update_category_counter(None, entity.category)
         
-        return render.layout(render.admin(result), title ='Admin', navbar = False, admin = users.get_current_user())
+        return render.layout(render.admin(result), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
 
         
 class Warmup:

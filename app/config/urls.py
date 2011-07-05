@@ -4,7 +4,9 @@
 
 urls = (
   '/tag/(.*)', 'app.controllers.main.Tags',
+  '/featured', 'app.controllers.main.Featured',
   '/tagcloud','app.controllers.main.TagCloud',
+  '/submit','app.controllers.main.Submit',
   '/post', 'app.controllers.main.Post',
   '/post/(\w+)/.*', 'app.controllers.main.Post',
   '/about', 'app.controllers.main.About',

@@ -4,6 +4,7 @@
 from app.config.urls import urls
 import app.config.settings as settings 
 from google.appengine.ext.webapp.util import run_wsgi_app
+from google.appengine.api import users
 import app.utility.utils as utils
 import logging
 import web
@@ -23,9 +24,9 @@ global_template = {
 web.render = render = web.template.render('app/views/', globals = global_template, cache = True)
                                                
 def notfound():
-    return web.notfound(render.layout(render.oops(settings.NOT_FOUND_ERROR), title ='Error', navbar = False))
+    return web.notfound(render.layout(render.oops(settings.NOT_FOUND_ERROR), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
 def internalerror():
-    return web.internalerror(render.layout(render.oops(settings.SERVER_ERROR), title ='Error', navbar = False))
+    return web.internalerror(render.layout(render.oops(settings.SERVER_ERROR), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
 
 app = web.application(urls, globals())
 app.notfound = notfound

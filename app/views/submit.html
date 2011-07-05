@@ -1,0 +1,32 @@
+$def with (submitted, message, title = '', link = '', description = '', tags = [], category = '')
+ <div>
+     <ul>
+         <li>Save this <a href="javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');window.document.body.appendChild(s);f='http://$(curdomain)/submit?action=submit_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a> and use it to Submit a new link<br>
+     </ul>
+     <ul>     
+         <li>Submit a link:<br>
+             <form action = "/submit" method="POST"> 
+             <input type="hidden" name="action" value="submit"/>
+             <p>title : <span class="required">*</span> <span class="help">[ex: tipfy ]<span><br><input type="text" size="100" name="title" value="$title"/></p>
+             <p>link : <span class="required">*</span> <span class="help">[ex: http://www.tipfy.org ]<span><br> <input type="text" size="100" id = "link" name="link" value="$link"/> <span id="link_check"/></p>
+             <p>description : <span class="help">[ex: tipfy is a top notch gae web-framework ]<span><br><input type="text" size="100" name="description" maxlenght="500" value="$description"/></p>
+             <p>tags : <span class="required">*</span> <span class="help">[ex: python web-frameworks ]<span><br><input type="text" id="tags" name="tags" size="100" value = "$' '.join(tags)"/> </p>
+             $if settings.CATEGORIES:
+                 <p>categories:<br>
+                 <select name="category">
+                     $for category_tmp in settings.CATEGORIES:
+                        <option $:(category_tmp==category and 'selected="selected"')  value="$category_tmp">$category_tmp</option>
+                 </select>
+             <br/><br/>
+             <p><input type="submit" value="Submit a link"/></p>
+           </form>
+         </li>
+     </ul>
+     $if message:
+         <div id="message_box">
+                 $if submitted:
+                     <span class="message_OK">$message</span>
+                 $else:
+                     <span class="message_KO">$message</span>
+          </div>
+ </div>
