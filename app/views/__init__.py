@@ -27,13 +27,19 @@ def admin (result, title = '', link = '', description = '', tags = [], category 
     extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://', escape_((settings.HOST), True), u'/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a,#eow-tags a,.post-info a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\' \'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
-    extend_([u'           <li><a href="/admin?action=start_import">Import </a></li>\n'])
-    extend_([u'           \n'])
     extend_([u'     </ul>\n'])
     extend_([u'     <p><b>Result:</b></p>\n'])
     for key in loop.setup(result.keys()):
         extend_(['      ', u'* ', escape_(("%s - %s" % (key, result[key])), True), u'<br>\n'])
     extend_([u'     <ul>\n'])
+    if post_id:
+        extend_(['         ', u' <li>Delete:\n'])
+        extend_(['         ', u'    <form action = "/admin" method="POST"> \n'])
+        extend_(['         ', u'        <input type="hidden" name="action" value="deletepost"/>\n'])
+        extend_(['         ', u'        <input type="hidden" name="post_id" value="', escape_(post_id, True), u'"/>\n'])
+        extend_(['         ', u'        <p><input type="submit" value="Delete"/></p>\n'])
+        extend_(['         ', u'    </form>\n'])
+        extend_(['         ', u'</il>\n'])
     extend_([u'         <li>Post:<br>\n'])
     extend_([u'             <form action = "/admin" method="POST" enctype="multipart/form-data"> \n'])
     if post_id:
@@ -71,15 +77,6 @@ def admin (result, title = '', link = '', description = '', tags = [], category 
     extend_([u'             <p><input type="submit" value="Submit"/></p>\n'])
     extend_([u'           </form>\n'])
     extend_([u'         </li>\n'])
-    extend_([u'         \n'])
-    if post_id:
-        extend_(['         ', u'<li>Delete:\n'])
-        extend_(['         ', u'   <form action = "/admin" method="POST"> \n'])
-        extend_(['         ', u'       <input type="hidden" name="action" value="deletepost"/>\n'])
-        extend_(['         ', u'       <input type="hidden" name="post_id" value="', escape_(post_id, True), u'"/>\n'])
-        extend_(['         ', u'       <p><input type="submit" value="Delete"/></p>\n'])
-        extend_(['         ', u'   </form>\n'])
-    extend_([u'            </il>\n'])
     extend_([u'     </ul>\n'])
     extend_([u'                            \n'])
     extend_([u' </div>\n'])
@@ -142,7 +139,7 @@ def featured (posts, is_user_admin = False):
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
-        extend_(['      ', u'              <p><a target="_new" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+        extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         extend_(['      ', u'              <p>', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
@@ -255,7 +252,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         for category in loop.setup(settings.CATEGORIES):
             extend_(['          ', u'<li>\n'])
             extend_(['          ', u'<label ', escape_((selected_category != "" and category == selected_category and 'id="selected_category"' or ""), False), u' for="', escape_(category, True), u'">\n'])
-            extend_(['          ', u'<input type="radio" name="category" id="', escape_(category, True), u'" value="', escape_(category, True), u'" ', escape_((selected_category != "" and category == selected_category and 'checked="checked"' or ""), False), u' onclick="this.form.submit()"/>\n'])
+            extend_(['          ', u'<input type="radio" name="category" id="', escape_(category, True), u'" value="', escape_(category, True), u'" ', escape_((selected_category != "" and category == selected_category and 'checked="checked"' or ""), False), u' onclick="this.form.action= this.form.action+\'?category=\' + this.value; this.form.submit();"/>\n'])
             extend_(['          ', escape_(category, True), u'</label>\n'])
             extend_(['          ', u'</li>              \n'])
         extend_(['       ', u' </ul>\n'])
@@ -272,7 +269,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
         if is_user_admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
-            extend_(['                    ', u'| <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
+        extend_(['      ', u'              | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p>\n'])
         if post.link:
@@ -280,7 +277,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
-        extend_(['      ', u'              <p><a target="_new" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+        extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         extend_(['      ', u'              <p>', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
@@ -459,8 +456,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'</div>\n'])
         extend_([u'\n'])
     extend_([u'<div id="footer">\n'])
-    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | Powered by Google App Engine\n'])
-    extend_([u'    | <a href="http://validator.w3.org/check/referer">XHTML</a></p>\n'])
+    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
     extend_([u'</div>\n'])
     extend_([u'\n'])
     if settings.ANALYTICS_ID and not development and not admin:
@@ -542,7 +538,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     for tag in loop.setup(post.tags):
         extend_(['              ', u'  <a class="tag" href="/tag/', escape_(tag, True), u'">', escape_((tag), True), u'</a> \n'])
     extend_([u'          </p>\n'])
-    extend_([u'          <p><a target="_new" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+    extend_([u'          <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
     extend_([u'          <p>', escape_((post.description), True), u'</p>\n'])
     extend_([u'      </div>\n'])
     extend_([u'      <div>\n'])
@@ -591,6 +587,28 @@ def search():
 
 search = CompiledTemplate(search, 'app/views/search.html')
 join_ = search._join; escape_ = search._escape
+
+# coding: utf-8
+def sitemap (sitemap_urls):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<?xml version="1.0" encoding="UTF-8"?>\n'])
+    extend_([u'<urlset\n'])
+    extend_([u'      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'])
+    extend_([u'      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'])
+    extend_([u'      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'])
+    extend_([u'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'])
+    for url in loop.setup(sitemap_urls):
+        extend_(['  ', u'<url>\n'])
+        extend_(['  ', u'  <loc>http://', escape_((settings.HOST), True), escape_((url), True), u'</loc>\n'])
+        extend_(['  ', u'</url>\n'])
+    extend_([u'</urlset>\n'])
+
+    return self
+
+sitemap = CompiledTemplate(sitemap, 'app/views/sitemap.xml')
+join_ = sitemap._join; escape_ = sitemap._escape
 
 # coding: utf-8
 def submit (submitted, message, title = '', link = '', description = '', tags = [], category = ''):

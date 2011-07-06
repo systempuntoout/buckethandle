@@ -21,7 +21,7 @@ $def render_catqs(selected_category, front_char):
               $for category in settings.CATEGORIES:
                   <li>
                   <label $:(selected_category != "" and category == selected_category and 'id="selected_category"' or "") for="$category">
-                  <input type="radio" name="category" id="$category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.submit()"/>
+                  <input type="radio" name="category" id="$category" value="$category" $:(selected_category != "" and category == selected_category and 'checked="checked"' or "") onclick="this.form.action= this.form.action+'?category=' + this.value; this.form.submit();"/>
                   $category</label>
                   </li>              
             </ul>
@@ -38,7 +38,7 @@ $def render_catqs(selected_category, front_char):
                         <p>$post.created.strftime("%d %B, %Y")
                         $if is_user_admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
-                            | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
+                        | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
                         </p>
                         <p>
                         $if post.link:
@@ -46,7 +46,7 @@ $def render_catqs(selected_category, front_char):
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>
-                        <p><a target="_new" href="$(post.link)">$(post.link)</a></p>
+                        <p><a target="_blank" href="$(post.link)">$(post.link)</a></p>
                         <p>$(post.description)</p>
                     </div>
                     <div style="float:right">

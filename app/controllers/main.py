@@ -1,4 +1,5 @@
 from app.config.settings import *
+from app.config.urls import sitemap_urls
 import app.db.models as models
 import app.utility.utils as utils
 import logging, web, re
@@ -167,6 +168,14 @@ class Cse:
      """
      def GET(self):
          return render.cse()
+
+class Sitemap:
+      """
+      Sitemap
+      """
+      def GET(self):
+          web.header('Content-type', 'text/xml')
+          return render.sitemap(sitemap_urls)
                              
 class Image:
      """
@@ -223,7 +232,7 @@ class Submit:
              if title.strip() and link.strip() and tags.strip():
                  mail.send_mail(sender="%s <%s>" % (CMS_NAME, MAIL_ADMIN),
                                to="Admin <%s>" % MAIL_ADMIN,
-                               subject="Link submitted",
+                               subject="Link submitted %s" % utils.now().strftime("%Y-%m-%dT%H:%M:%SZ"),
                                body="""
                  Link submission:
 

@@ -17,7 +17,19 @@ urls = (
   '/admin','app.controllers.admin.Admin',
   '/index.xml', 'app.controllers.main.Feed',
   '/cse.xml', 'app.controllers.main.Cse',
+  '/sitemap.xml', 'app.controllers.main.Sitemap',
   '/feed/index.rss', 'app.controllers.main.Feed',
   '/_ah/warmup','app.controllers.admin.Warmup',
   '/.*', 'app.controllers.main.Index',
 )
+
+"""
+ Routes for sitemap
+"""
+
+sitemap_urls = ('/',
+                '/tag',
+                '/post',
+                '/tagcloud',
+                '/featured',
+                '/about')

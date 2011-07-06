@@ -4,13 +4,19 @@ $def with (result, title = '', link = '', description = '', tags = [], category 
      <ul>  <li><a href="javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');window.document.body.appendChild(s);f='http://$(settings.HOST)/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>
            <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
            <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
-           <li><a href="/admin?action=start_import">Import </a></li>
-           
      </ul>
      <p><b>Result:</b></p>
       $for key in result.keys():
           * $("%s - %s" % (key, result[key]))<br>
      <ul>
+         $if post_id:
+              <li>Delete:
+                 <form action = "/admin" method="POST"> 
+                     <input type="hidden" name="action" value="deletepost"/>
+                     <input type="hidden" name="post_id" value="$post_id"/>
+                     <p><input type="submit" value="Delete"/></p>
+                 </form>
+             </il>
          <li>Post:<br>
              <form action = "/admin" method="POST" enctype="multipart/form-data"> 
              $if post_id: 
@@ -48,15 +54,6 @@ $def with (result, title = '', link = '', description = '', tags = [], category 
              <p><input type="submit" value="Submit"/></p>
            </form>
          </li>
-         
-         $if post_id:
-             <li>Delete:
-                <form action = "/admin" method="POST"> 
-                    <input type="hidden" name="action" value="deletepost"/>
-                    <input type="hidden" name="post_id" value="$post_id"/>
-                    <p><input type="submit" value="Delete"/></p>
-                </form>
-            </il>
      </ul>
                             
  </div>
