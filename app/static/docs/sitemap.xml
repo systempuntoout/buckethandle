@@ -7,9 +7,21 @@
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
 <url>
-  <loc>http://www.buckethandle.com/</loc>
+  <loc>http://www.gaecupboard.com/</loc>
 </url>
 <url>
-  <loc>http://www.buckethandle.com/about</loc>
+  <loc>http://www.gaecupboard.com/tag</loc>
+</url>
+<url>
+  <loc>http://www.gaecupboard.com/post</loc>
+</url>
+<url>
+  <loc>http://www.gaecupboard.com/tagcloud</loc>
+</url>
+<url>
+  <loc>http://www.gaecupboard.com/featured</loc>
+</url>
+<url>
+  <loc>http://www.gaecupboard.com/about</loc>
 </url>
 </urlset>

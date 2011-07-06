@@ -75,7 +75,7 @@ img {
 	float:left;
 	width:100%;
 	list-style:none;
-	margin:10px 0 0 0;
+	margin:20px 0 0 0;
 	padding:0;
 }
 #header ul li {
@@ -280,6 +280,22 @@ td.pagination_page a:hover {
 }
 .tag_cloud_5{
     font-size:35px;
+}
+
+.tag_cloud_nav_1{
+    font-size:12px;
+}
+.tag_cloud_nav_2{
+    font-size:14px;
+}
+.tag_cloud_nav_3{
+    font-size:16px;
+}
+.tag_cloud_nav_4{
+    font-size:18px;
+}
+.tag_cloud_nav_5{
+    font-size:22px;
 }
 
 #oops{

@@ -17,8 +17,7 @@ global_template = {
             'htmlquote':web.net.htmlquote,
             'settings': settings,
             'utils': utils,
-            'development' : os.environ['SERVER_SOFTWARE'].startswith('Dev'),
-            'curdomain': os.environ['HTTP_HOST'],
+            'development' : os.environ['SERVER_SOFTWARE'].startswith('Dev')
           }
 
 web.render = render = web.template.render('app/views/', globals = global_template, cache = True)

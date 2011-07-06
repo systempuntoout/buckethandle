@@ -1,4 +1,5 @@
 $def with (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '')
+$ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
 <head>
@@ -49,7 +50,7 @@ $def with (content, title = None , tag_cloud = [], categories = [], navbar = Tru
         <form id="form" action="/search" method="get">
           <p id="layoutdims">  
             <input type="hidden" name="ie" value="UTF-8" />
-            <input type="hidden" name="cref" value="$(curdomain)/cse.xml" />
+            <input type="hidden" name="cref" value="$(settings.HOST)/cse.xml" />
             <input type="hidden" name="cof" value="FORID:11" />
         	<input id="search_box" name="q" tabindex="1" onfocus="if (this.value=='search') this.value = ''" type="text" maxlength="140" size="32" value="search"/>
             </p>
@@ -82,12 +83,12 @@ $if navbar:
                 <h2>Tags</h2>
                 <p>
                     $for tag in tag_cloud:
-                            <a href="/tag/$(tag.name)">$(tag.name)</a><span class="counter">($commify(tag.counter))</span>&nbsp;
+                            <span class="tag_info"><a class="tag_cloud_nav_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)">$(tag.name)</a><span class="counter">($commify(tag.counter))</span>&nbsp;</span>
 
                     $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
                         <br/><span class="more_tag"><a  href="/tagcloud">more »</a></span>
                 </p>
-                <div id="img" style="margin-top:40px">
+                <div id="img" style="margin-top:10px">
                     <p style="text-align:center">
                     <a href="/submit?action=submit_init"><img onmouseout="this.src='/images/submitlink.png';" onmouseover="this.src='/images/submitlink_hover.png'" src="/images/submitlink.png" alt="Submit a link"/></a>
                     </p>

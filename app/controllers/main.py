@@ -221,7 +221,7 @@ class Submit:
              category = web.input(category = None)['category']
              
              if title.strip() and link.strip() and tags.strip():
-                 mail.send_mail(sender="Gaecupboard <%s>" % MAIL_ADMIN,
+                 mail.send_mail(sender="%s <%s>" % (CMS_NAME, MAIL_ADMIN),
                                to="Admin <%s>" % MAIL_ADMIN,
                                subject="Link submitted",
                                body="""

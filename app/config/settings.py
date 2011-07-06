@@ -8,10 +8,10 @@ META_DESCRIPTION = u"GAEcupboard - Ingredients for your Google App Engine recipe
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
+HOST = "www.gaecupboard.com"
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
-Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine.  
-I've coded this tool that is a sort of mix between Reddit, a blogging platform and Delicious.  
+Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine and I've coded this tool that is a sort of mix between Reddit, a blogging platform and Delicious.  
 I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day, I like reddit and it's fantastic for the hottest news but I miss a tagging feature  a là delicious or Stack Overflow.  
 The data is now collected through a semi-automatic process and hopefully with your help.  
 
@@ -30,7 +30,7 @@ HTML_MIME_TYPE = "text/html; charset=UTF-8"
 THUMBNAIL_WIDTH= 70
 THUMBNAIL_HEIGHT= 70
 POSTS_PER_PAGE = 15
-NAVBAR_CLOUDSIZE = 30
+NAVBAR_CLOUDSIZE = 40
 RECENT_POST_NUM = 20
 FEATURED_POST_NUM = 10
 NO_LIMIT = 10000

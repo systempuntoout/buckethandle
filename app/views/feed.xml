@@ -3,22 +3,22 @@ $def with (posts, site_updated)
 <feed xmlns="http://www.w3.org/2005/Atom">
 <title>$(settings.CMS_NAME)</title>
 <subtitle>$(settings.SLOGAN)</subtitle>
-<link rel="alternate" type="text/html" href="http://$(curdomain)/" />
-<link rel="self" type="application/atom+xml" href="http://$(curdomain)/index.xml" />
-<id>http://$(curdomain)/</id>
+<link rel="alternate" type="text/html" href="http://$(settings.HOST)/" />
+<link rel="self" type="application/atom+xml" href="http://$(settings.HOST)/index.xml" />
+<id>http://$(settings.HOST)/</id>
 <updated>$site_updated</updated>
 <rights>Copyright © 2011, $settings.CMS_NAME</rights>
 $for post in posts:
     <entry>
         <title>$(post.title) - $(post.category)</title>
-        <link rel="alternate" type="text/html" href="http://$(curdomain)/post/$post.get_path()" />
-        <id>tag:$(curdomain),$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ")):/post/$(post.key())</id>
+        <link rel="alternate" type="text/html" href="http://$(settings.HOST)/post/$post.get_path()" />
+        <id>tag:$(settings.HOST),$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ")):/post/$(post.key())</id>
         <published>$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ"))</published>
         <updated>$(post.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ"))</updated>
         <author>
             <name>$settings.AUTHOR_NAME)</name>
-            <uri>http://$(curdomain)</uri> 
+            <uri>http://$(settings.HOST)</uri> 
         </author>
-        <content type="html" xml:base="http://$(curdomain)/" xml:lang="en"><![CDATA[$(post.description)]]></content>
+        <content type="html" xml:base="http://$(settings.HOST)/" xml:lang="en"><![CDATA[$(post.description)]]></content>
     </entry>
 </feed>
