@@ -103,6 +103,13 @@ def cse():
     extend_([u'      </BackgroundLabels>\n'])
     extend_([u'    </Context>\n'])
     extend_([u'    <LookAndFeel nonprofit="false" />\n'])
+    if settings.ADSENSE_ID:
+        extend_(['    ', u'<AdSense>\n'])
+        extend_(['    ', u' <Client id="', escape_((settings.ADSENSE_ID), True), u'">\n'])
+        if settings.ADSENSE_CHANNEL_ID:
+            extend_(['       ', u'<Channel id="', escape_((settings.ADSENSE_CHANNEL_ID), True), u'"/>\n'])
+        extend_(['    ', u'</Client>\n'])
+        extend_(['    ', u'</AdSense>\n'])
     extend_([u'  </CustomSearchEngine>  \n'])
     extend_([u'  <Annotations>\n'])
     extend_([u'    <Annotation about="http://', escape_((settings.HOST), True), u'/*">\n'])
@@ -443,6 +450,9 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                <a href="http://code.google.com/appengine/"><img width="100" height="30" src="/images/appengine.png" alt="Appengine"/></a>\n'])
+        extend_([u'                </p>\n'])
+        extend_([u'                <p>\n'])
+        extend_([u'                <a href="/"><img src="/images/buckethandle.png" alt="buckethandle"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'            </div>\n'])
         extend_([u'        </div>\n'])

@@ -43,6 +43,8 @@ TAGS_BLACK_LIST = ['appengine', 'google-app-engine', 'gae', 'app-engine','ae']
 DISQUS = "gaecupboard"
 CLICKY_ID = None
 ANALYTICS_ID = 'UA-4276204-7'
+ADSENSE_ID = 'pub-3296756901484166'
+ADSENSE_CHANNEL_ID = '2124691773'
 
 #Errors
 RELAXING_MESSAGE_ERROR = "..cumulus clouds are white, puffy clouds that look like pieces of floating cotton.. "

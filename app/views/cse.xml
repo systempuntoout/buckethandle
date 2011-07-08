@@ -10,6 +10,13 @@
       </BackgroundLabels>
     </Context>
     <LookAndFeel nonprofit="false" />
+    $if settings.ADSENSE_ID:
+        <AdSense>
+         <Client id="$(settings.ADSENSE_ID)">
+           $if settings.ADSENSE_CHANNEL_ID:  
+              <Channel id="$(settings.ADSENSE_CHANNEL_ID)"/>
+        </Client>
+        </AdSense>
   </CustomSearchEngine>  
   <Annotations>
     <Annotation about="http://$(settings.HOST)/*">

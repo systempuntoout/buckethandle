@@ -167,6 +167,7 @@ class Cse:
      Google Cse
      """
      def GET(self):
+         web.header('Content-type', 'text/xml')
          return render.cse()
 
 class Sitemap:
