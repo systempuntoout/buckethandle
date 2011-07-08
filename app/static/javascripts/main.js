@@ -6,6 +6,7 @@ jQuery(
                 multiple: true,
                 matchContains: true,
                 multipleSeparator:' '});
+        jQuery("#tagcloud_filter").focus();
     }
 );
 
