@@ -216,7 +216,7 @@ def feed (posts, site_updated):
         extend_([u'    <published>', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u'</published>\n'])
         extend_([u'    <updated>', escape_((post.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u'</updated>\n'])
         extend_([u'    <author>\n'])
-        extend_([u'        <name>', escape_(settings.AUTHOR_NAME, True), u')</name>\n'])
+        extend_([u'        <name>', escape_(settings.AUTHOR_NAME, True), u'</name>\n'])
         extend_([u'        <uri>http://', escape_((settings.HOST), True), u'</uri> \n'])
         extend_([u'    </author>\n'])
         extend_([u'    <content type="html" xml:base="http://', escape_((settings.HOST), True), u'/" xml:lang="en"><![CDATA[', escape_((post.description), True), u']]></content>\n'])
@@ -469,7 +469,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
     extend_([u'</div>\n'])
     extend_([u'\n'])
-    if settings.ANALYTICS_ID and not development and not admin:
+    if settings.ANALYTICS_ID and not development and not is_user_admin:
         extend_([u'<script type="text/javascript">\n'])
         extend_([u'var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");\n'])
         extend_([u'document.write(unescape("%3Cscript src=\'" + gaJsHost + "google-analytics.com/ga.js\' type=\'text/javascript\'%3E%3C/script%3E"));\n'])
@@ -480,7 +480,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'pageTracker._trackPageview();\n'])
         extend_([u'} catch(err) {}</script>\n'])
         extend_([u'\n'])
-    if settings.CLICKY_ID and not development and not admin:
+    if settings.CLICKY_ID and not development and not is_user_admin:
         extend_([u'<script src="http://static.getclicky.com/js" type="text/javascript"></script>\n'])
         extend_([u'<script type="text/javascript">clicky.init(', escape_(settings.CLICKY_ID, True), u');</script>\n'])
         extend_([u'<noscript><p><img alt="Clicky" width="1" height="1" src="http://in.getclicky.com/', escape_((settings.CLICKY_ID), True), u'ns.gif" /></p></noscript>\n'])

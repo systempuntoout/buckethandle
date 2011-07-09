@@ -12,11 +12,18 @@ MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com"
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
-Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine and I've coded this tool that is a sort of mix between Reddit, a blogging platform and Delicious.  
-I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day, I like reddit and it's fantastic for the hottest news but I miss a tagging feature  a là delicious or Stack Overflow.  
-The data is now collected through a semi-automatic process and hopefully with your help.  
+Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine;  I've coded this tool that is a sort of mix between Reddit, Delicious and a blogging platform.  
+I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day, I like reddit and it's fantastic for the hottest news but it lacks a tagging feature like Delicious or Stack Overflow.   
 
-This tool is a work in progress, so expect errors and other nasty things;
+Do you want some good tags/categories combo to start with?  
+Try with:  
+    - [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
+    - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
+    - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
+    - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category
+    
+
+This tool is a work in progress, so expect errors, dragons and other nasty things.  
 I've kept the code pretty configurable for other sites and topics and I'm planning to open-source it if it will gain some interest and traction.  
 
 

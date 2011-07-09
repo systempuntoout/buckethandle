@@ -16,7 +16,7 @@ $for post in posts:
         <published>$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ"))</published>
         <updated>$(post.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ"))</updated>
         <author>
-            <name>$settings.AUTHOR_NAME)</name>
+            <name>$settings.AUTHOR_NAME</name>
             <uri>http://$(settings.HOST)</uri> 
         </author>
         <content type="html" xml:base="http://$(settings.HOST)/" xml:lang="en"><![CDATA[$(post.description)]]></content>
