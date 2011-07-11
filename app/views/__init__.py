@@ -671,7 +671,7 @@ def tagcloud (tag_cloud):
     max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     extend_([u'\n'])
     extend_([u'<p>Tags found: <b>', escape_(len(tag_cloud), True), u'</b></p>\n'])
-    extend_([u'<p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"></p>\n'])
+    extend_([u'<p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"/></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
         extend_(['    ', u'    <span class="tag_info"><a class="tag_cloud_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])

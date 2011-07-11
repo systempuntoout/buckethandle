@@ -65,8 +65,24 @@ AUTO_CONTENT_BY_LINK = {
                             'regex':'http://stackoverflow\.com/questions/(\d+).*',
                             'image':'stackoverflow.png',
                             'category':'Questions',
-                            'content_block':"""<div id="stacktack-%s"></div>"""
+                            'content_block':"""<div id="stacktack-%s"></div>
+                            <script language="javascript">
+                                jQuery(document).stacktack();
+                            </script>
+                            """
                             
+                            },
+'http://programmers.stackexchange.com':{
+                            'regex':'http://programmers.stackexchange\.com/questions/(\d+).*',
+                            'image':'programmers.png',
+                            'category':'Questions',
+                            'content_block':"""<div id="stacktack-%s"></div>
+                            <script language="javascript">
+                                jQuery(document).stacktack({site: 'programmers.stackexchange.com'});
+                            </script>
+                            
+                            """
+
                             },
 'http://www.youtube.com':{
                             'regex':'http://www\.youtube\.com/watch\?v=([^&]*)',

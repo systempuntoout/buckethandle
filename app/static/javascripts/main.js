@@ -25,7 +25,6 @@ function linkCheck() {
 }
 
 jQuery(document).ready(function() {
-            jQuery(document).stacktack();
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
             jQuery("#message_box").fadeOut(6000);
