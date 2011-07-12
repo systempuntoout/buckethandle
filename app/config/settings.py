@@ -66,7 +66,7 @@ AUTO_CONTENT_BY_LINK = {
                             'image':'stackoverflow.png',
                             'category':'Questions',
                             'content_block':"""<div id="stacktack-%s"></div>
-                            <script language="javascript">
+                            <script type="text/javascript">
                                 jQuery(document).stacktack();
                             </script>
                             """
@@ -77,12 +77,12 @@ AUTO_CONTENT_BY_LINK = {
                             'image':'programmers.png',
                             'category':'Questions',
                             'content_block':"""<div id="stacktack-%s"></div>
-                            <script language="javascript">
+                            <script type="text/javascript">
+                                jQuery(document).ready(function() {
                                 jQuery(document).stacktack({site: 'programmers.stackexchange.com'});
-                            </script>
-                            
+                                });
+                            </script>                            
                             """
-
                             },
 'http://www.youtube.com':{
                             'regex':'http://www\.youtube\.com/watch\?v=([^&]*)',

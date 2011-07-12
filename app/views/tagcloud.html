@@ -1,7 +1,7 @@
 $def with (tag_cloud)
 $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 
-<p>Tags found: <b>$len(tag_cloud)</b></p>
+<p>Tags found: <b>$commify(len(tag_cloud))</b></p>
 <p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"/></p>
 <div id="main_tag_cloud">
     $for tag in tag_cloud:
