@@ -3,7 +3,7 @@ from app.config.settings import GENERIC_ERROR, NOT_FOUND_ERROR
 import logging, web
 import app.db.models as models
 from google.appengine.ext import ereporter
-import urlparse
+import app.utility.utils as utils
 
 ereporter.register_logger()
 
@@ -16,8 +16,7 @@ class Tags:
         web.header('Content-type', 'text/plain')
         try:
             tag_filter = web.input()['q']
-            tags = models.Tag.get_tags() 
-            return '\n'.join([tag.name for tag in tags if tag.name.startswith(tag_filter)])
+            return models.Tag.get_tags_by_filter(tag_filter) 
         except Exception, exception:
             return ""
             
@@ -28,10 +27,15 @@ class Links:
     def GET(self):
         web.header('Content-type', 'application/json')
         link = web.input(check = None)['check']
-        if link and (link.startswith('http://') or link.startswith('https://')):
+        if link and utils.link_is_valid(link):
             link_is_stored = models.Post.get_post_by_link(link.strip())
+            if not link_is_stored: 
+                if link.strip().endswith('/'):
+                    link_is_stored = models.Post.get_post_by_link(link.strip()[:-1]) #check without slash
+                else:
+                    link_is_stored = models.Post.get_post_by_link("%s%s" % (link.strip(), '/')) #check with slash
             if link_is_stored:    
-                return '{"result":"[ We already know this link ]","clazz":"message_KO"}' 
+                return '{"result":"[ The link is known ]","clazz":"message_KO"}' 
             else:
                 return '{"result":"[ This link looks new ]","clazz":"message_OK"}'    
         else:

@@ -402,7 +402,6 @@ font-weight:bold;
 
 .counter{
     font-size:0.7em;
-    padding-left:2px; 
 }
 
 #frame {
@@ -458,4 +457,22 @@ font-weight:bold;
 #link_check{
     margin-left:10px;
     
+}
+
+#admin_message_box{
+    text-align:left;
+    height:25%;
+    position:absolute;
+    width:90%;
+    border:1px #000 solid;
+    box-shadow: 2px 2px 5px #000000;
+    z-index: 6;
+}
+
+.admin_message_KO{
+    background:#F95E69;
+}
+
+.admin_message_OK{
+    background:#88ED71;
 }

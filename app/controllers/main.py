@@ -164,7 +164,7 @@ class Feed:
 
 class Cse:
      """
-     Google Cse
+     Google Cse for Search
      """
      def GET(self):
          web.header('Content-type', 'text/xml')
@@ -177,6 +177,14 @@ class Sitemap:
       def GET(self):
           web.header('Content-type', 'text/xml')
           return render.sitemap(sitemap_urls)
+
+class Robots:
+       """
+       Robots
+       """
+       def GET(self):
+           return render.robots()          
+          
                              
 class Image:
      """

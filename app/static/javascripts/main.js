@@ -28,7 +28,10 @@ jQuery(document).ready(function() {
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
             jQuery("#message_box").fadeOut(6000);
-            if (jQuery('#link').val()){linkCheck();}
+            setTimeout(function() {
+                $('#admin_message_box').fadeOut('fast');
+            }, 4000);
+            if (jQuery('#link').val() && jQuery('#action').val() != 'editpost'){linkCheck();}
             jQuery("#link").typeWatch( {wait: 500,captureLength: -1, callback:linkCheck } );
             jQuery('#tagcloud_filter').keyup(function() {
                 jQuery('#main_tag_cloud span.tag_info').hide().filter('span.tag_info:contains("'+this.value+'")').show();

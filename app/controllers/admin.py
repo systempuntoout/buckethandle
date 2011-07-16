@@ -16,6 +16,22 @@ import random
 
 render = web.render
 
+
+def render_template(submitted, result, action, **kwargs):
+    """
+     Renders the layout template for the admin
+    """
+
+    return render.layout(render.admin(submitted, 
+                                      result, 
+                                      action, 
+                                      **kwargs), 
+                                      title ='Admin', 
+                                      navbar = False, 
+                                      user = users.get_current_user(), 
+                                      is_user_admin = users.is_current_user_admin())
+                          
+
 class Admin:
     """
     Admin homepage
@@ -26,11 +42,10 @@ class Admin:
     def GET(self):
         result = {}
         posts = []
+        submitted = True
         tags_filter = []
         action = web.input(action = None)['action']
-        if action =='filter':
-            tags_filter = web.input(title = None)['tags'].split()
-        elif action =='memcachestats':
+        if action =='memcachestats':
             result = memcache.get_stats()        
         elif action =='memcacheflush':
             result['result'] = memcache.flush_all()
@@ -39,7 +54,8 @@ class Admin:
                           method = 'GET', 
                           queue_name = 'populate',
                           countdown = 5)
-        elif action =='import':
+            result[action] = "Done"
+        elif action =='import': #Import from archive
             fi = open('app/data/import.txt')
             for line in fi:
                 splitted_data = line.strip().split(';')
@@ -59,39 +75,7 @@ class Admin:
                                 'category' : splitted_data[2],
                                 'tags' : splitted_data[3].strip(),
                                 'url_img': url_img
-                              })
-        elif action =='populate':
-            timestamp = utils.generate_key_name()
-            title= u"Title test %s" % timestamp
-            link = "http://www.foo.it"
-            description= "Description test %s" % timestamp
-            body = "test"
-            tags = ""
-            for tag in range(random.randint(1,5)):
-                tagindex = random.randint(1,500)
-                tags = tags + " foo%s" % tagindex
-            tags = [tag.lower() for tag in tags.split()]
-            category = CATEGORIES[random.randint(0,6)]
-            post = models.Post(key_name = utils.inverse_microsecond_str(),
-                               title = title,
-                               link = db.Link(link),
-                               description = description,
-                               tags = tags,
-                               category = category,
-                               thumbnail = None,
-                               slug = utils.slugify(title),
-                               author_name = 'test',
-                               body = body  )
-            
-            post.put()
-            counter.increment("Posts_Count")
-            deferred.defer(worker.deferred_update_tags_counter,tags)
-            deferred.defer(worker.deferred_update_category_counter,category)
-            taskqueue.add(url='/admin?action=populate', 
-                          method = 'GET', 
-                          queue_name = 'populate',
-                          countdown = 5)
-            
+                              })            
         elif action =='newpost_init':
             title = web.input(title = '')['title']
             link = web.input(link = '')['link']
@@ -107,7 +91,15 @@ class Admin:
                 selected_category = ''
                 
             tags = list(set(tags.split()) - set(TAGS_BLACK_LIST))
-            return render.layout(render.admin(result, title, link, description, tags, selected_category), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
+            return render_template(True, 
+                                   result, 
+                                   action, 
+                                   title = title,
+                                   link = link,
+                                   description = description,
+                                   tags = tags,
+                                   category = selected_category
+                                   )
         elif action =='newpost':
             title = web.input(title = None)['title']
             link = web.input(link = None)['link']
@@ -118,18 +110,44 @@ class Admin:
             featured = web.input(featured = False)['featured']
             thumbnail = web.input(img = None)['img']
             thumbnail_url = web.input(url_img = None)['url_img']
+
+            #Various checks
+            if not title:
+                result[action] = "Please fill in all required fields (*)"
+                submitted = False
+            if link and not utils.link_is_valid(link):
+                result[action] = "Link is not valid"
+                submitted = False
+            if thumbnail and thumbnail_url:
+                result[action] = "Only one kind of img is allowed"
+                submitted = False
+            if thumbnail_url and not utils.link_is_valid(thumbnail_url):
+                result[action] = "url_img is not a valid URL"
+                submitted = False
+            if not submitted:
+                return render_template(submitted, 
+                                       result, 
+                                       action, 
+                                       title = title,
+                                       link = link,
+                                       description = description,
+                                       tags = tags.split(),
+                                       category = category,
+                                       body = body,
+                                       url_img = thumbnail_url,
+                                       featured = featured
+                                       )
+            #Preparing for datastore
             if thumbnail_url:
                 response = urlfetch.fetch(url=thumbnail_url,
                                method=urlfetch.GET,
                                deadline = 10)
                 thumbnail = response.content
-            
             if thumbnail:
                 thumbnail = images.resize(thumbnail, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
-                blob_thumbnail= db.Blob(thumbnail)
+                thumbnail_for_db= db.Blob(thumbnail)
             else:
-                blob_thumbnail= None
-            
+                thumbnail_for_db= None
             if link:
                 link_for_db = db.Link(link)
             else:
@@ -143,32 +161,42 @@ class Admin:
                                description = description,
                                tags = tags,
                                category = category,
-                               thumbnail = blob_thumbnail,
+                               thumbnail = thumbnail_for_db,
                                slug = utils.slugify(title),
                                author_name = AUTHOR_NAME,
                                featured = True if featured else False,
                                body = body  )
             
-            result['newpost'] = post.put()
+            post.put()
             counter.increment("Posts_Count")
             deferred.defer(worker.deferred_update_tags_counter,tags)
             deferred.defer(worker.deferred_update_category_counter,category)
+            result[action] = "Done"
+
         elif action =='editpost_init':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
                 entity = models.Post.get(post_id)
                 if entity:
-                    return render.layout(render.admin(result,
-                                                      entity.title,
-                                                      entity.link, 
-                                                      entity.description, 
-                                                      entity.tags,
-                                                      entity.category,
-                                                      entity.get_image_path(),
-                                                      entity.body,
-                                                      post_id, entity.featured), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
-            result ={'Not_found':post_id}
-            render.layout(render.admin(result), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
+                    return render_template(False, 
+                                            result, 
+                                            action, 
+                                            title = entity.title,
+                                            link = entity.link,
+                                            description = entity.description,
+                                            tags = entity.tags,
+                                            category = entity.category,
+                                            img_path = entity.get_image_path(),
+                                            body = entity.body,
+                                            post_id = post_id,
+                                            featured = entity.featured
+                                            )
+                else:
+                    result[action] = "Post Id Not found"
+                    submitted = False
+            else:
+                result[action] = "Post Id is required"
+                submitted = False
         elif action =='editpost':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
@@ -185,7 +213,34 @@ class Admin:
                 thumbnail = web.input(img = None)['img']
                 delete_img = web.input(delete_img = None)['delete_img']
                 thumbnail_url = web.input(url_img = None)['url_img']
-
+                
+                #Various checks
+                if not title:
+                    result[action] = "Please fill in all required fields (*)"
+                    submitted = False
+                if link and not utils.link_is_valid(link):
+                    result[action] = "Link is not valid"
+                    submitted = False
+                if thumbnail and thumbnail_url:
+                    result[action] = "Only one kind of img is allowed"
+                    submitted = False
+                if thumbnail_url and not utils.link_is_valid(thumbnail_url):
+                    result[action] = "url_img is not a valid URL"
+                    submitted = False
+                if not submitted:
+                    return render_template(submitted, 
+                                           result, 
+                                           action, 
+                                           title = title,
+                                           link = link,
+                                           description = description,
+                                           tags = tags.split(),
+                                           category = category,
+                                           body = body,
+                                           url_img = thumbnail_url,
+                                           featured = featured
+                                           )
+                
                 if thumbnail_url:
                     response = urlfetch.fetch(url=thumbnail_url,
                                    method=urlfetch.GET,
@@ -193,9 +248,9 @@ class Admin:
                     thumbnail = response.content
                 if thumbnail:
                     thumbnail = images.resize(thumbnail, THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
-                    blob_thumbnail= db.Blob(thumbnail)
+                    thumbnail_for_db= db.Blob(thumbnail)
                 else:
-                    blob_thumbnail= None
+                    thumbnail_for_db= None
                 
                 if link:
                     link_for_db = db.Link(link)
@@ -212,24 +267,36 @@ class Admin:
                 entity_post.slug = utils.slugify(title)
                 entity_post.body = body
                 entity_post.featured = True if featured else False
-                if blob_thumbnail:
-                    entity_post.thumbnail = blob_thumbnail
+                if thumbnail_for_db:
+                    entity_post.thumbnail = thumbnail_for_db
                 if delete_img:
                     entity_post.thumbnail = None            
-                result['editpost'] = entity_post.put()
+                entity_post.put()
                 worker.deferred_update_tags_counter(entity_post.tags, tags_old)
                 worker.deferred_update_category_counter(entity_post.category, category_old)
+                result[action] = "Done"
         elif action =='deletepost':
             post_id = web.input(post_id = None)['post_id']
             if post_id:
                 entity = models.Post.get(post_id)
                 if entity:
-                    result['delete_post'] = entity.delete()
+                    entity.delete()
                     counter.decrement("Posts_Count")
                     worker.deferred_update_tags_counter([],entity.tags)
                     worker.deferred_update_category_counter(None, entity.category)
+                    result[action] = "Done"
+                else:
+                    result[action] = "Post ID not found"
+                    submitted = False
+            else:
+                result[action] = "Post ID is required"
+                submitted = False
         
-        return render.layout(render.admin(result), title ='Admin', navbar = False, user = users.get_current_user(), is_user_admin = users.is_current_user_admin())
+        #Default
+        return render_template(submitted, 
+                               result, 
+                               action
+                              )
 
         
 class Warmup:

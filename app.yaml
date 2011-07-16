@@ -19,9 +19,6 @@ handlers:
 - url: /favicon.ico
   static_files: app/static/images/favicon.ico
   upload: app/static/images/favicon.ico
-- url: /robots.txt
-  static_files: app/static/docs/robots.txt
-  upload: app/static/docs/robots.txt
 - url: /crossdomain.xml
   static_files: app/static/docs/crossdomain.xml
   upload: app/static/docs/crossdomain.xml

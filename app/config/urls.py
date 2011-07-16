@@ -18,6 +18,7 @@ urls = (
   '/index.xml', 'app.controllers.main.Feed',
   '/cse.xml', 'app.controllers.main.Cse',
   '/sitemap.xml', 'app.controllers.main.Sitemap',
+  '/robots.txt', 'app.controllers.main.Robots',
   '/feed/index.rss', 'app.controllers.main.Feed',
   '/_ah/warmup','app.controllers.admin.Warmup',
   '/.*', 'app.controllers.main.Index',

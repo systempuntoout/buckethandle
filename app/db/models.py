@@ -149,13 +149,18 @@ class Tag(db.Model):
     @memcached('get_tags', 3600, lambda limit = NO_LIMIT : limit )
     def get_tags(limit = NO_LIMIT ):
         tags =  Tag.all().filter('counter > ', 0).order('-counter')
-
         return tags.fetch(limit = limit)
     
     @staticmethod
     @memcached('get_tag', 3600*24, lambda name: name)
     def get_tag(name):
         return Tag.all().filter('name =', name).get()    
+    
+    @classmethod
+    @memcached('get_tags_by_filter', 3600, lambda clazz, tag_filter : tag_filter )
+    def get_tags_by_filter(clazz, tag_filter):
+        tags = clazz.get_tags() 
+        return '\n'.join([tag.name for tag in tags if tag.name.startswith(tag_filter)])
         
 class Category(db.Model):
     name = db.StringProperty(required = True)

@@ -18,66 +18,67 @@ about = CompiledTemplate(about, 'app/views/about.html')
 join_ = about._join; escape_ = about._escape
 
 # coding: utf-8
-def admin (result, title = '', link = '', description = '', tags = [], category = '', img_path ='', body = '', post_id ='', featured = False):
+def admin (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', img ='', url_img ='', body = '', post_id ='', featured = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
+    extend_([u' \n'])
     extend_([u' <div>\n'])
-    extend_([u'     <p>ADMIN CONSOLE</p>\n'])
+    extend_([u'     <div style="float:right">\n'])
     extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://', escape_((settings.HOST), True), u'/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a,#eow-tags a,.post-info a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\' \'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
     extend_([u'     </ul>\n'])
-    extend_([u'     <p><b>Result:</b></p>\n'])
-    for key in loop.setup(result.keys()):
-        extend_(['      ', u'* ', escape_(("%s - %s" % (key, result[key])), True), u'<br>\n'])
     extend_([u'     <ul>\n'])
     if post_id:
-        extend_(['         ', u' <li>Delete:\n'])
-        extend_(['         ', u'    <form action = "/admin" method="POST"> \n'])
-        extend_(['         ', u'        <input type="hidden" name="action" value="deletepost"/>\n'])
-        extend_(['         ', u'        <input type="hidden" name="post_id" value="', escape_(post_id, True), u'"/>\n'])
-        extend_(['         ', u'        <p><input type="submit" value="Delete"/></p>\n'])
-        extend_(['         ', u'    </form>\n'])
-        extend_(['         ', u'</il>\n'])
-    extend_([u'         <li>Post:<br>\n'])
-    extend_([u'             <form action = "/admin" method="POST" enctype="multipart/form-data"> \n'])
+        extend_(['          ', u'<li><a href="/admin?action=deletepost&amp;post_id=', escape_((post_id), True), u'">Delete this post</a></li>\n'])
+    extend_([u'      </ul>     \n'])
+    extend_([u'    </div>\n'])
+    extend_([u'    <div>\n'])
+    if result:
+        extend_(['    ', u'<div id="admin_message_box" ', escape_((submitted and 'class="admin_message_OK"' or 'class="admin_message_KO"'), False), u'>\n'])
+        extend_(['    ', u' <p>RESULT: ', escape_(action, True), u'</p>\n'])
+        extend_(['    ', u' <ul>\n'])
+        for key in loop.setup(result.keys()):
+            extend_(['     ', u'<li> ', escape_(("%s - %s" % (key, result[key])), True), u'</li>\n'])
+        extend_(['    ', u' </ul>\n'])
+        extend_(['    ', u'</div>    \n'])
+    extend_([u'    <form action = "/admin" method="POST" enctype="multipart/form-data"> \n'])
+    extend_([u'     <input type="hidden" name="post_id" value="', escape_(post_id, True), u'"/>\n'])
     if post_id:
-        extend_(['             ', u'<input type="hidden" name="action" value="editpost"/>\n'])
-        extend_(['             ', u'<p>Id: ', escape_(post_id, True), u'</p>\n'])
+        extend_(['     ', u'<input type="hidden" id="action" name="action" value="editpost"/>\n'])
     else:
-        extend_(['             ', u'<input type="hidden" name="action" value="newpost"/>\n'])
-    extend_([u'             <input type="hidden" name="post_id" value="', escape_(post_id, True), u'"/>\n'])
-    extend_([u'             <p>title:<br><input type="text" size="100" name="title" value="', escape_(title, True), u'"/></p>\n'])
-    extend_([u'             <p>link:<br> <input type="text" size="100" id = "link" name="link" value="', escape_(link, True), u'"/> <span id="link_check"/></p>\n'])
-    extend_([u'             <p>description :<br><input type="text" size="150" name="description" maxlenght="500" value="', escape_(description, True), u'"/></p>\n'])
-    extend_([u'             <p>tags:<br><input type="text" id="tags" name="tags" size="100" value = "', escape_(' '.join(tags), True), u'"/> </p>\n'])
-    extend_([u'             <p>featured:<br><input type="checkbox" id="featured" name="featured" ', escape_((featured and 'checked="checked"'), False), u'/> </p>\n'])
+        extend_(['     ', u'<input type="hidden" id="action" name="action" value="newpost"/>\n'])
+    extend_([u'     <p>title: <span class="required">*</span><br><input type="text" size="100" name="title" value="', escape_(title, True), u'"/></p>\n'])
+    extend_([u'     <p>link: <br> <input type="text" size="100" id = "link" name="link" value="', escape_(link, True), u'"/> <span id="link_check"/></p>\n'])
+    extend_([u'     <p>description :<br><input type="text" size="150" name="description" maxlenght="500" value="', escape_(description, True), u'"/></p>\n'])
+    extend_([u'     <p>tags:<br><input type="text" id="tags" name="tags" size="100" value = "', escape_(' '.join(tags), True), u'"/> </p>\n'])
+    extend_([u'     <p>featured:<br><input type="checkbox" id="featured" name="featured" ', escape_((featured and 'checked="checked"'), False), u'/> </p>\n'])
     if settings.CATEGORIES:
-        extend_(['             ', u'<p>categories:<br>\n'])
-        extend_(['             ', u'<select name="category">\n'])
+        extend_(['     ', u'<p>categories:<br>\n'])
+        extend_(['     ', u'<select name="category">\n'])
         for category_tmp in loop.setup(settings.CATEGORIES):
-            extend_(['                 ', u'<option ', escape_((category_tmp==category and 'selected="selected"'), False), u'  value="', escape_(category_tmp, True), u'">', escape_(category_tmp, True), u'</option>\n'])
-        extend_(['             ', u'</select>\n'])
-    extend_([u'             <p>img:<input type="file" size="100" name="img"/>\n'])
+            extend_(['         ', u'<option ', escape_((category_tmp==category and 'selected="selected"'), False), u'  value="', escape_(category_tmp, True), u'">', escape_(category_tmp, True), u'</option>\n'])
+        extend_(['     ', u'</select>\n'])
+    extend_([u'     <p>img:<br><input type="file" size="100" name="img"/></p>\n'])
+    extend_([u'     <p>\n'])
     if img_path:
-        extend_(['             ', u'<img src="', escape_(img_path, True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(category, True), u'" alt="Image"/><br>\n'])
-        extend_(['             ', u'delete image:<input type="checkbox" name="delete_img">    \n'])
-        extend_(['             ', u'\n'])
-    extend_([u'             </p>\n'])
-    extend_([u'             <p>\n'])
-    extend_([u'                 url_img:<input type="text" size="100" name="url_img"/>\n'])
-    extend_([u'             </p>\n'])
-    extend_([u'             \n'])
-    extend_([u'             <p>body :<br>\n'])
-    extend_([u'                 <div>\n'])
-    extend_([u'                     <textarea id="post_body" name="body" cols="80" rows="20">', escape_(body, True), u'</textarea>\n'])
-    extend_([u'                 </div>\n'])
-    extend_([u'             </p>\n'])
-    extend_([u'             <p><input type="submit" value="Submit"/></p>\n'])
-    extend_([u'           </form>\n'])
-    extend_([u'         </li>\n'])
-    extend_([u'     </ul>\n'])
+        extend_(['     ', u'<img src="', escape_(img_path, True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(category, True), u'" alt="Image"/><br>\n'])
+        extend_(['     ', u'delete image:<br><input type="checkbox" name="delete_img">    \n'])
+    extend_([u'     </p>\n'])
+    extend_([u'     <p>\n'])
+    extend_([u'         url_img:<br><input type="text" size="100" name="url_img" value="', escape_(url_img, True), u'"/>\n'])
+    extend_([u'     </p>\n'])
+    extend_([u'     \n'])
+    extend_([u'     <p>body :<br>\n'])
+    extend_([u'         <div>\n'])
+    extend_([u'             <textarea id="post_body" name="body" cols="80" rows="20">', escape_(body, True), u'</textarea>\n'])
+    extend_([u'         </div>\n'])
+    extend_([u'     </p>\n'])
+    extend_([u'     <p><input type="submit" value="Submit"/></p>\n'])
+    extend_([u'   </form>\n'])
+    extend_([u'   </div>\n'])
+    extend_([u'        \n'])
     extend_([u'                            \n'])
     extend_([u' </div>\n'])
 
@@ -366,7 +367,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery-1.4.2.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.autocomplete.min.js"></script>\n'])
-    extend_([u'    <script type="text/javascript" src="/javascripts/jquery.stacktack.min.js"></script>\n'])
+    extend_([u'    <script type="text/javascript" src="http://app.stacktack.com/jquery.stacktack.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.uniform.min.js" ></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/typewatch.js" ></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/main.js"></script>\n'])
@@ -577,6 +578,20 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
 
 post = CompiledTemplate(post, 'app/views/post.html')
 join_ = post._join; escape_ = post._escape
+
+# coding: utf-8
+def robots():
+    __lineoffset__ = -5
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'User-Agent: *\n'])
+    extend_([u'Disallow: /admin\n'])
+    extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap.xml\n'])
+
+    return self
+
+robots = CompiledTemplate(robots, 'app/views/robots.txt')
+join_ = robots._join; escape_ = robots._escape
 
 # coding: utf-8
 def search():

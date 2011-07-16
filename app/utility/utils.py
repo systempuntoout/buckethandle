@@ -44,7 +44,7 @@ def generate_key_name():
     return now().strftime("%Y%m%d%H%M%S")
 
 def now():
-    return datetime.utcnow() + timedelta(hours =+ 8)
+    return datetime.utcnow() + timedelta(hours = utils.DIFF_FROM_UTC_IN_HOURS)
 
 def get_base_link(link):
     if link:
@@ -118,3 +118,10 @@ def get_tag_weight(occurrencies, max_occurrencies):
         return int(math.log(occurrencies)/math.log(max_occurrencies) * (5-1)+1)
     except:
         return 0
+        
+def link_is_valid(link):
+    scheme, netloc, path, query, fragment = urlparse.urlsplit(link)
+    if not scheme or not netloc:
+       return False
+    else: 
+       return True
