@@ -44,7 +44,7 @@ def generate_key_name():
     return now().strftime("%Y%m%d%H%M%S")
 
 def now():
-    return datetime.utcnow() + timedelta(hours = utils.DIFF_FROM_UTC_IN_HOURS)
+    return datetime.utcnow() + timedelta(hours = DIFF_FROM_UTC_IN_HOURS)
 
 def get_base_link(link):
     if link:
