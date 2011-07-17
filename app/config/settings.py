@@ -11,16 +11,6 @@ CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications"
 MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com"
 
-ADMIN_BOOKMARKLET = """
-javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
-window.document.body.appendChild(s);f='http://%s/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()
-""" % HOST
-
-USER_BOOKMARKLET ="""
-javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
-window.document.body.appendChild(s);f='http://%s/submit?action=submit_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()
-""" % HOST
-
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
 Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine;  I've coded this tool that is a sort of mix between Reddit, Delicious and a blogging platform.  
@@ -106,9 +96,9 @@ AUTO_CONTENT_BY_LINK = {
                             </div>"""
                             },
 
-'http://blip.tv':{
+'http://vimeo.com':{
                             'regex':'(.*)',
-                            'image':'bliptv.png',
+                            'image':'vimeo.png',
                             'category':'Videos',
                             'content_block':"""
                             <div id="content">
@@ -162,3 +152,14 @@ AUTO_CONTENT_BY_CATEGORY = {
         }
 }
 
+#Bookmarklets
+
+ADMIN_BOOKMARKLET = """
+javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
+window.document.body.appendChild(s);f='http://%s/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()
+""" % HOST
+
+USER_BOOKMARKLET ="""
+javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
+window.document.body.appendChild(s);f='http://%s/submit?action=submit_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()
+""" % HOST
