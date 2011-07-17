@@ -247,7 +247,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
     extend_([u'       <b>Tags:</b>\n'])
     for tag in loop.setup(selected_tags):
         extend_(['       ', u'<a class="tag dark" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'?removetag=', escape_(urlquote(tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_(tag, True), u' x</a>&raquo;\n'])
-    extend_([u'       <input id="search" type="text" name="addtag"/>\n'])
+    extend_([u'       <input id="search" type="text" size="35" name="addtag"/>\n'])
     extend_([u'       </p>\n'])
     if settings.CATEGORIES:
         extend_(['       ', u'<div>\n'])
@@ -374,6 +374,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <script type="text/javascript" src="/javascripts/main.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/jquery.markitup.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/sets/markdown/set.js"></script>\n'])
+    extend_([u'    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>\n'])
     extend_([u'    <!-- markItUp! skin -->\n'])
     extend_([u'    \n'])
     extend_([u'    \n'])
@@ -443,6 +444,9 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'            <div id="img" style="margin-top:10px">\n'])
         extend_([u'                <p style="text-align:center">\n'])
         extend_([u'                <a href="/submit?action=submit_init"><img onmouseout="this.src=\'/images/submitlink.png\';" onmouseover="this.src=\'/images/submitlink_hover.png\'" src="/images/submitlink.png" alt="Submit a link"/></a>\n'])
+        extend_([u'                </p>\n'])
+        extend_([u'                <p>\n'])
+        extend_([u'                    <g:plusone size="medium"></g:plusone>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])

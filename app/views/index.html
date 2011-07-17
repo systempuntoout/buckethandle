@@ -8,7 +8,7 @@ $def render_catqs(selected_category, front_char):
        <b>Tags:</b>
        $for tag in selected_tags:
            <a class="tag dark" href="/tag/$urlquote('/'.join(selected_tags))?removetag=$urlquote(tag)$(render_catqs(selected_category,"&"))">$tag x</a>&raquo;
-       <input id="search" type="text" name="addtag"/>
+       <input id="search" type="text" size="35" name="addtag"/>
        </p>
        $if settings.CATEGORIES:
            <div>

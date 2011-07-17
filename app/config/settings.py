@@ -41,7 +41,7 @@ THUMBNAIL_HEIGHT= 70
 POSTS_PER_PAGE = 15
 NAVBAR_CLOUDSIZE = 40
 RECENT_POST_NUM = 20
-FEATURED_POST_NUM = 10
+FEATURED_POST_NUM = 30
 NO_LIMIT = 10000
 MAX_NUMBER_OF_TAGS_FILTERS = 5
 MEMCACHE_ENABLED = True #Disable it just for testing
@@ -113,12 +113,25 @@ AUTO_CONTENT_BY_LINK = {
                             <div id="content">
                                 <a href="%s"></a>
                             </div>"""
-                            },                            
+                            },  
+'http://www.youtube.com':{
+                            'regex':'(.*)',
+                            'image':'youtube.png',
+                            'category':'Videos',
+                            'content_block':"""
+                            <div id="content">
+                                <a href="%s"></a>
+                            </div>"""
+                            },                          
                             
 'https://github.com':{
                             'image':'github.png',
                             'category':'Libraries',
                             },
+'https://bitbucket.org':{
+                        'image':'bitbucket.png',
+                        'category':'Libraries',
+                        },
 'http://code.google.com':{  'url_paths':['/p'], #different images for different url path on the same domain
                             'image':'googlecode_documentation.png',
                             'image_/p':'googlecode_hosting.png',
