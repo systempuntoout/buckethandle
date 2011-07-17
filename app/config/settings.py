@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #Meta
-VERSION = '0.9.0.1'
+VERSION = '0.9.0.2'
 CMS_NAME = u"GAEcupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
@@ -10,6 +10,17 @@ META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos pro
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com"
+
+ADMIN_BOOKMARKLET = """
+javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
+window.document.body.appendChild(s);f='http://%s/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()
+""" % HOST
+
+USER_BOOKMARKLET ="""
+javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
+window.document.body.appendChild(s);f='http://%s/submit?action=submit_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()
+""" % HOST
+
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
 Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine;  I've coded this tool that is a sort of mix between Reddit, Delicious and a blogging platform.  
@@ -21,7 +32,6 @@ Try with:
     - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
     - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
     - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category
-    
 
 This tool is a work in progress, so expect errors, dragons and other nasty things.  
 I've kept the code pretty configurable for other sites and topics and I'm planning to open-source it if it will gain some interest and traction.  
@@ -86,15 +96,35 @@ AUTO_CONTENT_BY_LINK = {
                             </script>                            
                             """
                             },
-'http://www.youtube.com':{
-                            'regex':'http://www\.youtube\.com/watch\?v=([^&]*)',
-                            'image':'youtube.png',
-                            'category':'Videos',
+'http://www.slideshare.net':{
+                            'regex':'(.*)',
+                            'image':'slideshare.png',
+                            'category':'Articles',
                             'content_block':"""
-                            <div id="youtube">
-                                <iframe width="560" height="349" src="http://www.youtube.com/embed/%s" frameborder="0" allowfullscreen></iframe>
+                            <div id="content">
+                                <a href="%s"></a>
                             </div>"""
                             },
+
+'http://blip.tv':{
+                            'regex':'(.*)',
+                            'image':'bliptv.png',
+                            'category':'Videos',
+                            'content_block':"""
+                            <div id="content">
+                                <a href="%s"></a>
+                            </div>"""
+                            },       
+'http://blip.tv':{
+                            'regex':'(.*)',
+                            'image':'bliptv.png',
+                            'category':'Videos',
+                            'content_block':"""
+                            <div id="content">
+                                <a href="%s"></a>
+                            </div>"""
+                            },                            
+                            
 'https://github.com':{
                             'image':'github.png',
                             'category':'Libraries',
@@ -131,3 +161,4 @@ AUTO_CONTENT_BY_CATEGORY = {
             'content_block':'<iframe id="frame" src="%s"></iframe>'
         }
 }
+

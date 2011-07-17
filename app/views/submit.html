@@ -1,7 +1,7 @@
 $def with (submitted, message, title = '', link = '', description = '', tags = [], category = '')
  <div>
      <ul>
-         <li>Save this <a href="javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');window.document.body.appendChild(s);f='http://$(settings.HOST)/submit?action=submit_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a> and use it to Submit a new link<br>
+         <li>Save this <a href="$settings.USER_BOOKMARKLET">Bookmarklet</a> and use it to Submit a new link<br>
      </ul>
      <ul>     
          <li>Submit a link:<br>

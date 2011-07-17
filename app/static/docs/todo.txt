@@ -1,4 +1,6 @@
-Todo
+Todo:
+Css chaos
+Better admin
 
 
 

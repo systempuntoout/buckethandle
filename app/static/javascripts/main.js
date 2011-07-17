@@ -25,6 +25,11 @@ function linkCheck() {
 }
 
 jQuery(document).ready(function() {
+            jQuery('#content').embedly({
+              maxWidth: 600,
+              wmode: 'transparent',
+              method: 'after'
+            });
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
             jQuery("#message_box").fadeOut(6000);

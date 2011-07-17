@@ -18,14 +18,14 @@ about = CompiledTemplate(about, 'app/views/about.html')
 join_ = about._join; escape_ = about._escape
 
 # coding: utf-8
-def admin (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', img ='', url_img ='', body = '', post_id ='', featured = False):
+def admin (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', url_img ='', body = '', post_id ='', featured = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
     extend_([u' \n'])
     extend_([u' <div>\n'])
     extend_([u'     <div style="float:right">\n'])
-    extend_([u'     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://', escape_((settings.HOST), True), u'/admin?action=newpost_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a,#eow-tags a,.post-info a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\' \'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>\n'])
+    extend_([u'     <ul>  <li><a href="', escape_(settings.ADMIN_BOOKMARKLET, True), u'">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
     extend_([u'     </ul>\n'])
@@ -368,6 +368,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery-1.4.2.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.autocomplete.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="http://app.stacktack.com/jquery.stacktack.js"></script>\n'])
+    extend_([u'    <script type="text/javascript" src="http://scripts.embed.ly/jquery.embedly.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.uniform.min.js" ></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/typewatch.js" ></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/main.js"></script>\n'])
@@ -643,7 +644,7 @@ def submit (submitted, message, title = '', link = '', description = '', tags = 
     self = TemplateResult(); extend_ = self.extend
     extend_([u' <div>\n'])
     extend_([u'     <ul>\n'])
-    extend_([u'         <li>Save this <a href="javascript:(function(){var s=window.document.createElement(\'script\');s.setAttribute(\'src\',\'http://code.jquery.com/jquery-latest.min.js\');window.document.body.appendChild(s);f=\'http://', escape_((settings.HOST), True), u'/submit?action=submit_init&link=\'+encodeURIComponent(window.location.href)+\'&tags=\'+encodeURIComponent(jQuery.map(jQuery(\'.post-taglist a,#eow-tags a,.post-info a\').not(\'#edit-tags\'),function(x){return encodeURIComponent(x.text)}).join(\' \'))+\'&title=\'+encodeURIComponent(document.title)+\'&description=\'+encodeURIComponent(\'\'+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+\'&\';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a> and use it to Submit a new link<br>\n'])
+    extend_([u'         <li>Save this <a href="', escape_(settings.USER_BOOKMARKLET, True), u'">Bookmarklet</a> and use it to Submit a new link<br>\n'])
     extend_([u'     </ul>\n'])
     extend_([u'     <ul>     \n'])
     extend_([u'         <li>Submit a link:<br>\n'])

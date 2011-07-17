@@ -2,7 +2,7 @@ $def with (submitted, result, action, title = '', link = '', description = '', t
  
  <div>
      <div style="float:right">
-     <ul>  <li><a href="javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');window.document.body.appendChild(s);f='http://$(settings.HOST)/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()">Bookmarklet</a></li>
+     <ul>  <li><a href="$settings.ADMIN_BOOKMARKLET">Bookmarklet</a></li>
            <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
            <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
      </ul>
