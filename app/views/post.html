@@ -21,8 +21,10 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
               </div>
           </div>
           <p>$post.created.strftime("%d %B, %Y")
+              <a href="/post/$post.get_path()"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>
               $if is_user_admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
+              
           </p>
           <p>
               $if settings.CATEGORIES:

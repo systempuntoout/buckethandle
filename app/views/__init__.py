@@ -446,10 +446,10 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                <a href="/submit?action=submit_init"><img onmouseout="this.src=\'/images/submitlink.png\';" onmouseover="this.src=\'/images/submitlink_hover.png\'" src="/images/submitlink.png" alt="Submit a link"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
-        extend_([u'                    <g:plusone size="medium"></g:plusone>\n'])
+        extend_([u'                <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
-        extend_([u'                <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])
+        extend_([u'                <g:plusone size="medium"></g:plusone>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                <a href="/"><img src="/images/buckethandle.png" alt="buckethandle"/></a>\n'])
@@ -546,8 +546,10 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
     extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
+    extend_([u'              <a href="/post/', escape_(post.get_path(), True), u'"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>\n'])
     if is_user_admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
+        extend_(['              ', u'\n'])
     extend_([u'          </p>\n'])
     extend_([u'          <p>\n'])
     if settings.CATEGORIES:
