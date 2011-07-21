@@ -68,12 +68,14 @@ class Post:
             prev_post, next_post = models.Post.get_prev_next(post)
         else:
             return render_error(NOT_FOUND_ERROR)
-        
+        logging.debug("post/%s" % (post.get_path()))
         return render_template(render.post(post, 
                                            prev_post, 
                                            next_post, 
                                            utils.ContentDiscoverer(post.link, post.category).get_content_block(),
-                                           is_user_admin = users.is_current_user_admin()), title = post.title)
+                                           is_user_admin = users.is_current_user_admin()), 
+                                           title = post.title,
+                                           canonical = "post/%s" % (post.get_path()))
 
 class Tags:
     """
@@ -174,9 +176,21 @@ class Sitemap:
       """
       Sitemap
       """
-      def GET(self):
+      def GET(self, id = None):
           web.header('Content-type', 'text/xml')
-          return render.sitemap(sitemap_urls)
+          if id:
+             return models.Sitemap.get_sitemap_by_id(int(id))
+          else:
+              return render.sitemap(sitemap_urls)
+
+class SitemapIndex:
+    """
+    Sitemap Index
+    """
+    def GET(self):
+        web.header('Content-type', 'text/xml')
+        sitemaps = models.Sitemap.get_sitemaps() 
+        return render.sitemap_index(sitemaps)
 
 class Robots:
        """

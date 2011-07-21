@@ -46,6 +46,7 @@ NO_LIMIT = 10000
 MAX_NUMBER_OF_TAGS_FILTERS = 5
 MEMCACHE_ENABLED = True #Disable it just for testing
 TAGS_BLACK_LIST = ['appengine', 'google-app-engine', 'gae', 'app-engine','ae']
+POSTS_PER_SITEMAP = 1000
 
 #Services
 DISQUS = "gaecupboard"

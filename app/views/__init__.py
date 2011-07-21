@@ -346,7 +346,7 @@ index = CompiledTemplate(index, 'app/views/index.html')
 join_ = index._join; escape_ = index._escape
 
 # coding: utf-8
-def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = ''):
+def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', canonical = ''):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
@@ -365,6 +365,8 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/skins/markitup/style.css" />\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/sets/markdown/style.css" />\n'])
     extend_([u'    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>\n'])
+    if canonical:
+        extend_(['    ', u'<link rel="canonical" href="http://', escape_((settings.HOST), True), u'/', escape_((canonical), True), u'"/>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery-1.4.2.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/jquery.autocomplete.min.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="http://app.stacktack.com/jquery.stacktack.js"></script>\n'])
@@ -593,6 +595,7 @@ def robots():
     self = TemplateResult(); extend_ = self.extend
     extend_([u'User-Agent: *\n'])
     extend_([u'Disallow: /admin\n'])
+    extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap_index.xml\n'])
     extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap.xml\n'])
 
     return self
@@ -642,6 +645,47 @@ def sitemap (sitemap_urls):
 
 sitemap = CompiledTemplate(sitemap, 'app/views/sitemap.xml')
 join_ = sitemap._join; escape_ = sitemap._escape
+
+# coding: utf-8
+def sitemap_index (sitemaps):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<?xml version="1.0" encoding="UTF-8"?>\n'])
+    extend_([u'<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'])
+    for sitemap in loop.setup(sitemaps):
+        extend_(['  ', u'<sitemap>\n'])
+        extend_(['  ', u'    <loc>http://', escape_((settings.HOST), True), u'/sitemap_', escape_((sitemap.key().id()), True), u'.xml</loc>\n'])
+        extend_(['  ', u'    <lastmod>', escape_((sitemap.last_modified.strftime("%Y-%m-%d")), True), u'</lastmod>\n'])
+        extend_(['  ', u'</sitemap>\n'])
+    extend_([u'</sitemapindex>\n'])
+
+    return self
+
+sitemap_index = CompiledTemplate(sitemap_index, 'app/views/sitemap_index.xml')
+join_ = sitemap_index._join; escape_ = sitemap_index._escape
+
+# coding: utf-8
+def sitemap_posts (posts):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<?xml version="1.0" encoding="UTF-8"?>\n'])
+    extend_([u'<urlset\n'])
+    extend_([u'      xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"\n'])
+    extend_([u'      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\n'])
+    extend_([u'      xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9\n'])
+    extend_([u'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'])
+    for post in loop.setup(posts):
+        extend_(['  ', u'<url>\n'])
+        extend_(['  ', u'  <loc>http://', escape_((settings.HOST), True), u'/post/', escape_((post.get_path()), True), u'</loc>\n'])
+        extend_(['  ', u'</url>\n'])
+    extend_([u'</urlset>\n'])
+
+    return self
+
+sitemap_posts = CompiledTemplate(sitemap_posts, 'app/views/sitemap_posts.xml')
+join_ = sitemap_posts._join; escape_ = sitemap_posts._escape
 
 # coding: utf-8
 def submit (submitted, message, title = '', link = '', description = '', tags = [], category = ''):

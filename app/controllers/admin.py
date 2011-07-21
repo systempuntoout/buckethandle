@@ -49,6 +49,63 @@ class Admin:
             result = memcache.get_stats()        
         elif action =='memcacheflush':
             result['result'] = memcache.flush_all()
+        elif action =='populate':
+            timestamp = utils.generate_key_name()
+            title= u"Title test %s" % timestamp
+            link = "http://www.foo.it"
+            description= "Description test %s" % timestamp
+            body = "test"
+            tags = ""
+            for tag in range(random.randint(1,5)):
+                tagindex = random.randint(1,500)
+                tags = tags + " foo%s" % tagindex
+            tags = [tag.lower() for tag in tags.split()]
+            category = CATEGORIES[random.randint(0,5)]
+            post = models.Post(key_name = utils.inverse_microsecond_str(),
+                               title = title,
+                               link = db.Link(link),
+                               description = description,
+                               tags = tags,
+                               category = category,
+                               thumbnail = None,
+                               slug = utils.slugify(title),
+                               author_name = 'test',
+                               body = body )
+            post.put()
+            counter.increment("Posts_Count")
+            deferred.defer(worker.deferred_update_tags_counter,tags)
+            deferred.defer(worker.deferred_update_category_counter,category)
+            taskqueue.add(url='/admin?action=populate',
+                         method = 'GET',
+                         queue_name = 'populate',
+                         countdown = 5)
+        elif action =='start_sitemapize':
+            taskqueue.add(url='/admin?action=sitemapize',
+                          method = 'GET', 
+                          queue_name = 'populate',
+                          countdown = 5)
+            result[action] = "Done"
+        elif action =='sitemapize': #Create sitemap archives
+            entities = models.Post.all(keys_only = True).order("created")
+            keys = []
+            for entity in entities:
+                keys.insert(0, str(entity))
+                if len(keys) >= POSTS_PER_SITEMAP:
+                    sitemap = models.Sitemap()
+                    sitemap.post_count = POSTS_PER_SITEMAP
+                    sitemap.post_keys = keys
+                    sitemap.archived = True
+                    posts = models.Post.get(keys)
+                    sitemap.content = unicode(render.sitemap_posts(posts))
+                    sitemap.put()
+                    keys = []
+            if keys:
+                sitemap = models.Sitemap()
+                sitemap.post_count = len(keys)
+                sitemap.post_keys = keys
+                sitemap.put()
+                 
+            
         elif action =='start_import':
             taskqueue.add(url='/admin?action=import',
                           method = 'GET', 
@@ -169,6 +226,7 @@ class Admin:
             
             post.put()
             counter.increment("Posts_Count")
+            deferred.defer(worker.deferred_update_last_sitemap,post.key())
             deferred.defer(worker.deferred_update_tags_counter,tags)
             deferred.defer(worker.deferred_update_category_counter,category)
             result[action] = "Done"

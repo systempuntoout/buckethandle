@@ -1,3 +1,4 @@
 User-Agent: *
 Disallow: /admin
+Sitemap: http://$(settings.HOST)/sitemap_index.xml
 Sitemap: http://$(settings.HOST)/sitemap.xml

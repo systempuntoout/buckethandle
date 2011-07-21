@@ -5,6 +5,9 @@ from app.config.settings import *
 import app.utility.utils as utils
 import app.db.counter as counter
 import logging
+import web
+
+render = web.render 
 
 class Post(db.Model):
     title = db.StringProperty(required = True)
@@ -146,7 +149,7 @@ class Tag(db.Model):
         db.put(tags_to_update)
 
     @staticmethod
-    @memcached('get_tags', 3600, lambda limit = NO_LIMIT : limit )
+    @memcached('get_tags', 3600*24, lambda limit = NO_LIMIT : limit )
     def get_tags(limit = NO_LIMIT ):
         tags =  Tag.all().filter('counter > ', 0).order('-counter')
         return tags.fetch(limit = limit)
@@ -193,3 +196,52 @@ class Category(db.Model):
     @memcached('get_category', 3600*24, lambda name: name)
     def get_category(name):
         return Category.all().filter('name =', name).get()
+        
+class Sitemap(db.Model):
+    post_count = db.IntegerProperty(default = 0)
+    post_keys = db.StringListProperty(default = [])    
+    content = db.TextProperty(default ='')
+    archived = db.BooleanProperty(default = False)
+    created = db.DateTimeProperty(auto_now_add = True)
+    last_modified = db.DateTimeProperty(auto_now = True)
+    
+    @staticmethod
+    def get_last_sitemap():
+        entity = Sitemap.all().order('-created').get()
+        if entity:
+            if entity.post_count >= POSTS_PER_SITEMAP:
+                entity.content = unicode(render.sitemap_posts(entity.post_keys))
+                entity.archived = True
+                entity.put()
+                entity = Sitemap()
+                entity.put()
+        else:
+            entity = Sitemap()
+            entity.put()
+        return entity
+        
+    @staticmethod
+    def update_last_sitemap(key):
+        last_sitemap = Sitemap.get_last_sitemap()
+        last_sitemap.post_count += 1
+        last_sitemap.post_keys.insert(0, str(key))
+        last_sitemap.put()
+    
+    
+    @staticmethod
+    def get_sitemaps():
+        sitemaps = Sitemap.all().order('-created').fetch(500)
+        return sitemaps
+        
+    @staticmethod
+    @memcached('get_sitemap_by_id', 3600*24, lambda id : int(id) )
+    def get_sitemap_by_id(id):
+        entity = Sitemap.get_by_id(id)
+        if entity:
+            if entity.content:
+                return entity.content
+            else:
+                posts = Post.get(entity.post_keys)
+                return unicode(render.sitemap_posts(posts))
+        else:
+            raise web.notfound()
