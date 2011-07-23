@@ -8,7 +8,7 @@ urls = (
   '/tagcloud','app.controllers.main.TagCloud',
   '/submit','app.controllers.main.Submit',
   '/post', 'app.controllers.main.Post',
-  '/post/(\w+)/.*', 'app.controllers.main.Post',
+  '/post/([\w_-]+)(?:/([\w-]+))?/?', 'app.controllers.main.Post',
   '/about', 'app.controllers.main.About',
   '/search', 'app.controllers.main.Search',
   '/img', 'app.controllers.main.Image',

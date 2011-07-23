@@ -58,7 +58,15 @@ class Post:
     """
     Post
     """
-    def GET(self, post_id = None):
+    def GET(self, post_id = None, slug = None):
+        
+        if post_id and not slug:
+            post = models.Post.get(post_id)
+            if post:
+                web.redirect('/post/%s/%s' % (post_id, post.slug))
+            else:
+                raise web.notfound()
+                
         if post_id:
             post = models.Post.get_post(post_id)
         else:
@@ -67,8 +75,8 @@ class Post:
         if post:
             prev_post, next_post = models.Post.get_prev_next(post)
         else:
-            return render_error(NOT_FOUND_ERROR)
-        logging.debug("post/%s" % (post.get_path()))
+            raise web.notfound()
+        
         return render_template(render.post(post, 
                                            prev_post, 
                                            next_post, 

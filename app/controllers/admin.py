@@ -14,6 +14,7 @@ from google.appengine.api import images
 from app.config.settings import *
 import random
 
+
 render = web.render
 
 
@@ -48,7 +49,9 @@ class Admin:
         if action =='memcachestats':
             result = memcache.get_stats()        
         elif action =='memcacheflush':
-            result['result'] = memcache.flush_all()
+            memcache.flush_all()
+            deferred.defer(worker.deferred_cache_tags)
+            result['result'] = "Done"
         elif action =='populate':
             timestamp = utils.generate_key_name()
             title= u"Title test %s" % timestamp
@@ -340,6 +343,7 @@ class Admin:
                 if entity:
                     entity.delete()
                     counter.decrement("Posts_Count")
+                    worker.deferred_delete_post_sitemap(str(entity.key()))
                     worker.deferred_update_tags_counter([],entity.tags)
                     worker.deferred_update_category_counter(None, entity.category)
                     result[action] = "Done"
@@ -362,4 +366,6 @@ class Warmup:
     Warming Requests for avoiding latency
     """
     def GET(self):
+        #Cache ajax request
+        deferred.defer(worker.deferred_cache_tags)
         pass

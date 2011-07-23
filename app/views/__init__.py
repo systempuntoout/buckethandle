@@ -285,7 +285,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
-        extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+        extend_(['      ', u'              <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         extend_(['      ', u'              <p>', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
@@ -559,7 +559,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     for tag in loop.setup(post.tags):
         extend_(['              ', u'  <a class="tag" href="/tag/', escape_(tag, True), u'">', escape_((tag), True), u'</a> \n'])
     extend_([u'          </p>\n'])
-    extend_([u'          <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+    extend_([u'          <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
     extend_([u'          <p>', escape_((post.description), True), u'</p>\n'])
     extend_([u'      </div>\n'])
     extend_([u'      <div>\n'])
