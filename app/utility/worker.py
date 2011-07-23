@@ -1,5 +1,6 @@
 import logging
 import app.db.models as models
+import app.utility.utils as utils
 
 def deferred_update_last_sitemap(post_key):
     models.Sitemap.update_last_sitemap(post_key)
@@ -11,6 +12,9 @@ def deferred_delete_post_sitemap(post_key):
             sitemap.post_count -= 1
             sitemap.put()
 
+def deferred_ping_sitemap():
+    utils.ping_googlesitemap()
+    
 def deferred_cache_tags():
     models.Tag.cache_tags()
 

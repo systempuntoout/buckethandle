@@ -59,7 +59,7 @@ $def render_catqs(selected_category, front_char):
                     <div class="meta">
                         $if settings.CATEGORIES:
                             <span>
-                                <a class="category" href="/?category=$(post.category)">$(post.category)&nbsp;<img width="17px" height="17px" src="$(utils.get_predefined_image_link(category = post.category))"/></a>
+                                <a class="category" href="/?category=$(post.category)">$(post.category)&nbsp;<img alt="$(post.category)" width="17px" height="17px" src="$(utils.get_predefined_image_link(category = post.category))"/></a>
                             </span>
                         <span class="tags">
                             $for tag in post.tags:

@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from google.appengine.api import memcache
+from google.appengine.api import urlfetch
 from app.config.settings import *
 import unicodedata
 import re
@@ -125,3 +126,11 @@ def link_is_valid(link):
        return False
     else: 
        return True
+       
+def ping_googlesitemap():
+    google_url = 'http://www.google.com/webmasters/tools/ping?sitemap=http://' + HOST + '/sitemap_index.xml'
+    response = urlfetch.fetch(google_url, '', urlfetch.GET)
+    if response.status_code / 100 != 2:
+       logging.warning("Google Sitemap ping failed %s", response.status_code)
+    else:
+       logging.info("Google Sitemap ping done!")

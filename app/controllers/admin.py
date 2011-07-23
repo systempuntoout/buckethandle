@@ -232,6 +232,7 @@ class Admin:
             deferred.defer(worker.deferred_update_last_sitemap,post.key())
             deferred.defer(worker.deferred_update_tags_counter,tags)
             deferred.defer(worker.deferred_update_category_counter,category)
+            deferred.defer(worker.deferred_ping_sitemap)
             result[action] = "Done"
 
         elif action =='editpost_init':
