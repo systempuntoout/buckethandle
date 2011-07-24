@@ -51,10 +51,14 @@ class Admin:
         elif action =='memcacheflush':
             memcache.flush_all()
             result['result'] = "Done"
-        elif action =='cacherefresh':
-            memcache.flush_all()
-            deferred.defer(worker.deferred_cache_tags)
+        elif action =='start_cacherefresh':
+            taskqueue.add(url='/admin?action=cacherefresh',
+                         method = 'GET',
+                         queue_name = 'populate',
+                         countdown = 5)
             result['result'] = "Done"    
+        elif action =='cacherefresh':
+            models.Tag.cache_tags()
         elif action =='populate':
             timestamp = utils.generate_key_name()
             title= u"Title test %s" % timestamp
@@ -371,5 +375,8 @@ class Warmup:
     """
     def GET(self):
         #Cache ajax request
-        deferred.defer(worker.deferred_cache_tags)
+        taskqueue.add(url='/admin?action=cacherefresh',
+                     method = 'GET',
+                     queue_name = 'populate',
+                     countdown = 5)
         pass

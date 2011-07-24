@@ -28,7 +28,7 @@ def admin (submitted, result, action, title = '', link = '', description = '', t
     extend_([u'     <ul>  <li><a href="', escape_(settings.ADMIN_BOOKMARKLET, True), u'">Bookmarklet</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
-    extend_([u'           <li><a href="/admin?action=cacherefresh">Cache refresh </a></li>\n'])
+    extend_([u'           <li><a href="/admin?action=start_cacherefresh">Cache refresh </a></li>\n'])
     extend_([u'     </ul>\n'])
     extend_([u'     <ul>\n'])
     if post_id:
