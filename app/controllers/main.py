@@ -222,7 +222,7 @@ class Image:
              web.header('Content-type', 'image/png')
              return post.thumbnail
          else:
-             return web.notfound()
+             raise web.notfound()
 
 
 class Submit:
