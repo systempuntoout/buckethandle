@@ -215,15 +215,14 @@ class Image:
      """
      Image
      """
-     def GET(self):
-         post_id = web.input(post_id = None)['id']
+     def GET(self, post_id):
          post = models.Post.get_post(post_id)
 
-         if post.thumbnail:
+         if post and post.thumbnail:
              web.header('Content-type', 'image/png')
              return post.thumbnail
          else:
-             return "No image"
+             return web.notfound()
 
 
 class Submit:

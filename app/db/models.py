@@ -90,7 +90,7 @@ class Post(db.Model):
         
     def get_image_path(self):
         if self.thumbnail is not None:
-            return "/img?id=%s" % self.key()
+            return "/img/%s" % self.key()
         else:
             return utils.get_predefined_image_link(self.link, self.category)
     

@@ -50,8 +50,11 @@ class Admin:
             result = memcache.get_stats()        
         elif action =='memcacheflush':
             memcache.flush_all()
-            deferred.defer(worker.deferred_cache_tags)
             result['result'] = "Done"
+        elif action =='cacherefresh':
+            memcache.flush_all()
+            deferred.defer(worker.deferred_cache_tags)
+            result['result'] = "Done"    
         elif action =='populate':
             timestamp = utils.generate_key_name()
             title= u"Title test %s" % timestamp

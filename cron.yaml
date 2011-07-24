@@ -3,5 +3,9 @@ cron:
   url: /_ereporter?sender=systempuntoout@gmail.com&to=systempuntoout@gmail.com&delete=true
   schedule: every day 00:00
   timezone: Europe/Rome
-
+-description: Cache refresh
+  url: /admin?action=cacherefresh
+  schedule: every 10 minutes
+  timezone: Europe/Rome
+ 
   
