@@ -42,6 +42,11 @@ $def with (submitted, result, action, feeds, posts, name = '', link = '')
           <td><a target="_blank" href="$(post.link)">$(post.title)</a></td>
           <td><a href="#" onclick="feeditemRemove('$post.key()')" >Remove</a></td> 
         </tr>
+   $else:
+        $if len(posts) == 0:
+            <tr>
+              <td><p id="not_found">No posts found</p></td>
+            </tr>
    <table>
    </div>
         

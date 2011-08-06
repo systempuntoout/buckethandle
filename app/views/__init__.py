@@ -137,6 +137,11 @@ def admin_content (submitted, result, action, feeds, posts, name = '', link = ''
         extend_(['   ', u'   <td><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.title), True), u'</a></td>\n'])
         extend_(['   ', u'   <td><a href="#" onclick="feeditemRemove(\'', escape_(post.key(), True), u'\')" >Remove</a></td> \n'])
         extend_(['   ', u' </tr>\n'])
+    else:
+        if len(posts) == 0:
+            extend_(['    ', u'<tr>\n'])
+            extend_(['    ', u'  <td><p id="not_found">No posts found</p></td>\n'])
+            extend_(['    ', u'</tr>\n'])
     extend_([u'   <table>\n'])
     extend_([u'   </div>\n'])
     extend_([u'        \n'])
