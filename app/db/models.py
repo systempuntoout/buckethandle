@@ -251,3 +251,28 @@ class Sitemap(db.Model):
                 return unicode(render.sitemap_posts(posts))
         else:
             raise web.notfound()
+
+class Feed(db.Model):
+    name = db.StringProperty(required = True)
+    link = db.LinkProperty(required = True)
+    last_modified = db.DateTimeProperty(required = True, auto_now = True)
+    created = db.DateTimeProperty(required = True, auto_now_add = True)
+    
+    @staticmethod
+    def get_feeds():
+        feeds = Feed.all().order('-created').fetch(500)
+        return feeds
+        
+class FeedEntry(db.Model):
+    title = db.StringProperty(required = True)
+    link = db.LinkProperty(required = True)
+    tags = db.ListProperty(str, required = True)
+    reviewed = db.BooleanProperty(required = True, default = False)
+    feed = db.ReferenceProperty(required = True)
+    last_modified = db.DateTimeProperty(required = True, auto_now = True)
+    created = db.DateTimeProperty(required = True, auto_now_add = True)
+
+    @staticmethod
+    def get_posts():
+        posts = FeedEntry.all().filter('reviewed =', False).order('-created').fetch(500)
+        return posts

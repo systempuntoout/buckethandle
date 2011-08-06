@@ -7,6 +7,7 @@ from google.appengine.ext import ereporter
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import mail
+from google.appengine.ext.db import BadKeyError
 
 ereporter.register_logger()
 
@@ -59,34 +60,37 @@ class Post:
     Post
     """
     def GET(self, post_id = None, slug = None):
-        #Return to canonical if the slug is missing
-        if post_id and not slug:
-            post = models.Post.get(post_id)
+        try:
+            #Return to canonical if the slug is missing
+            if post_id and not slug:
+                post = models.Post.get(post_id)
+                if post:
+                    return web.redirect('/post/%s/%s' % (post_id, post.slug))
+                else:
+                    raise web.notfound()
+            #Gest post 
+            if post_id:            
+                post = models.Post.get_post(post_id)
+            else:
+                post = models.Post.get_latest_post()
+        
             if post:
-                return web.redirect('/post/%s/%s' % (post_id, post.slug))
+                #Return to canonical if the slug is truncated
+                if slug and slug.strip() != post.slug:
+                    return web.redirect('/post/%s/%s' % (post_id, post.slug))
+                prev_post, next_post = models.Post.get_prev_next(post)
             else:
                 raise web.notfound()
-        #Gest post 
-        if post_id:            
-            post = models.Post.get_post(post_id)
-        else:
-            post = models.Post.get_latest_post()
         
-        if post:
-            #Return to canonical if the slug is truncated
-            if slug and slug.strip() != post.slug:
-                return web.redirect('/post/%s/%s' % (post_id, post.slug))
-            prev_post, next_post = models.Post.get_prev_next(post)
-        else:
-            raise web.notfound()
-        
-        return render_template(render.post(post, 
-                                           prev_post, 
-                                           next_post, 
-                                           utils.ContentDiscoverer(post.link, post.category).get_content_block(),
-                                           is_user_admin = users.is_current_user_admin()), 
-                                           title = post.title,
-                                           canonical = "post/%s" % (post.get_path()))
+            return render_template(render.post(post, 
+                                               prev_post, 
+                                               next_post, 
+                                               utils.ContentDiscoverer(post.link, post.category).get_content_block(),
+                                               is_user_admin = users.is_current_user_admin()), 
+                                               title = post.title,
+                                               canonical = "post/%s" % (post.get_path()))
+        except BadKeyError:
+                raise web.notfound()
 
 class Tags:
     """
@@ -95,7 +99,7 @@ class Tags:
     def POST(self, tags):
         return self.GET(tags)
         
-    def GET(self, tags):
+    def GET(self, tags = None):
         if tags:
             tags = [tag.lower() for tag in tags.split('/')]
         else: 

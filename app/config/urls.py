@@ -3,6 +3,7 @@
 """
 
 urls = (
+  '/tag', 'app.controllers.main.Tags',
   '/tag/(.*)', 'app.controllers.main.Tags',
   '/featured', 'app.controllers.main.Featured',
   '/tagcloud','app.controllers.main.TagCloud',
@@ -15,6 +16,7 @@ urls = (
   '/ajax/tags','app.controllers.ajax.Tags',
   '/ajax/links','app.controllers.ajax.Links',
   '/admin','app.controllers.admin.Admin',
+  '/admin/content','app.controllers.admin.ContentDiscoverer',
   '/index.xml', 'app.controllers.main.Feed',
   '/cse.xml', 'app.controllers.main.Cse',
   '/sitemap.xml', 'app.controllers.main.Sitemap',

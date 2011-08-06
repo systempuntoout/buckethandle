@@ -476,3 +476,12 @@ font-weight:bold;
 .admin_message_OK{
     background:#88ED71;
 }
+
+table {
+    border:1px #efefef solid;
+    width:70%;
+}
+
+tr.odd {
+    background-color:#efefef;
+}

@@ -5,7 +5,10 @@ cron:
   timezone: Europe/Rome
 - description: Cache refresh
   url: /admin?action=cacherefresh
-  schedule: every 10 minutes
+  schedule: every 30 minutes
+  timezone: Europe/Rome 
+- description: Cache refresh
+  url: /admin/content?action=downloadfeeds
+  schedule: every day 00:00
   timezone: Europe/Rome
- 
   

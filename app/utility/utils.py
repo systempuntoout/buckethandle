@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 from app.config.settings import *
+from app.lib import pyso
 import unicodedata
 import re
 import logging
@@ -105,7 +106,7 @@ class ContentDiscoverer():
                 return re_tmp.match(self.link).group(1)
         except:
             return None    
-        
+    
     def get_content_block(self):
         base_link = get_base_link(self.link)
         if base_link in AUTO_CONTENT_BY_LINK and 'content_block' in AUTO_CONTENT_BY_LINK[base_link] :
@@ -134,3 +135,12 @@ def ping_googlesitemap():
        logging.warning("Google Sitemap ping failed %s", response.status_code)
     else:
        logging.info("Google Sitemap ping done!")
+
+
+def check_link_weight(link):
+   base_link = get_base_link(link)
+   if base_link == 'http://stackoverflow.com':
+       pyso.install_site(pyso.APISite("api.stackoverflow.com", "1.0"))
+       question = pyso.get_question(ContentDiscoverer(link).get_id())
+       return (question['score']) >= 3
+   return True       

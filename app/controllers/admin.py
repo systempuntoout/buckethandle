@@ -12,25 +12,22 @@ from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import images
 from app.config.settings import *
+import app.lib.feedparser as feedparser
 import random
 
 
 render = web.render
 
 
-def render_template(submitted, result, action, **kwargs):
+def render_template(content):
     """
      Renders the layout template for the admin
     """
-
-    return render.layout(render.admin(submitted, 
-                                      result, 
-                                      action, 
-                                      **kwargs), 
-                                      title ='Admin', 
-                                      navbar = False, 
-                                      user = users.get_current_user(), 
-                                      is_user_admin = users.is_current_user_admin())
+    return render.layout(content, 
+                         title ='Admin', 
+                         navbar = False, 
+                         user = users.get_current_user(), 
+                         is_user_admin = users.is_current_user_admin())
                           
 
 class Admin:
@@ -156,16 +153,26 @@ class Admin:
                     selected_category = ''
             else: 
                 selected_category = ''
+            
+            #In case it is already known, read it and show it
+            post = models.Post.get_post_by_link(link)
+            if post:
+                title = post.title
+                link = post.link
+                description = post.description
+                tags = ' '.join(post.tags)
+                selected_category = post.category
                 
             tags = list(set(tags.split()) - set(TAGS_BLACK_LIST))
-            return render_template(True, 
-                                   result, 
-                                   action, 
-                                   title = title,
-                                   link = link,
-                                   description = description,
-                                   tags = tags,
-                                   category = selected_category
+            return render_template(render.admin(
+                                               True, 
+                                               result, 
+                                               action, 
+                                               title = title,
+                                               link = link,
+                                               description = description,
+                                               tags = tags,
+                                               category = selected_category)
                                    )
         elif action =='newpost':
             title = web.input(title = None)['title']
@@ -192,17 +199,18 @@ class Admin:
                 result[action] = "url_img is not a valid URL"
                 submitted = False
             if not submitted:
-                return render_template(submitted, 
-                                       result, 
-                                       action, 
-                                       title = title,
-                                       link = link,
-                                       description = description,
-                                       tags = tags.split(),
-                                       category = category,
-                                       body = body,
-                                       url_img = thumbnail_url,
-                                       featured = featured
+                return render_template(render.admin(
+                                                    submitted, 
+                                                    result, 
+                                                    action, 
+                                                    title = title,
+                                                    link = link,
+                                                    description = description,
+                                                    tags = tags.split(),
+                                                    category = category,
+                                                    body = body,
+                                                    url_img = thumbnail_url,
+                                                    featured = featured)
                                        )
             #Preparing for datastore
             if thumbnail_url:
@@ -247,18 +255,18 @@ class Admin:
             if post_id:
                 entity = models.Post.get(post_id)
                 if entity:
-                    return render_template(False, 
-                                            result, 
-                                            action, 
-                                            title = entity.title,
-                                            link = entity.link,
-                                            description = entity.description,
-                                            tags = entity.tags,
-                                            category = entity.category,
-                                            img_path = entity.get_image_path(),
-                                            body = entity.body,
-                                            post_id = post_id,
-                                            featured = entity.featured
+                    return render_template(render.admin(False, 
+                                                        result, 
+                                                        action, 
+                                                        title = entity.title,
+                                                        link = entity.link,
+                                                        description = entity.description,
+                                                        tags = entity.tags,
+                                                        category = entity.category,
+                                                        img_path = entity.get_image_path(),
+                                                        body = entity.body,
+                                                        post_id = post_id,
+                                                        featured = entity.featured)
                                             )
                 else:
                     result[action] = "Post Id Not found"
@@ -297,17 +305,17 @@ class Admin:
                     result[action] = "url_img is not a valid URL"
                     submitted = False
                 if not submitted:
-                    return render_template(submitted, 
-                                           result, 
-                                           action, 
-                                           title = title,
-                                           link = link,
-                                           description = description,
-                                           tags = tags.split(),
-                                           category = category,
-                                           body = body,
-                                           url_img = thumbnail_url,
-                                           featured = featured
+                    return render_template(render.admin(submitted, 
+                                                       result, 
+                                                       action, 
+                                                       title = title,
+                                                       link = link,
+                                                       description = description,
+                                                       tags = tags.split(),
+                                                       category = category,
+                                                       body = body,
+                                                       url_img = thumbnail_url,
+                                                       featured = featured)
                                            )
                 
                 if thumbnail_url:
@@ -363,11 +371,81 @@ class Admin:
                 submitted = False
         
         #Default
-        return render_template(submitted, 
-                               result, 
-                               action
+        return render_template(render.admin(
+                                            submitted, 
+                                            result, 
+                                            action)
                               )
 
+class ContentDiscoverer:
+      """
+      Admin homepage
+      """
+      def POST(self):
+          return self.GET()
+            
+      def GET(self):
+          result = {}
+          submitted = True
+          action = web.input(action = None)['action']
+          name = web.input(name = None)['name']
+          link = web.input(link = None)['link']
+          feeds = models.Feed.get_feeds()      
+          posts = models.FeedEntry.get_posts()
+          if action == 'removefeeditem':
+                key = web.input(key = None)['key']
+                entity = models.FeedEntry.get(key)
+                entity.reviewed = True
+                entity.put()
+                result[action] = "Done"
+                
+          if action =='start_downloadfeeds':
+                taskqueue.add(url='/admin/content?action=downloadfeeds',
+                              method = 'GET', 
+                              queue_name = 'populate',
+                              countdown = 5)
+                result[action] = "Done"
+          if action == 'downloadfeeds':
+              for feed in feeds:
+                  response = urlfetch.fetch(feed.link)
+                  if response.status_code == 200:
+                      rss = feedparser.parse(response.content)
+                      for entry in reversed(rss['entries']): 
+                          if utils.check_link_weight(entry['link']):
+                              if not models.Post.get_post_by_link(entry['link'].strip()):
+                                  entity = models.FeedEntry.get_or_insert(key_name = entry['link'], title = entry['title'], link = entry['link'], feed = feed.key() )
+                                  entity.put()
+              posts = models.FeedEntry.get_posts()
+              result[action] = "Done"
+          elif action== 'newfeed':
+              #Various checks
+              if not name or not link:
+                  result[action] = "Please fill in all required fields (*)"
+                  submitted = False
+              if link and not utils.link_is_valid(link):
+                  result[action] = "Link is not valid"
+                  submitted = False
+              if not submitted:
+                  return render_template(render.admin_content(
+                                                               submitted, 
+                                                               result, 
+                                                               action,
+                                                               feeds,
+                                                               posts,
+                                                               name = name,
+                                                               link = link)
+                                          )
+              models.Feed(name = name, link = link).put()
+              feeds = models.Feed.get_feeds()
+              result[action] = "Done"
+                
+          return render_template(render.admin_content(
+                                                     submitted, 
+                                                     result, 
+                                                     action,
+                                                     feeds,
+                                                     posts)
+                                )
         
 class Warmup:
     """

@@ -24,6 +24,16 @@ function linkCheck() {
      }
 }
 
+function feeditemRemove(feedItemKey) {
+        jQuery.ajax({
+                url: '/admin/content?action=removefeeditem&key=' + feedItemKey,
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                dataType: "json",
+            });
+        jQuery('#'+feedItemKey).hide();
+}
+
 jQuery(document).ready(function() {
             jQuery('#content').embedly({
               maxWidth: 600,
@@ -33,6 +43,10 @@ jQuery(document).ready(function() {
             jQuery('#post_body').markItUp(mySettings);
             jQuery("input:radio").uniform();
             jQuery("#message_box").fadeOut(6000);
+            jQuery(".toggle").click(function () {
+                jQuery(".totoggle").toggle();
+            });
+            
             setTimeout(function() {
                 $('#admin_message_box').fadeOut('fast');
             }, 4000);

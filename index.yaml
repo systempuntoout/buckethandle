@@ -10,6 +10,12 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: FeedEntry
+  properties:
+  - name: reviewed
+  - name: created
+    direction: desc
+
 - kind: Post
   properties:
   - name: category

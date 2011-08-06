@@ -29,6 +29,7 @@ def admin (submitted, result, action, title = '', link = '', description = '', t
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=start_cacherefresh">Cache refresh </a></li>\n'])
+    extend_([u'           <li><a href="/admin/content">Content discovery </a></li>\n'])
     extend_([u'     </ul>\n'])
     extend_([u'     <ul>\n'])
     if post_id:
@@ -87,6 +88,65 @@ def admin (submitted, result, action, title = '', link = '', description = '', t
 
 admin = CompiledTemplate(admin, 'app/views/admin.html')
 join_ = admin._join; escape_ = admin._escape
+
+# coding: utf-8
+def admin_content (submitted, result, action, feeds, posts, name = '', link = ''):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u' \n'])
+    extend_([u' <div>\n'])
+    extend_([u'     <div style="float:right">\n'])
+    extend_([u'     <ul> \n'])
+    extend_([u'           <li><a href="/admin">Main admin</a></li>\n'])
+    extend_([u'           <li><a href="/admin/content">Content discovery</a></li>\n'])
+    extend_([u'           <li><a class="toggle" href="#">Manage Feeds</a></li>\n'])
+    extend_([u'           <li><a href="/admin/content?action=start_downloadfeeds">Download Feeds entries</a></li>\n'])
+    extend_([u'     </ul>\n'])
+    extend_([u'     <br/>\n'])
+    extend_([u'    </div>\n'])
+    extend_([u'    <div>\n'])
+    if result:
+        extend_(['    ', u'<div id="admin_message_box" ', escape_((submitted and 'class="admin_message_OK"' or 'class="admin_message_KO"'), False), u'>\n'])
+        extend_(['    ', u' <p>RESULT: ', escape_(action, True), u'</p>\n'])
+        extend_(['    ', u' <ul>\n'])
+        for key in loop.setup(result.keys()):
+            extend_(['     ', u'<li> ', escape_(("%s - %s" % (key, result[key])), True), u'</li>\n'])
+        extend_(['    ', u' </ul>\n'])
+        extend_(['    ', u'</div>\n'])
+    extend_([u'    <br>\n'])
+    extend_([u'    <div class="totoggle" style="display: none">    \n'])
+    extend_([u'    <form action = "/admin/content" method="POST" enctype="multipart/form-data"> \n'])
+    extend_([u'        <input type="hidden" id="action" name="action" value="newfeed"/>\n'])
+    extend_([u'        <p>name: <span class="required">*</span><br><input type="text" size="100" name="name" value="', escape_(name, True), u'"/></p>\n'])
+    extend_([u'        <p>link: <span class="required">*</span><br> <input type="text" size="100" id = "link" name="link" value="', escape_(link, True), u'"/></p>\n'])
+    extend_([u'        <p><input type="submit" value="Submit"/></p>\n'])
+    extend_([u'   </form>\n'])
+    extend_([u'   Feeds\n'])
+    extend_([u'   <ul> \n'])
+    for feed in loop.setup(feeds):
+        extend_(['       ', u'<li><a href="', escape_(feed.link, True), u'">', escape_(feed.name, True), u'</a></li>\n'])
+    extend_([u'   </ul>\n'])
+    extend_([u'   </div>\n'])
+    extend_([u'   <hr>\n'])
+    extend_([u'   <table>\n'])
+    for post in loop.setup(posts):
+        extend_(['   ', u' <tr id="', escape_(post.key(), True), u'" class="', escape_(loop.parity, True), u'">\n'])
+        extend_(['   ', u'   <td>', escape_((post.created.strftime("%Y-%m-%d %H:%M:%S")), True), u'</a></td>  \n'])
+        extend_(['   ', u'   <td>', escape_((post.feed.name), True), u'</a></td>    \n'])
+        extend_(['   ', u'   <td><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.title), True), u'</a></td>\n'])
+        extend_(['   ', u'   <td><a href="#" onclick="feeditemRemove(\'', escape_(post.key(), True), u'\')" >Remove</a></td> \n'])
+        extend_(['   ', u' </tr>\n'])
+    extend_([u'   <table>\n'])
+    extend_([u'   </div>\n'])
+    extend_([u'        \n'])
+    extend_([u'                            \n'])
+    extend_([u' </div>\n'])
+
+    return self
+
+admin_content = CompiledTemplate(admin_content, 'app/views/admin_content.html')
+join_ = admin_content._join; escape_ = admin_content._escape
 
 # coding: utf-8
 def cse():
