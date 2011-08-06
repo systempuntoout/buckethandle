@@ -34,7 +34,7 @@ $def with (submitted, result, action, feeds, posts, name = '', link = '')
    </ul>
    </div>
    <hr>
-   <table>
+   <table class="feed_items">
    $for post in posts:
         <tr id="$post.key()" class="$loop.parity">
           <td>$(post.created.strftime("%Y-%m-%d %H:%M:%S"))</a></td>  

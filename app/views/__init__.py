@@ -129,7 +129,7 @@ def admin_content (submitted, result, action, feeds, posts, name = '', link = ''
     extend_([u'   </ul>\n'])
     extend_([u'   </div>\n'])
     extend_([u'   <hr>\n'])
-    extend_([u'   <table>\n'])
+    extend_([u'   <table class="feed_items">\n'])
     for post in loop.setup(posts):
         extend_(['   ', u' <tr id="', escape_(post.key(), True), u'" class="', escape_(loop.parity, True), u'">\n'])
         extend_(['   ', u'   <td>', escape_((post.created.strftime("%Y-%m-%d %H:%M:%S")), True), u'</a></td>  \n'])

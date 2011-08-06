@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #Meta
-VERSION = '0.9.0.3'
+VERSION = '0.9.0.4'
 CMS_NAME = u"GAEcupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
