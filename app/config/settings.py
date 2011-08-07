@@ -17,6 +17,7 @@ Having some time to spare, I've tried to implement something to store and organi
 I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day, I like reddit and it's fantastic for the hottest news but it lacks a tagging feature like Delicious or Stack Overflow.   
 
 Do you want some good tags/categories combo to start with?  
+
 Try with:  
     - [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
     - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  

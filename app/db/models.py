@@ -2,6 +2,7 @@ from google.appengine.ext import db
 from google.appengine.api import memcache
 from app.utility.utils import memcached
 from app.config.settings import *
+import datetime
 import app.utility.utils as utils
 import app.db.counter as counter
 import logging
@@ -276,3 +277,8 @@ class FeedEntry(db.Model):
     def get_posts():
         posts = FeedEntry.all().filter('reviewed =', False).order('-created').fetch(500)
         return posts
+
+    @staticmethod
+    def check_for_new_posts():
+        post = FeedEntry.all().filter('reviewed =', False).filter('created >=', datetime.date.today()).get()
+        return post

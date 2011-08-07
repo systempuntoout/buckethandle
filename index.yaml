@@ -14,6 +14,11 @@ indexes:
   properties:
   - name: reviewed
   - name: created
+
+- kind: FeedEntry
+  properties:
+  - name: reviewed
+  - name: created
     direction: desc
 
 - kind: Post

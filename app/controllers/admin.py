@@ -5,6 +5,7 @@ from google.appengine.api import memcache
 from google.appengine.ext import deferred
 import app.utility.worker as worker
 from google.appengine.api.taskqueue import taskqueue
+from google.appengine.api import mail
 import app.db.models as models
 import app.db.counter as counter
 import app.utility.utils as utils
@@ -399,13 +400,13 @@ class ContentDiscoverer:
                 entity.put()
                 result[action] = "Done"
                 
-          if action =='start_downloadfeeds':
+          elif action =='start_downloadfeeds':
                 taskqueue.add(url='/admin/content?action=downloadfeeds',
                               method = 'GET', 
                               queue_name = 'populate',
                               countdown = 5)
                 result[action] = "Done"
-          if action == 'downloadfeeds':
+          elif action == 'downloadfeeds':
               for feed in feeds:
                   response = urlfetch.fetch(feed.link)
                   if response.status_code == 200:
@@ -438,7 +439,17 @@ class ContentDiscoverer:
               models.Feed(name = name, link = link).put()
               feeds = models.Feed.get_feeds()
               result[action] = "Done"
-                
+          elif action == 'mailcontents':
+              if models.FeedEntry.check_for_new_posts():
+                   mail.send_mail(sender="%s <%s>" % (CMS_NAME, MAIL_ADMIN),
+                                 to="Admin <%s>" % MAIL_ADMIN,
+                                 subject="Contents Discoverer %s" % utils.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                 body="""
+                   \nContents discovered:
+                   \n%s\n
+                   http://%s/admin/content
+                   """ % ('\n'.join([post.title.strip() for post in models.FeedEntry.get_posts()]), HOST))      
+              result[action] = "Done"
           return render_template(render.admin_content(
                                                      submitted, 
                                                      result, 
