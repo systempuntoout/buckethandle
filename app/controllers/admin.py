@@ -414,7 +414,7 @@ class ContentDiscoverer:
                       for entry in reversed(rss['entries']): 
                           if utils.check_link_weight(entry['link']):
                              try:
-                              if not models.Post.get_post_by_link(entry['link'].strip() and isinstance(entry['title'], unicode)):
+                              if not models.Post.get_post_by_link(entry['link'].strip()):
                                   entity = models.FeedEntry.get_or_insert(key_name = entry['link'], title = entry['title'], link = entry['link'], feed = feed.key() )
                                   entity.put()
                              except:
