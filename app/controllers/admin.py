@@ -413,9 +413,12 @@ class ContentDiscoverer:
                       rss = feedparser.parse(response.content)
                       for entry in reversed(rss['entries']): 
                           if utils.check_link_weight(entry['link']):
-                              if not models.Post.get_post_by_link(entry['link'].strip()):
+                             try:
+                              if not models.Post.get_post_by_link(entry['link'].strip() and isinstance(entry['title'], unicode)):
                                   entity = models.FeedEntry.get_or_insert(key_name = entry['link'], title = entry['title'], link = entry['link'], feed = feed.key() )
                                   entity.put()
+                             except:
+                                 pass
               posts = models.FeedEntry.get_posts()
               result[action] = "Done"
           elif action== 'newfeed':
