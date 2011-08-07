@@ -12,6 +12,6 @@ cron:
   schedule: every day 00:00
   timezone: Europe/Rome
 - description: Download feeds
-  url: /admin/content?action=mailcontentsdiscovered
+  url: /admin/content?action=mailcontents
   schedule: every day 07:00
   timezone: Europe/Rome 
