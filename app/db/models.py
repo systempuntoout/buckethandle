@@ -280,5 +280,5 @@ class FeedEntry(db.Model):
 
     @staticmethod
     def check_for_new_posts():
-        post = FeedEntry.all().filter('reviewed =', False).filter('created >=', datetime.date.today()).get()
+        post = FeedEntry.all().filter('reviewed =', False).filter('created >=', datetime.date.today() - datetime.timedelta(1)).get()
         return post
