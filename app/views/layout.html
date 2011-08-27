@@ -87,7 +87,7 @@ $if navbar:
                 <h2>Tags</h2>
                 <p>
                     $for tag in tag_cloud:
-                            <span class="tag_info"><a class="tag_cloud_nav_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)"> $(tag.name)</a><span class="counter">($commify(tag.counter))</span>&nbsp;</span>
+                            <span class="tag_info"><a class="tag_cloud_nav_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)"> $(tag.name)</a><span class="counter"> ($commify(tag.counter))</span>&nbsp;</span>
 
                     $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
                         <br/><span class="more_tag"><a  href="/tagcloud">more »</a></span>
