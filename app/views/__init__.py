@@ -531,7 +531,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                    <script type="text/javascript" src="http://s7.addthis.com/js/250/addthis_widget.js#pubid=xa-4e2ac7014073bf9a"></script>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
-        extend_([u'                <a href="/"><img src="/images/buckethandle.png" alt="buckethandle"/></a>\n'])
+        extend_([u'                <a href="https://github.com/systempuntoout/buckethandle"><img src="/images/buckethandle.png" alt="buckethandle"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                <a href="http://webpy.org"><img width="80" height="30" src="/images/webpy.jpg" alt="Webpy"/></a>\n'])

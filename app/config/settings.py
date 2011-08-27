@@ -13,8 +13,8 @@ HOST = "www.gaecupboard.com"
 
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
-Having some time to spare, I've tried to implement something to store and organize all the public knowledge around Google App Engine;  I've coded this tool that is a sort of mix between Reddit, Delicious and a blogging platform.  
-I love Delicious but there is too much noise and duplicates in the tons of links bookmarked every day, I like reddit and it's fantastic for the hottest news but it lacks a tagging feature like Delicious or Stack Overflow.   
+Having some time to spare, I've tried to implement something to store and organize part of the public knowledge around Google App Engine.  
+I've coded up this tool that is a sort of mix among Reddit, Delicious and a Cms/Blogging platform.  
 
 Do you want some good tags/categories combo to start with?  
 
@@ -24,9 +24,9 @@ Try with:
     - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
     - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category
 
-This tool is a work in progress, so expect errors, dragons and other nasty things.  
-I've kept the code pretty configurable for other sites and topics and I'm planning to open-source it if it will gain some interest and traction.  
+This tool is a work in progress, so expect errors, dragons and other nasty things.    
 
+Source code [here](https://github.com/systempuntoout/buckethandle) on Github.
 
 Feedback at this address:  
 ![test](/images/systempuntooutmail.jpg "mail")

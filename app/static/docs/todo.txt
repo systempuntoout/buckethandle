@@ -1,8 +1,5 @@
 Todo:
 Css chaos
+Polish everything need to be polished
 Better admin
-twitter
-
-
-
 
