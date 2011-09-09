@@ -9,6 +9,7 @@ import logging
 import time
 import urlparse
 import math
+import web
 
 
 def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
@@ -35,7 +36,7 @@ def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
                 return value
         return cached_func
     return wrap
-
+    
 def slugify(value):
     """ Slugify a string, to make it URL friendly. """
     value = unicodedata.normalize('NFKD', value).encode('ascii', 'ignore')
@@ -143,4 +144,19 @@ def check_link_weight(link):
        pyso.install_site(pyso.APISite("api.stackoverflow.com", "1.0"))
        question = pyso.get_question(ContentDiscoverer(link).get_id())
        return (question['score']) >= 3
-   return True       
+   return True    
+
+   
+CACHE = {}
+def cachepage():
+   """
+   Instance caching
+   """
+   def decorator(func):
+       def proxyfunc(self, *args, **kw):
+           url = web.ctx.get('fullpath')
+           if url not in CACHE:
+               CACHE[url] = func(self, *args, **kw)
+           return CACHE[url]
+       return proxyfunc
+   return decorator   

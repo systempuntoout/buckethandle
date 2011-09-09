@@ -2,6 +2,8 @@ from app.config.settings import *
 from app.config.urls import sitemap_urls
 import app.db.models as models
 import app.utility.utils as utils
+from app.utility.utils import cachepage
+from google.appengine.api import memcache
 import logging, web, re
 from google.appengine.ext import ereporter
 from google.appengine.ext import db
@@ -12,7 +14,6 @@ from google.appengine.ext.db import BadKeyError
 ereporter.register_logger()
 
 render = web.render 
-
 
 def render_template(content, **kwargs):
     """
@@ -141,9 +142,9 @@ class TagCloud:
     """
     Tag Cloud
     """
+    @cachepage()
     def GET(self):
         tag_cloud = models.Tag.get_tags()
-        
         return render_template(render.tagcloud(tag_cloud),
                                title = 'Tag cloud')
 
@@ -160,6 +161,7 @@ class About:
     """
     About
     """
+    @cachepage()
     def GET(self):
         return render_template(render.about(), title = 'About')
 
@@ -290,3 +292,4 @@ class Submit:
                                    title = 'Posts')
          else:
             return None
+

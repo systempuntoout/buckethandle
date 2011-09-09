@@ -4,6 +4,7 @@ import logging, web
 import app.db.models as models
 from google.appengine.ext import ereporter
 import app.utility.utils as utils
+from app.utility.utils import cachepage
 
 ereporter.register_logger()
 
@@ -12,6 +13,7 @@ class Tags:
     """
     Return tags for auto completion
     """
+    @cachepage()
     def GET(self):
         web.header('Content-type', 'text/plain')
         try:
