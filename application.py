@@ -1,14 +1,18 @@
 """
     BucketHandle: lightweight cms to tag and collect knowledge
 """
-from app.config.urls import urls
-import app.config.settings as settings 
+import os
+import logging
+import webob, urlparse
+
 from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.api import users
-import app.utility.utils as utils
-import logging
+
 import web
-import os
+import app.utility.utils as utils
+from app.config.urls import urls
+import app.config.settings as settings
+from app.config.settings import *
 
 global_template = {
             'safemarkdown':web.safemarkdown,
@@ -31,9 +35,27 @@ app = web.application(urls, globals())
 app.notfound = notfound
 app.internalerror = internalerror
 
+def redirect_from_appspot(wsgi_app):
+    """Handle redirect to my domain if called from appspot (and not SSL)"""
+    from_server = APPENGINE_HOST
+    to_server = HOST
+
+    def redirect_if_needed(env, start_response):
+        if REDIRECT_FROM_APPENGINE_HOST_TO_HOST and env["HTTP_HOST"].endswith(from_server) and env.get("HTTPS") == "off":
+            # Parse the URL
+            request = webob.Request(env)
+            scheme, netloc, path, query, fragment = urlparse.urlsplit(request.url)
+            url = urlparse.urlunsplit([scheme, to_server, path, query, fragment])
+            if not path.startswith('/admin'):
+                start_response("301 Moved Permanently", [("Location", url)])
+                return ["301 Moved Peramanently", "Click Here %s" % url]
+        return wsgi_app(env, start_response)
+    return redirect_if_needed
+
 def main():
     logging.getLogger().setLevel(logging.DEBUG)
     application = app.wsgifunc()
+    application = redirect_from_appspot(application)
     run_wsgi_app(application)
 
 if __name__ == '__main__':

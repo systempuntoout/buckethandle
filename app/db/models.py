@@ -162,7 +162,7 @@ class Tag(db.Model):
         return Tag.all().filter('name =', name).get()    
     
     @staticmethod
-    @memcached('get_tags_by_filter', 3600, lambda tag_filter : tag_filter )
+    @memcached('get_tags_by_filter', 3600*24*20, lambda tag_filter : tag_filter )
     def get_tags_by_filter(tag_filter):
         tags = Tag.get_tags() 
         return '\n'.join([tag.name for tag in tags if tag.name.startswith(tag_filter)])

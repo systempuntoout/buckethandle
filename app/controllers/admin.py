@@ -53,7 +53,8 @@ class Admin:
             taskqueue.add(url='/admin?action=cacherefresh',
                          method = 'GET',
                          queue_name = 'populate',
-                         countdown = 5)
+                         countdown = 5,
+                         headers = {'X-AppEngine-FailFast' : True})
             result['result'] = "Done"    
         elif action =='cacherefresh':
             models.Tag.cache_tags()
@@ -404,7 +405,8 @@ class ContentDiscoverer:
                 taskqueue.add(url='/admin/content?action=downloadfeeds',
                               method = 'GET', 
                               queue_name = 'populate',
-                              countdown = 5)
+                              countdown = 5,
+                              headers = {'X-AppEngine-FailFast' : True})
                 result[action] = "Done"
           elif action == 'downloadfeeds':
               for feed in feeds:

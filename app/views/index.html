@@ -26,6 +26,18 @@ $def render_catqs(selected_category, front_char):
                   </li>              
             </ul>
             </div>
+        $if settings.ADSENSE_ID:
+               <script type="text/javascript"><!--
+               google_ad_client = "$settings.ADSENSE_ID";
+               /* 468x60, created 9/11/11 */
+               google_ad_slot = "9166906893";
+               google_ad_width = 468;
+               google_ad_height = 60;
+               //-->
+               </script>
+               <script type="text/javascript"
+               src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+               </script>
      </form>
 </div>
 <div>      

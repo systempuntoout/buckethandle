@@ -10,6 +10,8 @@ META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos pro
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com"
+APPENGINE_HOST = "gaecupboard.appspot.com"
+REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True
 
 ABOUT =u"""
 This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
