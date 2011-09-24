@@ -32,22 +32,22 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
               $for tag in post.tags:
                     <a class="tag" href="/tag/$tag">$(tag)</a> 
           </p>
+          $if settings.ADSENSE_ID:
+                  <div id="adsense">
+                      <script type="text/javascript"><!--
+                      google_ad_client = "$settings.ADSENSE_ID";
+                      /* 728x90, created 9/8/11 */
+                      google_ad_slot = "2341185460";
+                      google_ad_width = 728;
+                      google_ad_height = 90;
+                      //-->
+                      </script>
+                      <script type="text/javascript"
+                      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                      </script>
+                  </div>
           <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
           <p>$(post.description)</p>
-          $if settings.ADSENSE_ID:
-              <div id="adsense" style="text-align:center">
-                  <script type="text/javascript"><!--
-                  google_ad_client = "$settings.ADSENSE_ID";
-                  /* 728x90, created 9/8/11 */
-                  google_ad_slot = "7129208720";
-                  google_ad_width = 728;
-                  google_ad_height = 90;
-                  //-->
-                  </script>
-                  <script type="text/javascript"
-                  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                  </script>
-              </div>
       </div>
       <div>
           $:safemarkdown(post.body)
