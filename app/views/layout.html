@@ -1,13 +1,13 @@
-$def with (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', canonical = '')
+$def with (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', canonical = '', meta_description = '')
 $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
 <head>
+    <META name="y_key" content="88698ce39daf8603" />
     <link rel="alternate" type="application/atom+xml" href="/index.xml" />
     <meta http-equiv="content-type" content="$settings.HTML_MIME_TYPE"/>
-    <meta name="description" content="$(settings.META_DESCRIPTION)"/>
+    <meta name="description" content="$(meta_description != '' and meta_description or settings.META_DESCRIPTION)"/>
     <meta name="keywords" content="$settings.META_KEYWORDS"/>
-    <meta name="y_key" content="5db97c4a60863af1" />
     <title> $(title) - $settings.CMS_NAME</title> 
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>
@@ -135,7 +135,7 @@ $else:
     </div>
     
 <div id="footer">
-    <p>© $settings.AUTHOR_NAME | Powered by Google App Engine | BucketHandle v. $settings.VERSION</p>
+    <p>© $settings.AUTHOR_NAME | $settings.CMS_NAME | Powered by Google App Engine | BucketHandle v. $settings.VERSION</p>
 </div>
 
 $if settings.ANALYTICS_ID and not development and not is_user_admin:

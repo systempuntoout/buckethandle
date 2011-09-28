@@ -436,7 +436,7 @@ index = CompiledTemplate(index, 'app/views/index.html')
 join_ = index._join; escape_ = index._escape
 
 # coding: utf-8
-def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', canonical = ''):
+def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', canonical = '', meta_description = ''):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
@@ -444,11 +444,11 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n'])
     extend_([u'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">\n'])
     extend_([u'<head>\n'])
+    extend_([u'    <META name="y_key" content="88698ce39daf8603" />\n'])
     extend_([u'    <link rel="alternate" type="application/atom+xml" href="/index.xml" />\n'])
     extend_([u'    <meta http-equiv="content-type" content="', escape_(settings.HTML_MIME_TYPE, True), u'"/>\n'])
-    extend_([u'    <meta name="description" content="', escape_((settings.META_DESCRIPTION), True), u'"/>\n'])
+    extend_([u'    <meta name="description" content="', escape_((meta_description != '' and meta_description or settings.META_DESCRIPTION), True), u'"/>\n'])
     extend_([u'    <meta name="keywords" content="', escape_(settings.META_KEYWORDS, True), u'"/>\n'])
-    extend_([u'    <meta name="y_key" content="5db97c4a60863af1" />\n'])
     extend_([u'    <title> ', escape_((title), True), u' - ', escape_(settings.CMS_NAME, True), u'</title> \n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>\n'])
@@ -576,7 +576,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'</div>\n'])
         extend_([u'\n'])
     extend_([u'<div id="footer">\n'])
-    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
+    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u'| ', escape_(settings.CMS_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
     extend_([u'</div>\n'])
     extend_([u'\n'])
     if settings.ANALYTICS_ID and not development and not is_user_admin:
@@ -649,7 +649,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'                <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" alt="Image"/>\n'])
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
-    extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
+    extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u' | <strong>', escape_(settings.CMS_NAME, True), u'</strong>\n'])
     extend_([u'              <a href="/post/', escape_(post.get_path(), True), u'"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>\n'])
     if is_user_admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
@@ -662,7 +662,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
         extend_(['              ', u'  <a class="tag" href="/tag/', escape_(tag, True), u'">', escape_((tag), True), u'</a> \n'])
     extend_([u'          </p>\n'])
     if settings.ADSENSE_ID:
-        extend_(['          ', u'    <div id="adsense">\n'])
+        extend_(['          ', u'    <div id="adsense" style="margin-bottom:20px">\n'])
         extend_(['          ', u'        <script type="text/javascript"><!--\n'])
         extend_(['          ', u'        google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
         extend_(['          ', u'        /* 728x90, created 9/8/11 */\n'])

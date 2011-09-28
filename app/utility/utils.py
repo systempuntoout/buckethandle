@@ -121,7 +121,7 @@ def get_tag_weight(occurrencies, max_occurrencies):
         return int(math.log(occurrencies)/math.log(max_occurrencies) * (5-1)+1)
     except:
         return 0
-        
+       
 def link_is_valid(link):
     scheme, netloc, path, query, fragment = urlparse.urlsplit(link)
     if not scheme or not netloc:
@@ -146,7 +146,11 @@ def check_link_weight(link):
        return (question['score']) >= 3
    return True    
 
-   
+def get_metadescription(post):
+    
+    return ("%s - %s" % ((CMS_NAME + ' ' + post.category if post.category else '').strip(),
+                          (post.description if post.description else '' + " "+ post.title if post.title else '').strip())).strip()
+
 CACHE = {}
 def cachepage():
    """

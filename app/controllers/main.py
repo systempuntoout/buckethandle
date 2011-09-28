@@ -89,7 +89,8 @@ class Post:
                                                utils.ContentDiscoverer(post.link, post.category).get_content_block(),
                                                is_user_admin = users.is_current_user_admin()), 
                                                title = post.title,
-                                               canonical = "post/%s" % (post.get_path()))
+                                               canonical = "post/%s" % (post.get_path()),
+                                               meta_description = utils.get_metadescription(post))
         except BadKeyError:
                 raise web.notfound()
 
@@ -135,7 +136,7 @@ class Tags:
                                             category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = 'Home')
+                                            title = "%s %s" % (category if category else 'Home',' '.join(tags)))
         
 
 class TagCloud:

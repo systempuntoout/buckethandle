@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
 #Meta
-VERSION = '0.9.0.4'
-CMS_NAME = u"GAEcupboard"
+VERSION = '0.9.0.5'
+CMS_NAME = u"GAE Cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
-DESCRIPTION = u"""Google App Engine knowledge base"""             
-META_DESCRIPTION = u"GAEcupboard - Ingredients for your Google App Engine recipes"
+DESCRIPTION = u"""**GAE Cupboard**  
+                **Google App Engine knowledge base**"""             
+META_DESCRIPTION = u"GAE Cupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
@@ -14,13 +15,14 @@ APPENGINE_HOST = "gaecupboard.appspot.com"
 REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True
 
 ABOUT =u"""
-This is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
+GAE Cupboard is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
 Having some time to spare, I've tried to implement something to store and organize part of the public knowledge around Google App Engine.  
 I've coded up this tool that is a sort of mix among Reddit, Delicious and a Cms/Blogging platform.  
 
 Do you want some good tags/categories combo to start with?  
 
 Try with:  
+
     - [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
     - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
     - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  

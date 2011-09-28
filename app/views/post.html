@@ -20,7 +20,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
                 <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" alt="Image"/>
               </div>
           </div>
-          <p>$post.created.strftime("%d %B, %Y")
+          <p>$post.created.strftime("%d %B, %Y") | <strong>$settings.CMS_NAME</strong>
               <a href="/post/$post.get_path()"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>
               $if is_user_admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
@@ -33,7 +33,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
                     <a class="tag" href="/tag/$tag">$(tag)</a> 
           </p>
           $if settings.ADSENSE_ID:
-                  <div id="adsense">
+                  <div id="adsense" style="margin-bottom:20px">
                       <script type="text/javascript"><!--
                       google_ad_client = "$settings.ADSENSE_ID";
                       /* 728x90, created 9/8/11 */
