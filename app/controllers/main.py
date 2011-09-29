@@ -66,7 +66,7 @@ class Post:
             if post_id and not slug:
                 post = models.Post.get(post_id)
                 if post:
-                    return web.redirect('/post/%s/%s' % (post_id, post.slug))
+                    return web.seeother('/post/%s/%s' % (post_id, post.slug))
                 else:
                     raise web.notfound()
             #Gest post 
@@ -78,7 +78,7 @@ class Post:
             if post:
                 #Return to canonical if the slug is truncated
                 if slug and slug.strip() != post.slug:
-                    return web.redirect('/post/%s/%s' % (post_id, post.slug))
+                    return web.seeother('/post/%s/%s' % (post_id, post.slug))
                 prev_post, next_post = models.Post.get_prev_next(post)
             else:
                 raise web.notfound()
@@ -118,15 +118,15 @@ class Tags:
         if add_tag:
             tags = tags + [tag.lower() for tag in add_tag.split()]
             if category:
-                return web.redirect('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
+                return web.seeother('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
             else:
-                return web.redirect('/tag/%s' % web.urlquote('/'.join(tags)))
+                return web.seeother('/tag/%s' % web.urlquote('/'.join(tags)))
         if remove_tag:
             tags.remove(remove_tag.lower())
             if category:
-                return web.redirect('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
+                return web.seeother('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
             else:
-                return web.redirect('/tag/%s' % web.urlquote('/'.join(tags)))
+                return web.seeother('/tag/%s' % web.urlquote('/'.join(tags)))
         
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
