@@ -1,13 +1,17 @@
-from google.appengine.ext import db
-from google.appengine.api import memcache
-from app.utility.utils import memcached
-from app.config.settings import *
-import datetime
-import app.utility.utils as utils
-import app.db.counter as counter
 import logging
 import string
+import datetime
+import itertools
+
+from google.appengine.ext import db
+from google.appengine.api import memcache
+
 import web
+import app.utility.utils as utils
+import app.db.counter as counter
+from app.utility.utils import memcached
+from app.config.settings import *
+
 
 render = web.render 
 
@@ -151,10 +155,17 @@ class Tag(db.Model):
         db.put(tags_to_update)
 
     @staticmethod
-    @memcached('get_tags', 3600*24, lambda limit = NO_LIMIT : limit )
-    def get_tags(limit = NO_LIMIT ):
-        tags =  Tag.all().filter('counter > ', 0).order('-counter')
-        return tags.fetch(limit = limit)
+    @memcached('get_tags', 3600*24, lambda limit = NO_LIMIT, tag_filter = None : '%s_%s' % (limit, tag_filter) )
+    def get_tags(limit = NO_LIMIT, tag_filter = None ):
+        tags =  Tag.all()
+        if tag_filter:
+            tags = tags.filter('name >=', tag_filter).filter('name <', tag_filter + u'\ufffd')
+            tags.fetch(limit = limit)
+            tags = sorted(tags, key=lambda x: x.counter, reverse=True)
+            return tags
+        else:
+            tags = tags.filter('counter >', 0).order('-counter')
+            return tags.fetch(limit = limit)
     
     @staticmethod
     @memcached('get_tag', 3600*24, lambda name: name)
@@ -164,8 +175,8 @@ class Tag(db.Model):
     @staticmethod
     @memcached('get_tags_by_filter', 3600*24*20, lambda tag_filter : tag_filter )
     def get_tags_by_filter(tag_filter):
-        tags = Tag.get_tags() 
-        return '\n'.join([tag.name for tag in tags if tag.name.startswith(tag_filter)])
+        tags = Tag.get_tags(limit = 20, tag_filter = tag_filter) 
+        return '\n'.join([tag.name for tag in tags])
         
     @staticmethod
     def cache_tags():

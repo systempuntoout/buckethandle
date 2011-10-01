@@ -22,7 +22,6 @@ I've coded up this tool that is a sort of mix among Reddit, Delicious and a Cms/
 Do you want some good tags/categories combo to start with?  
 
 Try with:  
-
     - [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
     - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
     - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
