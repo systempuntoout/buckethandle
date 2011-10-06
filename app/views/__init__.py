@@ -230,7 +230,7 @@ def featured (posts, is_user_admin = False):
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
         extend_(['      ', u'              <p style="text-align:right;">\n'])
-        extend_(['      ', u'                  <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="Image"/>\n'])
+        extend_(['      ', u'                  <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="', escape_(post.category, True), u'"/>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'\n'])
@@ -380,7 +380,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
         extend_(['      ', u'              <p style="text-align:right;">\n'])
-        extend_(['      ', u'                  <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="Image"/>\n'])
+        extend_(['      ', u'                  <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="', escape_(post.category, True), u'"/>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'\n'])
@@ -449,6 +449,8 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <meta http-equiv="content-type" content="', escape_(settings.HTML_MIME_TYPE, True), u'"/>\n'])
     extend_([u'    <meta name="description" content="', escape_((meta_description != '' and meta_description or settings.META_DESCRIPTION), True), u'"/>\n'])
     extend_([u'    <meta name="keywords" content="', escape_(settings.META_KEYWORDS, True), u'"/>\n'])
+    if title == 'Tag cloud':
+        extend_(['    ', u'<meta name="robots" content="noindex">\n'])
     extend_([u'    <title> ', escape_((title), True), u' - ', escape_(settings.CMS_NAME, True), u'</title> \n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>\n'])
@@ -519,6 +521,21 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'            <div>\n'])
         extend_([u'                ', escape_(safemarkdown(settings.DESCRIPTION), False), u'\n'])
         extend_([u'            </div>\n'])
+        extend_([u'            <p>\n'])
+        extend_([u'            <g:plusone size="large"></g:plusone>\n'])
+        extend_([u'            </p>\n'])
+        extend_([u'            <p>\n'])
+        extend_([u'                <div id="fb-root"></div>\n'])
+        extend_([u'                <script>(function(d, s, id) {\n'])
+        extend_([u'                  var js, fjs = d.getElementsByTagName(s)[0];\n'])
+        extend_([u'                  if (d.getElementById(id)) {return;}\n'])
+        extend_([u'                  js = d.createElement(s); js.id = id;\n'])
+        extend_([u'                  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";\n'])
+        extend_([u'                  fjs.parentNode.insertBefore(js, fjs);\n'])
+        extend_([u"                }(document, 'script', 'facebook-jssdk'));</script>\n"])
+        extend_([u'\n'])
+        extend_([u'                <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>\n'])
+        extend_([u'            </p>\n'])
         extend_([u'            <p>Posts: <span class="summarycount">', escape_(commify(posts_total_count), True), u'</span></p> \n'])
         if settings.CATEGORIES:
             extend_(['            ', u'<h2>Categories</h2>\n'])
@@ -526,23 +543,21 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
             for category in loop.setup(categories):
                 extend_(['            ', u'<li><a href="/?category=', escape_(category.name, True), u'">', escape_(category.name, True), u'</a><span class="counter"> (', escape_(commify(category.counter), True), u')</span></li>\n'])
             extend_(['            ', u'</ul>\n'])
-        extend_([u'            <h2>Tags</h2>\n'])
-        extend_([u'            <p>\n'])
-        for tag in loop.setup(tag_cloud):
-            extend_(['                ', u'    <span class="tag_info"><a class="tag_cloud_nav_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'"> ', escape_((tag.name), True), u'</a><span class="counter"> (', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
-            extend_(['                ', u'\n'])
-        if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
-            extend_(['                ', u'<br/><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
-        extend_([u'            </p>\n'])
+        if title != 'Tag cloud':
+            extend_(['            ', u'<h2>Tags</h2>\n'])
+            extend_(['            ', u'<p>\n'])
+            for tag in loop.setup(tag_cloud):
+                extend_(['                ', u'    <span class="tag_info"><a class="tag_cloud_nav_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'"> ', escape_((tag.name), True), u'</a><span class="counter"> (', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
+                extend_(['                ', u'\n'])
+            if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
+                extend_(['                ', u'<br/><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
+            extend_(['            ', u'</p>\n'])
         extend_([u'            <div id="img" style="margin-top:10px">\n'])
         extend_([u'                <p style="text-align:center">\n'])
         extend_([u'                <a href="/submit?action=submit_init"><img onmouseout="this.src=\'/images/submitlink.png\';" onmouseover="this.src=\'/images/submitlink_hover.png\'" src="/images/submitlink.png" alt="Submit a link"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])
-        extend_([u'                </p>\n'])
-        extend_([u'                <p>\n'])
-        extend_([u'                <g:plusone size="medium"></g:plusone>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                    <div class="addthis_toolbox addthis_default_style ">\n'])
@@ -576,7 +591,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'</div>\n'])
         extend_([u'\n'])
     extend_([u'<div id="footer">\n'])
-    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u'| ', escape_(settings.CMS_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
+    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | ', escape_(settings.CMS_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
     extend_([u'</div>\n'])
     extend_([u'\n'])
     if settings.ANALYTICS_ID and not development and not is_user_admin:
@@ -646,7 +661,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'          <div style="margin-top:20px;text-align:center;font-size:140%;font-weight:bold">\n'])
     extend_([u'          <p>', escape_((post.title), True), u'</p>\n'])
     extend_([u'              <div style="float:right;">\n'])
-    extend_([u'                <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" alt="Image"/>\n'])
+    extend_([u'                <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="', escape_(post.category, True), u'"/>\n'])
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
     extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u' | <strong>', escape_(settings.CMS_NAME, True), u'</strong>\n'])
@@ -846,18 +861,19 @@ submit = CompiledTemplate(submit, 'app/views/submit.html')
 join_ = submit._join; escape_ = submit._escape
 
 # coding: utf-8
-def tagcloud (tag_cloud):
+def tagcloud (tag_cloud, show_all = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
     max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     extend_([u'\n'])
-    extend_([u'<p>Tags found: <b>', escape_(commify(len(tag_cloud)), True), u'</b></p>\n'])
+    extend_([u'<p>Tags shown: <b>', escape_(commify(len(tag_cloud)), True), u'</b></p>\n'])
     extend_([u'<p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"/></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
         extend_(['    ', u'    <span class="tag_info"><a class="tag_cloud_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
-        extend_(['    ', u'\n'])
+    if len(tag_cloud)>=settings.MAIN_CLOUDSIZE and not show_all:
+        extend_(['    ', u'    <br/><span class="more_tag"><a  href="/tagcloud?showall=true">even more \xbb</a></span>\n'])
     extend_([u'</div>\n'])
 
     return self

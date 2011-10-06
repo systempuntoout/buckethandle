@@ -35,6 +35,5 @@ urls = (
 sitemap_urls = ('/',
                 '/tag',
                 '/post',
-                '/tagcloud',
                 '/featured',
                 '/about')

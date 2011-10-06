@@ -8,6 +8,8 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     <meta http-equiv="content-type" content="$settings.HTML_MIME_TYPE"/>
     <meta name="description" content="$(meta_description != '' and meta_description or settings.META_DESCRIPTION)"/>
     <meta name="keywords" content="$settings.META_KEYWORDS"/>
+    $if title == 'Tag cloud':
+        <meta name="robots" content="noindex">
     <title> $(title) - $settings.CMS_NAME</title> 
     <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>
@@ -78,6 +80,21 @@ $if navbar:
                 <div>
                     $:safemarkdown(settings.DESCRIPTION)
                 </div>
+                <p>
+                <g:plusone size="large"></g:plusone>
+                </p>
+                <p>
+                    <div id="fb-root"></div>
+                    <script>(function(d, s, id) {
+                      var js, fjs = d.getElementsByTagName(s)[0];
+                      if (d.getElementById(id)) {return;}
+                      js = d.createElement(s); js.id = id;
+                      js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                      fjs.parentNode.insertBefore(js, fjs);
+                    }(document, 'script', 'facebook-jssdk'));</script>
+
+                    <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>
+                </p>
                 <p>Posts: <span class="summarycount">$commify(posts_total_count)</span></p> 
                 $if settings.CATEGORIES:
                     <h2>Categories</h2>
@@ -85,23 +102,21 @@ $if navbar:
                     $for category in categories:
                         <li><a href="/?category=$category.name">$category.name</a><span class="counter"> ($commify(category.counter))</span></li>
                     </ul>
-                <h2>Tags</h2>
-                <p>
-                    $for tag in tag_cloud:
-                            <span class="tag_info"><a class="tag_cloud_nav_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)"> $(tag.name)</a><span class="counter"> ($commify(tag.counter))</span>&nbsp;</span>
+                $if title != 'Tag cloud':
+                    <h2>Tags</h2>
+                    <p>
+                        $for tag in tag_cloud:
+                                <span class="tag_info"><a class="tag_cloud_nav_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)"> $(tag.name)</a><span class="counter"> ($commify(tag.counter))</span>&nbsp;</span>
 
-                    $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
-                        <br/><span class="more_tag"><a  href="/tagcloud">more »</a></span>
-                </p>
+                        $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
+                            <br/><span class="more_tag"><a  href="/tagcloud">more »</a></span>
+                    </p>
                 <div id="img" style="margin-top:10px">
                     <p style="text-align:center">
                     <a href="/submit?action=submit_init"><img onmouseout="this.src='/images/submitlink.png';" onmouseover="this.src='/images/submitlink_hover.png'" src="/images/submitlink.png" alt="Submit a link"/></a>
                     </p>
                     <p>
                     <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>
-                    </p>
-                    <p>
-                    <g:plusone size="medium"></g:plusone>
                     </p>
                     <p>
                         <div class="addthis_toolbox addthis_default_style ">

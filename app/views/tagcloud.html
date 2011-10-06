@@ -1,10 +1,11 @@
-$def with (tag_cloud)
+$def with (tag_cloud, show_all = False)
 $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 
-<p>Tags found: <b>$commify(len(tag_cloud))</b></p>
+<p>Tags shown: <b>$commify(len(tag_cloud))</b></p>
 <p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"/></p>
 <div id="main_tag_cloud">
     $for tag in tag_cloud:
             <span class="tag_info"><a class="tag_cloud_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)">$(tag.name)</a><span class="counter">($commify(tag.counter))</span>&nbsp;</span>
-
+    $if len(tag_cloud)>=settings.MAIN_CLOUDSIZE and not show_all:
+            <br/><span class="more_tag"><a  href="/tagcloud?showall=true">even more »</a></span>
 </div>

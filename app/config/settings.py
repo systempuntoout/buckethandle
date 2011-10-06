@@ -5,7 +5,7 @@ CMS_NAME = u"GAE Cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
 DESCRIPTION = u"""**GAE Cupboard**  
-                **Google App Engine knowledge base**"""             
+                *App Engine knowledge base directory*"""             
 META_DESCRIPTION = u"GAE Cupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
@@ -44,6 +44,7 @@ THUMBNAIL_WIDTH= 70
 THUMBNAIL_HEIGHT= 70
 POSTS_PER_PAGE = 10
 NAVBAR_CLOUDSIZE = 30
+MAIN_CLOUDSIZE = 500
 RECENT_POST_NUM = 20
 FEATURED_POST_NUM = 30
 NO_LIMIT = 10000

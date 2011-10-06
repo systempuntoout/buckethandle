@@ -145,8 +145,12 @@ class TagCloud:
     """
     @cachepage()
     def GET(self):
-        tag_cloud = models.Tag.get_tags()
-        return render_template(render.tagcloud(tag_cloud),
+        show_all = web.input(showall = False)['showall']
+        if show_all:
+            tag_cloud = models.Tag.get_tags()
+        else:
+            tag_cloud = models.Tag.get_tags(MAIN_CLOUDSIZE)
+        return render_template(render.tagcloud(tag_cloud, show_all),
                                title = 'Tag cloud')
 
 class Featured:
