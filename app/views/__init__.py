@@ -534,7 +534,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                  fjs.parentNode.insertBefore(js, fjs);\n'])
         extend_([u"                }(document, 'script', 'facebook-jssdk'));</script>\n"])
         extend_([u'\n'])
-        extend_([u'                <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>\n'])
+        extend_([u'                <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>\n'])
         extend_([u'            </p>\n'])
         extend_([u'            <p>Posts: <span class="summarycount">', escape_(commify(posts_total_count), True), u'</span></p> \n'])
         if settings.CATEGORIES:
