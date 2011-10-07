@@ -10,8 +10,11 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     <meta name="keywords" content="$settings.META_KEYWORDS"/>
     $if title == 'Tag cloud':
         <meta name="robots" content="noindex">
-    <title> $(title) - $settings.CMS_NAME</title> 
-    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css"/>
+    $if title == 'Home':
+        <title>$settings.CMS_NAME</title> 
+    $else:
+        <title> $(title) - $settings.CMS_NAME</title> 
+    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css?000002"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>
     <link rel="stylesheet" type="text/css" href="/stylesheets/uniform.default.css"/>
     <link rel="stylesheet" type="text/css" href="/javascripts/markitup/skins/markitup/style.css" />
@@ -53,7 +56,6 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
         $if is_user_admin:
             <li><a href="/admin" $:(title=='Admin' and 'class="active"' or '')>Admin</a></li>
     </ul>
-        
         <form id="form" action="/search" method="get">
           <p id="layoutdims">  
             <input type="hidden" name="ie" value="UTF-8" />
@@ -80,10 +82,11 @@ $if navbar:
                 <div>
                     $:safemarkdown(settings.DESCRIPTION)
                 </div>
-                <p>
-                <g:plusone size="large"></g:plusone>
-                </p>
-                <p>
+                <ul class="like-buttons">
+                <li style="width:67px">
+                    <g:plusone size="medium"></g:plusone>
+                </li>
+                <li class="fb-like">
                     <div id="fb-root"></div>
                     <script>(function(d, s, id) {
                       var js, fjs = d.getElementsByTagName(s)[0];
@@ -92,9 +95,9 @@ $if navbar:
                       js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
                       fjs.parentNode.insertBefore(js, fjs);
                     }(document, 'script', 'facebook-jssdk'));</script>
-
-                    <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-font="arial"></div>
-                </p>
+                    <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial"></div>
+                </li>
+                </ul>
                 <p>Posts: <span class="summarycount">$commify(posts_total_count)</span></p> 
                 $if settings.CATEGORIES:
                     <h2>Categories</h2>
