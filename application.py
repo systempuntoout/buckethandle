@@ -46,7 +46,7 @@ def redirect_from_appspot(wsgi_app):
             request = webob.Request(env)
             scheme, netloc, path, query, fragment = urlparse.urlsplit(request.url)
             url = urlparse.urlunsplit([scheme, to_server, path, query, fragment])
-            if not path.startswith('/admin'):
+            if not path.startswith('/admin') and not path.startswith('/robots.txt'):
                 start_response("301 Moved Permanently", [("Location", url)])
                 return ["301 Moved Peramanently", "Click Here %s" % url]
         return wsgi_app(env, start_response)

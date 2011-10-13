@@ -146,6 +146,12 @@ def check_link_weight(link):
        return (question['score']) >= 3
    return True    
 
+def check_useragent_for_bots(useragent):
+    for botname in BOTS:
+        if botname in useragent:
+            return True
+    return False
+
 def get_metadescription(post):
     
     return ("%s - %s" % ((CMS_NAME + ' ' + post.category if post.category else '').strip(),

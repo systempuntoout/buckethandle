@@ -12,7 +12,7 @@ urls = (
   '/post/([\w_-]+)(?:/([\w-]+))?/?', 'app.controllers.main.Post',
   '/about', 'app.controllers.main.About',
   '/search', 'app.controllers.main.Search',
-  '/img/([\w_-]+)', 'app.controllers.main.Image',
+  '/img/([\w_-]+)(?:/.*)?', 'app.controllers.main.Image',
   '/ajax/tags','app.controllers.ajax.Tags',
   '/ajax/links','app.controllers.ajax.Links',
   '/admin','app.controllers.admin.Admin',

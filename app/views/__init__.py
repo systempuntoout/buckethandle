@@ -444,6 +444,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n'])
     extend_([u'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">\n'])
     extend_([u'<head>\n'])
+    extend_([u'    <meta name="google-site-verification" content="m05zkgXk41nY4dXLheGpLdTiTnx-JduC2XOamAra_6Q" />\n'])
     extend_([u'    <META name="y_key" content="88698ce39daf8603" />\n'])
     extend_([u'    <link rel="alternate" type="application/atom+xml" href="/index.xml" />\n'])
     extend_([u'    <meta http-equiv="content-type" content="', escape_(settings.HTML_MIME_TYPE, True), u'"/>\n'])
@@ -723,14 +724,17 @@ post = CompiledTemplate(post, 'app/views/post.html')
 join_ = post._join; escape_ = post._escape
 
 # coding: utf-8
-def robots():
-    __lineoffset__ = -5
+def robots (disallow_all = False):
+    __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
     extend_([u'User-Agent: *\n'])
-    extend_([u'Disallow: /admin\n'])
-    extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap_index.xml\n'])
-    extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap.xml\n'])
+    if disallow_all:
+        extend_([u'Disallow: /\n'])
+    else:
+        extend_([u'Disallow: /admin\n'])
+        extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap_index.xml\n'])
+        extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap.xml\n'])
 
     return self
 

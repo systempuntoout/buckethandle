@@ -1,15 +1,20 @@
-from app.config.settings import *
-from app.config.urls import sitemap_urls
-import app.db.models as models
-import app.utility.utils as utils
-from app.utility.utils import cachepage
+import os
+import logging
+import re
+
 from google.appengine.api import memcache
-import logging, web, re
 from google.appengine.ext import ereporter
 from google.appengine.ext import db
 from google.appengine.api import users
 from google.appengine.api import mail
 from google.appengine.ext.db import BadKeyError
+
+import web
+from app.config.settings import *
+from app.config.urls import sitemap_urls
+import app.db.models as models
+import app.utility.utils as utils
+from app.utility.utils import cachepage
 
 ereporter.register_logger()
 
@@ -79,7 +84,11 @@ class Post:
                 #Return to canonical if the slug is truncated
                 if slug and slug.strip() != post.slug:
                     return web.seeother('/post/%s/%s' % (post_id, post.slug))
-                prev_post, next_post = models.Post.get_prev_next(post)
+                #ALERT:Trying to save some reads
+                if not utils.check_useragent_for_bots(os.environ.get('HTTP_USER_AGENT')):
+                    prev_post, next_post = models.Post.get_prev_next(post)
+                else:
+                    prev_post = next_post = None
             else:
                 raise web.notfound()
         
@@ -131,12 +140,15 @@ class Tags:
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
         
+        if not posts:
+            raise web.notfound(render.layout(render.index([]), title ='Home', navbar = True, is_user_admin = users.is_current_user_admin()))
+        
         return render_template(render.index(posts, 
                                             tags, 
                                             category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = "%s %s" % (category if category else 'Home',' '.join(tags)))
+                                            title = "%s %s" % (category if category else '',' '.join(tags)))
         
 
 class TagCloud:
@@ -219,7 +231,10 @@ class Robots:
        Robots
        """
        def GET(self):
-           return render.robots()          
+           disallow_all = False
+           if REDIRECT_FROM_APPENGINE_HOST_TO_HOST and os.environ.get('HTTP_HOST').endswith(APPENGINE_HOST):
+                disallow_all = True
+           return render.robots(disallow_all)          
           
                              
 class Image:
@@ -227,12 +242,16 @@ class Image:
      Image
      """
      def GET(self, post_id):
-         post = models.Post.get_post(post_id)
+         try:
+             post = models.Post.get_post(post_id)
 
-         if post and post.thumbnail:
-             web.header('Content-type', 'image/png')
-             return post.thumbnail
-         else:
+             if post and post.thumbnail:
+                 web.header('Content-type', 'image/png')
+                 web.header('Cache-Control','public, max-age=300')
+                 return post.thumbnail
+             else:
+                 raise web.notfound()
+         except:
              raise web.notfound()
 
 

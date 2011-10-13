@@ -25,7 +25,8 @@ Try with:
     - [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
     - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
     - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
-    - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category
+    - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category  
+    - [pricing](http://www.gaecupboard.com/tag/pricing?category=Articles)  in the _Articles_ category  
 
 This tool is a work in progress, so expect errors, dragons and other nasty things.    
 
@@ -66,6 +67,7 @@ RELAXING_MESSAGE_ERROR = "..cumulus clouds are white, puffy clouds that look lik
 GENERIC_ERROR = "Ooooops, it works on my machine. Please try again later."
 NOT_FOUND_ERROR = "Not found!"
 SERVER_ERROR = "Server problem"
+BOTS=['Googlebot','Slurp','Twiceler','msnbot','KaloogaBot','YodaoBot','Baiduspider','googlebot','Speedy Spider','DotBot']
 
 #Mapping Discovery
 AUTO_CONTENT_BY_LINK = {
