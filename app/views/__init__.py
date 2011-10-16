@@ -517,7 +517,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'        </div>    \n'])
         extend_([u'        <div class="col2">\n'])
         extend_([u'            <div id="logo">\n'])
-        extend_([u'                <a href="', escape_(settings.HOST, True), u'">\n'])
+        extend_([u'                <a href="http://', escape_(settings.HOST, True), u'">\n'])
         extend_([u'                    <img src="/images/logo.png" width="100" height="100" alt="Logo" />\n'])
         extend_([u'                </a>\n'])
         extend_([u'            </div>\n'])
