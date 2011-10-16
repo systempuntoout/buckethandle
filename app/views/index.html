@@ -78,7 +78,7 @@ $def render_catqs(selected_category, front_char):
                                   $if tag in selected_tags:
                                       <a class="tag dark" href="/tag/$urlquote('/'.join(selected_tags))$(render_catqs(selected_category,"?"))">$(tag)</a>
                                   $else:
-                                      <a class="tag" href="/tag/$urlquote('/'.join(selected_tags))?addtag=$urlquote(tag)$(render_catqs(selected_category,"&"))">$(tag)</a>
+                                      <a class="tag" href="/tag/$(urlquote('/'.join(selected_tags))+('/' if len(selected_tags) >= 1 else '')+urlquote(tag))$(render_catqs(selected_category,"?"))">$(tag)</a>
                         </span>
                     </div>
                   </td>

@@ -110,7 +110,7 @@ class APISite(object):
 
     def _get_response_data(self, url):
         """Gets the response encoded as a string."""
-        response = urlfetch.fetch(url,  headers = {'User-Agent': 'GAEcupboard'}, deadline = 10, method = urlfetch.GET)
+        response = urlfetch.fetch(url,  headers = {'User-Agent': 'Buckethandle'}, deadline = 10, method = urlfetch.GET)
         return response.content
 
 

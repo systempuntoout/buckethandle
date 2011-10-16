@@ -10,9 +10,9 @@ META_DESCRIPTION = u"GAE Cupboard - Ingredients for your Google App Engine recip
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
 CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
-HOST = "www.gaecupboard.com"
-APPENGINE_HOST = "gaecupboard.appspot.com"
-REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True
+HOST = "www.gaecupboard.com" #Insert your host here: foo.appspot.com or in case of custom domain www.foo.com
+REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True 
+APPENGINE_HOST = "gaecupboard.appspot.com" #Mandatory if REDIRECT_FROM_APPENGINE_HOST_TO_HOST is set to True
 
 ABOUT =u"""
 GAE Cupboard is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  

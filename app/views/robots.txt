@@ -4,5 +4,6 @@ $if disallow_all:
     Disallow: /
 $else:
     Disallow: /admin
+    Disallow: /*removetag=
     Sitemap: http://$(settings.HOST)/sitemap_index.xml
     Sitemap: http://$(settings.HOST)/sitemap.xml

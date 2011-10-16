@@ -46,7 +46,7 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
         $else:
             <span class="login"><a href="$login_url">login</a></span>
     </span>
-    <h1>$settings.CMS_NAME <img src="/images/lab.png" alt="Lab"/></h1>
+    <h1>$settings.CMS_NAME <img src="/images/logo_header.png" alt="Logo"/></h1>
     <h2>$(settings.SLOGAN)</h2>
     <ul>
         <li><a href="/" $:(title=='Home' and 'class="active"' or '')>Home</a></li>
@@ -76,8 +76,8 @@ $if navbar:
             </div>    
             <div class="col2">
                 <div id="logo">
-                    <a href="http://code.google.com/appengine/">
-                        <img src="/images/google-app-engine.png" width="100" height="100" alt="Google App Engine" />
+                    <a href="$settings.HOST">
+                        <img src="/images/logo.png" width="100" height="100" alt="Logo" />
                     </a>
                 </div>
                 <div>
@@ -96,7 +96,7 @@ $if navbar:
                       js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
                       fjs.parentNode.insertBefore(js, fjs);
                     }(document, 'script', 'facebook-jssdk'));</script>
-                    <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial"></div>
+                    <div class="fb-like" data-href="$settings.HOST" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial"></div>
                 </li>
                 </ul>
                 <p>Posts: <span class="summarycount">$commify(posts_total_count)</span></p> 

@@ -395,7 +395,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             if tag in selected_tags:
                 extend_(['                          ', u'<a class="tag dark" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), escape_((render_catqs(selected_category,"?")), True), u'">', escape_((tag), True), u'</a>\n'])
             else:
-                extend_(['                          ', u'<a class="tag" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'?addtag=', escape_(urlquote(tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_((tag), True), u'</a>\n'])
+                extend_(['                          ', u'<a class="tag" href="/tag/', escape_((urlquote('/'.join(selected_tags))+('/' if len(selected_tags) >= 1 else '')+urlquote(tag)), True), escape_((render_catqs(selected_category,"?")), True), u'">', escape_((tag), True), u'</a>\n'])
         extend_(['      ', u'              </span>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'        </td>\n'])
@@ -487,7 +487,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     else:
         extend_(['        ', u'<span class="login"><a href="', escape_(login_url, True), u'">login</a></span>\n'])
     extend_([u'    </span>\n'])
-    extend_([u'    <h1>', escape_(settings.CMS_NAME, True), u' <img src="/images/lab.png" alt="Lab"/></h1>\n'])
+    extend_([u'    <h1>', escape_(settings.CMS_NAME, True), u' <img src="/images/logo_header.png" alt="Logo"/></h1>\n'])
     extend_([u'    <h2>', escape_((settings.SLOGAN), True), u'</h2>\n'])
     extend_([u'    <ul>\n'])
     extend_([u'        <li><a href="/" ', escape_((title=='Home' and 'class="active"' or ''), False), u'>Home</a></li>\n'])
@@ -517,8 +517,8 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'        </div>    \n'])
         extend_([u'        <div class="col2">\n'])
         extend_([u'            <div id="logo">\n'])
-        extend_([u'                <a href="http://code.google.com/appengine/">\n'])
-        extend_([u'                    <img src="/images/google-app-engine.png" width="100" height="100" alt="Google App Engine" />\n'])
+        extend_([u'                <a href="', escape_(settings.HOST, True), u'">\n'])
+        extend_([u'                    <img src="/images/logo.png" width="100" height="100" alt="Logo" />\n'])
         extend_([u'                </a>\n'])
         extend_([u'            </div>\n'])
         extend_([u'            <div>\n'])
@@ -537,7 +537,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";\n'])
         extend_([u'                  fjs.parentNode.insertBefore(js, fjs);\n'])
         extend_([u"                }(document, 'script', 'facebook-jssdk'));</script>\n"])
-        extend_([u'                <div class="fb-like" data-href="http://www.gaecupboard.com" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial"></div>\n'])
+        extend_([u'                <div class="fb-like" data-href="', escape_(settings.HOST, True), u'" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial"></div>\n'])
         extend_([u'            </li>\n'])
         extend_([u'            </ul>\n'])
         extend_([u'            <p>Posts: <span class="summarycount">', escape_(commify(posts_total_count), True), u'</span></p> \n'])
@@ -733,6 +733,7 @@ def robots (disallow_all = False):
         extend_([u'Disallow: /\n'])
     else:
         extend_([u'Disallow: /admin\n'])
+        extend_([u'Disallow: /*removetag=\n'])
         extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap_index.xml\n'])
         extend_([u'Sitemap: http://', escape_((settings.HOST), True), u'/sitemap.xml\n'])
 

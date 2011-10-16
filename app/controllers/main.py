@@ -141,14 +141,14 @@ class Tags:
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
         
         if not posts:
-            raise web.notfound(render.layout(render.index([]), title ='Home', navbar = True, is_user_admin = users.is_current_user_admin()))
+            raise web.notfound(render.layout(render.index([], tags, category), title ='Home', navbar = True, is_user_admin = users.is_current_user_admin()))
         
         return render_template(render.index(posts, 
                                             tags, 
                                             category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = "%s %s" % (category if category else '',' '.join(tags)))
+                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else 'Posts'))
         
 
 class TagCloud:
@@ -163,7 +163,8 @@ class TagCloud:
         else:
             tag_cloud = models.Tag.get_tags(MAIN_CLOUDSIZE)
         return render_template(render.tagcloud(tag_cloud, show_all),
-                               title = 'Tag cloud')
+                               title = 'Tag cloud',
+                               meta_description = 'Weighted tags list that can be filtered')
 
 class Featured:
    """
