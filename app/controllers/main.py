@@ -148,7 +148,7 @@ class Tags:
                                             category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else 'Posts'))
+                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else ('Posts' if not category else '')))
         
 
 class TagCloud:
