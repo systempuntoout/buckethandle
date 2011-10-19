@@ -74,7 +74,7 @@ class Post:
                     return web.seeother('/post/%s/%s' % (post_id, post.slug))
                 else:
                     raise web.notfound()
-            #Gest post 
+            #Get post 
             if post_id:            
                 post = models.Post.get_post(post_id)
             else:
@@ -84,11 +84,8 @@ class Post:
                 #Return to canonical if the slug is truncated
                 if slug and slug.strip() != post.slug:
                     return web.seeother('/post/%s/%s' % (post_id, post.slug))
-                #ALERT:Trying to save some reads
-                if not utils.check_useragent_for_bots(os.environ.get('HTTP_USER_AGENT')):
-                    prev_post, next_post = models.Post.get_prev_next(post)
-                else:
-                    prev_post = next_post = None
+                    
+                prev_post, next_post = models.Post.get_prev_next(post)
             else:
                 raise web.notfound()
         
@@ -129,7 +126,7 @@ class Tags:
             if category:
                 return web.seeother('/tag/%s?category=%s' % (web.urlquote('/'.join(tags)), category))
             else:
-                return web.seeother('/tag/%s' % web.urlquote('/'.join(tags)))
+                return web.redirect('/tag/%s' % web.urlquote('/'.join(tags)))
         if remove_tag:
             tags.remove(remove_tag.lower())
             if category:
@@ -139,9 +136,6 @@ class Tags:
         
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
-        
-        if not posts:
-            raise web.notfound(render.layout(render.index([], tags, category), title ='Home', navbar = True, is_user_admin = users.is_current_user_admin()))
         
         return render_template(render.index(posts, 
                                             tags, 
@@ -248,7 +242,7 @@ class Image:
 
              if post and post.thumbnail:
                  web.header('Content-type', 'image/png')
-                 web.header('Cache-Control','public, max-age=300')
+                 web.header('Cache-Control','public, max-age=86400')
                  return post.thumbnail
              else:
                  raise web.notfound()

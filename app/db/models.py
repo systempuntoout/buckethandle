@@ -30,7 +30,7 @@ class Post(db.Model):
     created = db.DateTimeProperty(required = True, auto_now_add = True)
     
     @staticmethod
-    @memcached('get_posts_count', 3600, lambda tags_filter = [], category_filter= '': "%s_%s" % ('.'.join(sorted(tags_filter)), category_filter))
+    @memcached('get_posts_count', 3600*24, lambda tags_filter = [], category_filter= '': "%s_%s" % ('.'.join(sorted(tags_filter)), category_filter))
     def get_posts_count(tags_filter = [], category_filter = ''):
         #Use the sharded counter for the unfiltered number of posts count
         if not tags_filter and not category_filter:
@@ -59,7 +59,7 @@ class Post(db.Model):
         return posts.count(limit = None)
 
     @staticmethod
-    @memcached('get_posts', 3600, lambda page, limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
+    @memcached('get_posts', 3600*24, lambda page, limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
     def get_posts(page, limit, offset, tags_filter = [], category_filter = ''):
         posts =  Post.all()
         if category_filter:
@@ -71,9 +71,16 @@ class Post(db.Model):
         if bookmark:
             posts.with_cursor(start_cursor = bookmark)
             fetched_post = posts.fetch(limit = limit)
+            memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
         else:
-            fetched_post = posts.fetch(limit = limit, offset = offset)
-        memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
+            if offset ==  0:
+                fetched_post = posts.fetch(limit = limit) 
+                memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
+            else:
+                #Offset consumes a lot of Datastore reads, without bookmark I return nothing
+                fetched_post = []
+            
+        
         return fetched_post
     
     @staticmethod
@@ -205,7 +212,7 @@ class Category(db.Model):
                    category_entity.put()
 
     @staticmethod
-    @memcached('get_categories', 3600, lambda limit = NO_LIMIT : limit )
+    @memcached('get_categories', 3600*24, lambda limit = NO_LIMIT : limit )
     def get_categories(limit = NO_LIMIT ):
         category =  Category.all().filter('counter > ', 0).order('-counter')
         return category.fetch(limit = limit)

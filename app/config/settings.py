@@ -164,7 +164,15 @@ AUTO_CONTENT_BY_LINK = {
 'http://news.ycombinator.com':{
                             'image':'hackernews.png',
                             'category':'Articles',
-                            }
+                            },
+'http://www.amazon.com':{
+                            'regex':'(.*)',
+                            'category':'Books',
+                            'content_block':"""
+                            <div id="content">
+                                <a href="%s"></a>
+                            </div>"""
+                            },
 }
 
 AUTO_CONTENT_BY_CATEGORY = {
