@@ -400,7 +400,6 @@ class ContentDiscoverer:
                 entity.reviewed = True
                 entity.put()
                 result[action] = "Done"
-                
           elif action =='start_downloadfeeds':
                 taskqueue.add(url='/admin/content?action=downloadfeeds',
                               method = 'GET', 
@@ -448,7 +447,7 @@ class ContentDiscoverer:
               if models.FeedEntry.check_for_new_posts():
                    mail.send_mail(sender="%s <%s>" % (CMS_NAME, MAIL_ADMIN),
                                  to="Admin <%s>" % MAIL_ADMIN,
-                                 subject="Contents Discoverer %s" % utils.now().strftime("%Y-%m-%d %H:%M:%S"),
+                                 subject="%s - Contents Discoverer %s" % (CMS_NAME, utils.now().strftime("%Y-%m-%d %H:%M:%S")),
                                  body="""
                    \nContents discovered:
                    \n%s\n

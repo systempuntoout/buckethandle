@@ -136,6 +136,10 @@ AUTO_CONTENT_BY_LINK = {
                             'image':'github.png',
                             'category':'Libraries',
                             },
+'https://gist.github.com':{
+                            'image':'github.png',
+                            'category':'Libraries',
+                            },
 'https://bitbucket.org':{
                         'image':'bitbucket.png',
                         'category':'Libraries',

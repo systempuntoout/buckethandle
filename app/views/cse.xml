@@ -9,7 +9,17 @@
         <Label name="cse_exclude" mode="ELIMINATE" />
       </BackgroundLabels>
     </Context>
-    <LookAndFeel nonprofit="false" />
+    <LookAndFeel nonprofit="false" custom_theme="true">
+        <Colors url="#336699"
+                background="#ffffff"
+                border="#ffffff"
+                title="#000000"
+                text="#336699"
+                visited="#336699"
+                title_hover="#336699" 
+                title_active="#336699"/>
+        <Results background_color="#ffffff" />
+    </LookAndFeel>
     $if settings.ADSENSE_ID:
         <AdSense>
          <Client id="$(settings.ADSENSE_ID)">

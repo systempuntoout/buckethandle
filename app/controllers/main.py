@@ -290,7 +290,7 @@ class Submit:
              if title.strip() and link.strip() and tags.strip():
                  mail.send_mail(sender="%s <%s>" % (CMS_NAME, MAIL_ADMIN),
                                to="Admin <%s>" % MAIL_ADMIN,
-                               subject="Link submitted %s" % utils.now().strftime("%Y-%m-%d %H:%M:%S"),
+                               subject="%s - Link submitted %s" % (CMS_NAME, utils.now().strftime("%Y-%m-%d %H:%M:%S")),
                                body="""
                  Link submission:
 
