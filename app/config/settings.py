@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #Meta
-VERSION = '0.9.0.5'
+VERSION = '0.9.0.6'
 CMS_NAME = u"GAE Cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
@@ -170,12 +170,14 @@ AUTO_CONTENT_BY_LINK = {
                             'category':'Articles',
                             },
 'http://www.amazon.com':{
-                            'regex':'(.*)',
+                            'regex':'http://www.amazon.com/gp/product/(.*)/.*',
                             'category':'Books',
                             'content_block':"""
-                            <div id="content">
-                                <a href="%s"></a>
-                            </div>"""
+                            <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&nou=1&
+                              bg1=FFFFFF&fc1=000000&lc1=0000FF&t=syst-20&o=1&p=8&l=as4&m=amazon&f=ifr&
+                              ref=ss_til&asins=%s"style="width:120px;height:240px;
+                              "scrolling="no"marginwidth="0"marginheight="0"frameborder="0">
+                             </iframe>"""
                             },
 }
 

@@ -26,6 +26,7 @@ def admin (submitted, result, action, title = '', link = '', description = '', t
     extend_([u' <div>\n'])
     extend_([u'     <div style="float:right">\n'])
     extend_([u'     <ul>  <li><a href="', escape_(settings.ADMIN_BOOKMARKLET, True), u'">Bookmarklet</a></li>\n'])
+    extend_([u'           <li><a href="/admin/tags">Tags</a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
     extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
     extend_([u'           <li><a href="/admin/content">Content discovery </a></li>\n'])
@@ -153,6 +154,46 @@ admin_content = CompiledTemplate(admin_content, 'app/views/admin_content.html')
 join_ = admin_content._join; escape_ = admin_content._escape
 
 # coding: utf-8
+def admin_tags (submitted, result, action):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u' \n'])
+    extend_([u' <div>\n'])
+    extend_([u'     <div style="float:right">\n'])
+    extend_([u'     <ul>  <li><a href="', escape_(settings.ADMIN_BOOKMARKLET, True), u'">Bookmarklet</a></li>\n'])
+    extend_([u'           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>\n'])
+    extend_([u'            <li><a href="/admin/tags">Tags</a></li>\n'])
+    extend_([u'           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>\n'])
+    extend_([u'           <li><a href="/admin/content">Content discovery </a></li>\n'])
+    extend_([u'     </ul>    \n'])
+    extend_([u'    </div>\n'])
+    extend_([u'    <div>\n'])
+    if result:
+        extend_(['    ', u'<div id="admin_message_box" ', escape_((submitted and 'class="admin_message_OK"' or 'class="admin_message_KO"'), False), u'>\n'])
+        extend_(['    ', u' <p>RESULT: ', escape_(action, True), u'</p>\n'])
+        extend_(['    ', u' <ul>\n'])
+        for key in loop.setup(result.keys()):
+            extend_(['     ', u'<li> ', escape_(("%s - %s" % (key, result[key])), True), u'</li>\n'])
+        extend_(['    ', u' </ul>\n'])
+        extend_(['    ', u'</div>\n'])
+    extend_([u'    <form action = "/admin/tags" method="POST"> \n'])
+    extend_([u'     <input type="hidden" id="action" name="action" value="renametags_init"/>    \n'])
+    extend_([u'     <p>Tags list to rename:<br><input type="text" id="tags_to_rename" name="tags_to_rename" size="100"/> </p>\n'])
+    extend_([u'     <p>Tag destination:<br><input type="text" id="tag_destination" name="tag_destination" size="20" value = ""/> </p>\n'])
+    extend_([u'     <p><input type="submit" value="Rename"/></p>\n'])
+    extend_([u'   </form>\n'])
+    extend_([u'   </div>\n'])
+    extend_([u'        \n'])
+    extend_([u'                            \n'])
+    extend_([u' </div>\n'])
+
+    return self
+
+admin_tags = CompiledTemplate(admin_tags, 'app/views/admin_tags.html')
+join_ = admin_tags._join; escape_ = admin_tags._escape
+
+# coding: utf-8
 def cse():
     __lineoffset__ = -5
     loop = ForLoop()
@@ -172,8 +213,8 @@ def cse():
     extend_([u'        <Colors url="#336699"\n'])
     extend_([u'                background="#ffffff"\n'])
     extend_([u'                border="#ffffff"\n'])
-    extend_([u'                title="#000000"\n'])
-    extend_([u'                text="#336699"\n'])
+    extend_([u'                title="#336699"\n'])
+    extend_([u'                text="#000000"\n'])
     extend_([u'                visited="#336699"\n'])
     extend_([u'                title_hover="#336699" \n'])
     extend_([u'                title_active="#336699"/>\n'])
@@ -482,10 +523,13 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <script type="text/javascript" src="/javascripts/main.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/jquery.markitup.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/sets/markdown/set.js"></script>\n'])
-    extend_([u'    <script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>\n'])
-    extend_([u'    <!-- markItUp! skin -->\n'])
-    extend_([u'    \n'])
-    extend_([u'    \n'])
+    extend_([u'    <script type="text/javascript">\n'])
+    extend_([u'      (function() {\n'])
+    extend_([u"        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;\n"])
+    extend_([u"        po.src = 'https://apis.google.com/js/plusone.js';\n"])
+    extend_([u"        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);\n"])
+    extend_([u'      })();\n'])
+    extend_([u'    </script>\n'])
     extend_([u'    \n'])
     extend_([u'</head>\n'])
     extend_([u'<body>\n'])
@@ -533,6 +577,8 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'            <div>\n'])
         extend_([u'                ', escape_(safemarkdown(settings.DESCRIPTION), False), u'\n'])
         extend_([u'            </div>\n'])
+        extend_([u'            <div style="height:70px">\n'])
+        extend_([u'            &nbsp;\n'])
         extend_([u'            <ul class="like-buttons">\n'])
         extend_([u'            <li style="width:67px">\n'])
         extend_([u'                <g:plusone size="medium"></g:plusone>\n'])
@@ -549,6 +595,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                <div class="fb-like" data-href="', escape_(settings.HOST, True), u'" data-send="false" data-layout="button_count" data-width="100" data-show-faces="false" data-font="arial"></div>\n'])
         extend_([u'            </li>\n'])
         extend_([u'            </ul>\n'])
+        extend_([u'            </div>\n'])
         extend_([u'            <p>Posts: <span class="summarycount">', escape_(commify(posts_total_count), True), u'</span></p> \n'])
         if settings.CATEGORIES:
             extend_(['            ', u'<h2>Categories</h2>\n'])
@@ -678,6 +725,8 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
     extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u' | <strong>', escape_(settings.CMS_NAME, True), u'</strong>\n'])
+    if post.is_featured():
+        extend_(['              ', u'<a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>\n'])
     extend_([u'              <a href="/post/', escape_(post.get_path(), True), u'"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>\n'])
     if is_user_admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])

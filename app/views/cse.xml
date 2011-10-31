@@ -13,8 +13,8 @@
         <Colors url="#336699"
                 background="#ffffff"
                 border="#ffffff"
-                title="#000000"
-                text="#336699"
+                title="#336699"
+                text="#000000"
                 visited="#336699"
                 title_hover="#336699" 
                 title_active="#336699"/>

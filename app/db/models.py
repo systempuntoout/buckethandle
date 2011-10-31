@@ -108,6 +108,10 @@ class Post(db.Model):
     
     def get_path(self):
         return "%s/%s" % (self.key(), self.slug)
+    
+    def is_featured(self):
+        if self.featured:
+           return self.featured
             
     @staticmethod
     @memcached('get_prev_next', 3600*24, lambda post: post.key())

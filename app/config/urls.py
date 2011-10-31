@@ -17,6 +17,7 @@ urls = (
   '/ajax/links','app.controllers.ajax.Links',
   '/admin','app.controllers.admin.Admin',
   '/admin/content','app.controllers.admin.ContentDiscoverer',
+  '/admin/tags','app.controllers.admin.Tags',
   '/index.xml', 'app.controllers.main.Feed',
   '/cse.xml', 'app.controllers.main.Cse',
   '/sitemap.xml', 'app.controllers.main.Sitemap',

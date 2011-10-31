@@ -2,7 +2,7 @@ jQuery(
     function()
     {   
         jQuery("#search").focus();
-        jQuery("#search, #tags").autocomplete('/ajax/tags', {
+        jQuery("#search, #tags, #tags_to_rename, #tag_destination").autocomplete('/ajax/tags', {
                 multiple: true,
                 matchContains: true,
                 multipleSeparator:' '});

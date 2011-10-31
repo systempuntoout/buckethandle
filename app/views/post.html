@@ -21,6 +21,8 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
               </div>
           </div>
           <p>$post.created.strftime("%d %B, %Y") | <strong>$settings.CMS_NAME</strong>
+              $if post.is_featured():
+                <a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>
               <a href="/post/$post.get_path()"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>
               $if is_user_admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>

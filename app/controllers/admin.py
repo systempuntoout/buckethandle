@@ -122,26 +122,26 @@ class Admin:
                           countdown = 5)
             result[action] = "Done"
         elif action =='import': #Import from archive
-            fi = open('app/data/import.txt')
-            for line in fi:
-                splitted_data = line.strip().split(';')
-                try:
-                    url_img = splitted_data[4].strip()
-                except:
-                    url_img = ''
-                    
-                taskqueue.add(url='/admin',
-                              method = 'POST', 
-                              queue_name = 'populate',
-                              countdown = 5,
-                              params = {
-                                'action' : 'newpost',
-                                'title': splitted_data[0],
-                                'link' : splitted_data[1],
-                                'category' : splitted_data[2],
-                                'tags' : splitted_data[3].strip(),
-                                'url_img': url_img
-                              })            
+                    fi = open('app/data/import.txt')
+                    for line in fi:
+                        splitted_data = line.strip().split('|')
+                        try:
+                            url_img = splitted_data[4].strip()
+                        except:
+                            url_img = ''
+
+                        taskqueue.add(url='/admin',
+                                      method = 'POST', 
+                                      queue_name = 'populate',
+                                      countdown = 5,
+                                      params = {
+                                        'action' : 'newpost',
+                                        'title': splitted_data[0],
+                                        'link' : splitted_data[1],
+                                        'category' : splitted_data[2],
+                                        'tags' : splitted_data[3].strip(),
+                                        'url_img': url_img,
+                                        'body':splitted_data[5].strip()})
         elif action =='newpost_init':
             title = web.input(title = '')['title']
             link = web.input(link = '')['link']
@@ -461,15 +461,56 @@ class ContentDiscoverer:
                                                      feeds,
                                                      posts)
                                 )
-        
+
+
+class Tags:
+      """
+      Tags administration
+      """
+      def POST(self):
+          return self.GET()
+
+      def GET(self):
+          result = {}
+          submitted = True
+          action = web.input(action = None)['action']
+          if action == 'renametags_init':
+                tags_to_rename = web.input(tags_to_rename = None)['tags_to_rename']
+                tag_destination = web.input(tag_destination = None)['tag_destination']
+                
+                taskqueue.add(url='/admin/tags',
+                              method = 'POST', 
+                              queue_name = 'populate',
+                              countdown = 5,
+                              params = {
+                                'action' : 'renametags',
+                                'tags_to_rename': tags_to_rename,
+                                'tag_destination' : tag_destination,
+                              })
+                result[action] = "Done"
+          if action == 'renametags':
+                tags_to_rename = web.input(tags_to_rename = None)['tags_to_rename']
+                tag_destination = web.input(tag_destination = None)['tag_destination']
+                for tag_to_rename in tags_to_rename.split():
+                    if tag_to_rename:
+                        entities = models.Post.all().filter('tags',tag_to_rename).fetch(1000)
+                        for entity in entities:
+                            entity_tags_old = entity.tags 
+                            entity_tags_new = [tag.strip() for tag in entity_tags_old if tag and tag != tag_to_rename ]
+                            entity_tags_new.append(tag_destination.strip())
+                            entity.tags = list(set(entity_tags_new))
+                            entity.put()
+                            models.Tag.update_tags(list(set(entity_tags_new)), list(set(entity_tags_old)))
+                result[action] = "Done"
+          return render_template(render.admin_tags(
+                                                     submitted, 
+                                                     result, 
+                                                     action)
+                                )
+       
 class Warmup:
     """
     Warming Requests for avoiding latency
     """
     def GET(self):
-        #Cache ajax request
-        taskqueue.add(url='/admin?action=cacherefresh',
-                     method = 'GET',
-                     queue_name = 'populate',
-                     countdown = 5)
         pass
