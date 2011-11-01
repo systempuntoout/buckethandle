@@ -1,0 +1,34 @@
+$def with (submitted, result, action)
+ 
+ <div>
+     <div style="float:right">
+     <ul>  <li><a href="$settings.ADMIN_BOOKMARKLET">Bookmarklet</a></li>
+           <li><a href="/admin?action=memcachestats">Memcache stats </a></li>
+            <li><a href="/admin/tags">Tags</a></li>
+           <li><a href="/admin?action=memcacheflush">Memcache flush </a></li>
+           <li><a href="/admin/content">Content discovery </a></li>
+     </ul>    
+    </div>
+    <div>
+    $if result:
+        <div id="admin_message_box" $:(submitted and 'class="admin_message_OK"' or 'class="admin_message_KO"')>
+         <p>RESULT: $action</p>
+         <ul>
+         $for key in result.keys():
+             <li> $("%s - %s" % (key, result[key]))</li>
+         </ul>
+        </div>
+    <form action = "/admin/tags" method="POST"> 
+     <input type="hidden" id="action" name="action" value="renametags_init"/>    
+     <p>Tags list to rename:<br><input type="text" id="tags_to_rename" name="tags_to_rename" size="100"/> </p>
+     <p>Tag destination:<br><input type="text" id="tag_destination" name="tag_destination" size="20" value = ""/> </p>
+     <p><input type="submit" value="Rename"/></p>
+   </form>
+   <hr/>
+   <li><a href="/admin/tags?action=deletetags">Delete ghost tags</a></li>
+   
+   
+   </div>
+        
+                            
+ </div>
