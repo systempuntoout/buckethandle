@@ -166,7 +166,7 @@ class Admin:
                 selected_category = post.category
                 
             tags = list(set(tags.split()) - set(TAGS_BLACK_LIST))
-            return render_template(render.admin(
+            return render_template(render.admin.admin(
                                                True, 
                                                result, 
                                                action, 
@@ -201,7 +201,7 @@ class Admin:
                 result[action] = "url_img is not a valid URL"
                 submitted = False
             if not submitted:
-                return render_template(render.admin(
+                return render_template(render.admin.admin(
                                                     submitted, 
                                                     result, 
                                                     action, 
@@ -257,7 +257,7 @@ class Admin:
             if post_id:
                 entity = models.Post.get(post_id)
                 if entity:
-                    return render_template(render.admin(False, 
+                    return render_template(render.admin.admin(False, 
                                                         result, 
                                                         action, 
                                                         title = entity.title,
@@ -307,7 +307,7 @@ class Admin:
                     result[action] = "url_img is not a valid URL"
                     submitted = False
                 if not submitted:
-                    return render_template(render.admin(submitted, 
+                    return render_template(render.admin.admin(submitted, 
                                                        result, 
                                                        action, 
                                                        title = title,
@@ -373,7 +373,7 @@ class Admin:
                 submitted = False
         
         #Default
-        return render_template(render.admin(
+        return render_template(render.admin.admin(
                                             submitted, 
                                             result, 
                                             action)
@@ -431,7 +431,7 @@ class ContentDiscoverer:
                   result[action] = "Link is not valid"
                   submitted = False
               if not submitted:
-                  return render_template(render.admin_content(
+                  return render_template(render.admin.admin_content(
                                                                submitted, 
                                                                result, 
                                                                action,
@@ -454,7 +454,7 @@ class ContentDiscoverer:
                    http://%s/admin/content
                    """ % ('\n'.join([post.title.strip() for post in models.FeedEntry.get_posts()]), HOST))      
               result[action] = "Done"
-          return render_template(render.admin_content(
+          return render_template(render.admin.admin_content(
                                                      submitted, 
                                                      result, 
                                                      action,
@@ -502,7 +502,11 @@ class Tags:
                             entity.put()
                             models.Tag.update_tags(list(set(entity_tags_new)), list(set(entity_tags_old)))
                 result[action] = "Done"
-          return render_template(render.admin_tags(
+          if action == 'deletetags':
+                keys = models.Tag.all(keys_only = True).filter('counter =', 0).fetch(1000)
+                db.delete(keys)
+                result[action] = "Done"
+          return render_template(render.admin.admin_tags(
                                                      submitted, 
                                                      result, 
                                                      action)
