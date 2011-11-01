@@ -8,7 +8,7 @@ DESCRIPTION = u"""**GAE Cupboard**
                 *App Engine knowledge base directory*"""             
 META_DESCRIPTION = u"GAE Cupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
-CATEGORIES = [u"Libraries",u"Articles", u"Questions", u"Videos", u"Applications",u"Books"]
+CATEGORIES = [u"Libraries",u"Articles",u"Books", u"Questions", u"Videos", u"Applications"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com" #Insert your host here: foo.appspot.com or in case of custom domain www.foo.com
 REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True 
