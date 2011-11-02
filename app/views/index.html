@@ -38,6 +38,8 @@ $def render_catqs(selected_category, front_char):
                         <p>$post.created.strftime("%d %B, %Y")
                         $if is_user_admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
+                        $if post.is_featured():
+                          <a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>
                         | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
                         </p>
                         <p>
@@ -46,7 +48,7 @@ $def render_catqs(selected_category, front_char):
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>
-                         $if settings.ADSENSE_ID and loop.parity == 'even' and loop.index<=6:
+                         $if settings.ADSENSE_ID and loop.index<=2:
                                    <script type="text/javascript"><!--
                                    google_ad_client = "$settings.ADSENSE_ID";
                                    /* 468x60, created 9/11/11 */

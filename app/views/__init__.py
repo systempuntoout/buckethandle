@@ -79,7 +79,9 @@ def featured (posts, is_user_admin = False):
         extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
         if is_user_admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
-            extend_(['                    ', u'| <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
+        if post.is_featured():
+            extend_(['                    ', u'<a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>\n'])
+        extend_(['      ', u'              | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p>\n'])
         if post.link:
@@ -87,7 +89,7 @@ def featured (posts, is_user_admin = False):
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
-        if settings.ADSENSE_ID and loop.parity == 'even' and loop.index<=6:
+        if settings.ADSENSE_ID and loop.index<=2:
             extend_(['                    ', u'       <script type="text/javascript"><!--\n'])
             extend_(['                    ', u'       google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
             extend_(['                    ', u'       /* 468x60, created 9/11/11 */\n'])
@@ -229,6 +231,8 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
         if is_user_admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
+        if post.is_featured():
+            extend_(['                    ', u'<a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>\n'])
         extend_(['      ', u'              | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p>\n'])
@@ -237,7 +241,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
-        if settings.ADSENSE_ID and loop.parity == 'even' and loop.index<=6:
+        if settings.ADSENSE_ID and loop.index<=2:
             extend_(['                     ', u'      <script type="text/javascript"><!--\n'])
             extend_(['                     ', u'      google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
             extend_(['                     ', u'      /* 468x60, created 9/11/11 */\n'])
@@ -320,7 +324,10 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'<head>\n'])
     extend_([u'    <meta name="google-site-verification" content="m05zkgXk41nY4dXLheGpLdTiTnx-JduC2XOamAra_6Q" />\n'])
     extend_([u'    <META name="y_key" content="88698ce39daf8603" />\n'])
-    extend_([u'    <link rel="alternate" type="application/atom+xml" href="/index.xml" />\n'])
+    if settings.FEED_PROXY:
+        extend_(['    ', u'<link rel="alternate" type="application/atom+xml" href="', escape_(settings.FEED_PROXY, True), u'" />\n'])
+    else:
+        extend_(['    ', u'<link rel="alternate" type="application/atom+xml" href="/index.xml" />\n'])
     extend_([u'    <meta http-equiv="content-type" content="', escape_(settings.HTML_MIME_TYPE, True), u'"/>\n'])
     extend_([u'    <meta name="description" content="', escape_((meta_description != '' and meta_description or settings.META_DESCRIPTION), True), u'"/>\n'])
     extend_([u'    <meta name="keywords" content="', escape_(settings.META_KEYWORDS, True), u'"/>\n'])
@@ -441,7 +448,11 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                <a href="/submit?action=submit_init"><img onmouseout="this.src=\'/images/submitlink.png\';" onmouseover="this.src=\'/images/submitlink_hover.png\'" src="/images/submitlink.png" alt="Submit a link"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
-        extend_([u'                <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])
+        if settings.FEED_PROXY:
+            extend_(['                ', u'<a href="', escape_(settings.FEED_PROXY, True), u'">\n'])
+        else:
+            extend_(['                ', u'<a href="/feed/index.rss">\n'])
+        extend_([u'                <img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>\n'])
         extend_([u'                </p>\n'])
         extend_([u'                <p>\n'])
         extend_([u'                    <div class="addthis_toolbox addthis_default_style ">\n'])

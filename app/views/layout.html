@@ -5,7 +5,10 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 <head>
     <meta name="google-site-verification" content="m05zkgXk41nY4dXLheGpLdTiTnx-JduC2XOamAra_6Q" />
     <META name="y_key" content="88698ce39daf8603" />
-    <link rel="alternate" type="application/atom+xml" href="/index.xml" />
+    $if settings.FEED_PROXY:
+        <link rel="alternate" type="application/atom+xml" href="$settings.FEED_PROXY" />
+    $else:
+        <link rel="alternate" type="application/atom+xml" href="/index.xml" />
     <meta http-equiv="content-type" content="$settings.HTML_MIME_TYPE"/>
     <meta name="description" content="$(meta_description != '' and meta_description or settings.META_DESCRIPTION)"/>
     <meta name="keywords" content="$settings.META_KEYWORDS"/>
@@ -126,7 +129,11 @@ $if navbar:
                     <a href="/submit?action=submit_init"><img onmouseout="this.src='/images/submitlink.png';" onmouseover="this.src='/images/submitlink_hover.png'" src="/images/submitlink.png" alt="Submit a link"/></a>
                     </p>
                     <p>
-                    <a href="/feed/index.rss"><img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>
+                    $if settings.FEED_PROXY:
+                        <a href="$settings.FEED_PROXY">
+                    $else:    
+                        <a href="/feed/index.rss">
+                    <img width="45" height="45" src="/images/rss.png" alt="Rss"/></a>
                     </p>
                     <p>
                         <div class="addthis_toolbox addthis_default_style ">

@@ -60,6 +60,8 @@ CLICKY_ID = '66452880'
 ANALYTICS_ID = 'UA-4276204-7'
 ADSENSE_ID = 'pub-3296756901484166'
 ADSENSE_CHANNEL_ID = '2124691773'
+FEED_PROXY = 'http://feeds.feedburner.com/gaecupboard/fb'
+FEED_PROXY_USER_AGENT = 'FeedBurner'
 
 
 #Errors

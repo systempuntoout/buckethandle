@@ -189,9 +189,12 @@ class Feed:
      Feed
      """
      def GET(self):
-         posts = models.Post.get_recent_posts()
-         web.header('Content-type', 'application/atom+xml')
-         return render.feed(posts, utils.now().strftime("%Y-%m-%dT%H:%M:%SZ") )
+         if FEED_PROXY and not os.environ.get('HTTP_USER_AGENT').startswith(FEED_PROXY_USER_AGENT):
+            web.redirect(FEED_PROXY)
+         else:
+             posts = models.Post.get_recent_posts()
+             web.header('Content-type', 'application/atom+xml')
+             return render.feed(posts, utils.now().strftime("%Y-%m-%dT%H:%M:%SZ") )
 
 class Cse:
      """
