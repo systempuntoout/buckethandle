@@ -28,11 +28,8 @@ Try with:
     - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category  
     - [pricing](http://www.gaecupboard.com/tag/pricing?category=Articles)  in the _Articles_ category  
 
-This tool is a work in progress, so expect errors, dragons and other nasty things.    
+You can find me on [Stack Overflow](http://stackoverflow.com/search?q=user%3A130929+%5Bgoogle-app-engine%5D) or at the following address:  
 
-Source code [here](https://github.com/systempuntoout/buckethandle) on Github.
-
-Feedback at this address:  
 ![test](/images/systempuntooutmail.jpg "mail")
 """
 
