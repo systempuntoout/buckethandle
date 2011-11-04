@@ -58,7 +58,8 @@ class Index:
         return render_template(render.index(posts, 
                                             selected_category = category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
-                                            is_user_admin = users.is_current_user_admin()),title ='Home')
+                                            is_user_admin = users.is_current_user_admin()),
+                                            title = "%s" % (category if category else 'Home'))
 
 
 class Post:
