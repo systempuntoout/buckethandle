@@ -169,7 +169,7 @@ AUTO_CONTENT_BY_LINK = {
                             'category':'Articles',
                             },
 'http://www.amazon.com':{
-                            'regex':'http://www.amazon.com/gp/product/(.*)/.*',
+                            'regex':'http://www.amazon.com/dp/(.*)/.*',
                             'category':'Books',
                             'content_block':"""
                             <iframe src="http://rcm.amazon.com/e/cm?lt1=_blank&bc1=000000&IS2=1&nou=1&

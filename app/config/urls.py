@@ -15,6 +15,8 @@ urls = (
   '/img/([\w_-]+)(?:/.*)?', 'app.controllers.main.Image',
   '/ajax/tags','app.controllers.ajax.Tags',
   '/ajax/links','app.controllers.ajax.Links',
+  '/ajax/markdown','app.controllers.ajax.Markdown',
+  '/admin/tags','app.controllers.admin.Tags',
   '/admin','app.controllers.admin.Admin',
   '/admin/content','app.controllers.admin.ContentDiscoverer',
   '/admin/tags','app.controllers.admin.Tags',

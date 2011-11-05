@@ -181,3 +181,25 @@ def admin_tags (submitted, result, action):
 admin_tags = CompiledTemplate(admin_tags, 'app/views/admin/admin_tags.html')
 join_ = admin_tags._join; escape_ = admin_tags._escape
 
+# coding: utf-8
+def markdown_preview (data):
+    __lineoffset__ = -4
+    loop = ForLoop()
+    self = TemplateResult(); extend_ = self.extend
+    extend_([u'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">\n'])
+    extend_([u'<html xmlns="http://www.w3.org/1999/xhtml">\n'])
+    extend_([u'<head>\n'])
+    extend_([u'<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n'])
+    extend_([u'<title>markItUp! preview template</title>\n'])
+    extend_([u'<link rel="stylesheet" type="text/css" href="~/templates/preview.css" />\n'])
+    extend_([u'</head>\n'])
+    extend_([u'<body>\n'])
+    extend_([escape_(safemarkdown(data), False), u'\n'])
+    extend_([u'</body>\n'])
+    extend_([u'</html>\n'])
+
+    return self
+
+markdown_preview = CompiledTemplate(markdown_preview, 'app/views/admin/markdown_preview.html')
+join_ = markdown_preview._join; escape_ = markdown_preview._escape
+

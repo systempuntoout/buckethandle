@@ -8,6 +8,7 @@ from app.utility.utils import cachepage
 
 ereporter.register_logger()
 
+render = web.render
             
 class Tags:
     """
@@ -21,6 +22,14 @@ class Tags:
             return models.Tag.get_tags_by_filter(tag_filter) 
         except Exception, exception:
             return ""
+
+class Markdown:
+    """
+    Return markdown data for Markitup preview
+    """
+    def POST(self):
+        data = web.input(data = None)['data']
+        return render.admin.markdown_preview(data)
             
 class Links:
     """

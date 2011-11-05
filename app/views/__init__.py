@@ -341,6 +341,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/uniform.default.css"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/skins/markitup/style.css" />\n'])
+    extend_([u'    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/sets/html/style.css" />\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/sets/markdown/style.css" />\n'])
     extend_([u'    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>\n'])
     if canonical:
