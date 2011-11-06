@@ -52,7 +52,10 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
           <p>$(post.description)</p>
       </div>
       <div>
+      $if post.is_markdown():    
           $:safemarkdown(post.body)
+      $if post.is_html():    
+          $:(post.body)
       </div>
       <div>
           $:content_discovered

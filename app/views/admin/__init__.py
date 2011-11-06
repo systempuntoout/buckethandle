@@ -2,7 +2,7 @@ from web.template import CompiledTemplate, ForLoop, TemplateResult
 
 
 # coding: utf-8
-def admin (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', url_img ='', body = '', post_id ='', featured = False):
+def admin (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', url_img ='', body = '', post_id ='', featured = False, markup = 'Markdown'):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
@@ -57,15 +57,21 @@ def admin (submitted, result, action, title = '', link = '', description = '', t
     extend_([u'     </p>\n'])
     extend_([u'     \n'])
     extend_([u'     <p>body :<br>\n'])
+    extend_([u'         <p>Markup:<br>                \n'])
+    extend_([u'          <select id="markup" name="markup">\n'])
+    for markup_tmp in loop.setup(settings.MARKUPS):
+        extend_(['          ', u'  <option ', escape_((markup==markup_tmp and 'selected="selected"'), False), u'  value="', escape_(markup_tmp, True), u'">', escape_(markup_tmp, True), u'</option>\n'])
+    extend_([u'          </select>\n'])
     extend_([u'         <div>\n'])
-    extend_([u'             <textarea id="post_body" name="body" cols="80" rows="20">', escape_(body, True), u'</textarea>\n'])
+    extend_([u'             <textarea id="post_body" name="body_Markdown" cols="80" rows="20">', escape_(body, True), u'</textarea>\n'])
     extend_([u'         </div>\n'])
+    extend_([u'         <div>\n'])
+    extend_([u'              <textarea id="post_body_html" name="body_Html" cols="80" rows="20">', escape_(body, True), u'</textarea>\n'])
+    extend_([u'          </div>\n'])
     extend_([u'     </p>\n'])
     extend_([u'     <p><input type="submit" value="Submit"/></p>\n'])
     extend_([u'   </form>\n'])
-    extend_([u'   </div>\n'])
-    extend_([u'        \n'])
-    extend_([u'                            \n'])
+    extend_([u'   </div>                         \n'])
     extend_([u' </div>\n'])
 
     return self

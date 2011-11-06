@@ -1,4 +1,4 @@
-$def with (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', url_img ='', body = '', post_id ='', featured = False)
+$def with (submitted, result, action, title = '', link = '', description = '', tags = [], category = '', img_path ='', url_img ='', body = '', post_id ='', featured = False, markup = 'Markdown')
  
  <div>
      <div style="float:right">
@@ -50,13 +50,19 @@ $def with (submitted, result, action, title = '', link = '', description = '', t
      </p>
      
      <p>body :<br>
+         <p>Markup:<br>                
+          <select id="markup" name="markup">
+          $for markup_tmp in settings.MARKUPS:
+                <option $:(markup==markup_tmp and 'selected="selected"')  value="$markup_tmp">$markup_tmp</option>
+          </select>
          <div>
-             <textarea id="post_body" name="body" cols="80" rows="20">$body</textarea>
+             <textarea id="post_body" name="body_Markdown" cols="80" rows="20">$body</textarea>
          </div>
+         <div>
+              <textarea id="post_body_html" name="body_Html" cols="80" rows="20">$body</textarea>
+          </div>
      </p>
      <p><input type="submit" value="Submit"/></p>
    </form>
-   </div>
-        
-                            
+   </div>                         
  </div>

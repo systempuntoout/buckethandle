@@ -355,6 +355,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <script type="text/javascript" src="/javascripts/main.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/jquery.markitup.js"></script>\n'])
     extend_([u'    <script type="text/javascript" src="/javascripts/markitup/sets/markdown/set.js"></script>\n'])
+    extend_([u'    <script type="text/javascript" src="/javascripts/markitup/sets/html/set.js"></script>\n'])
     extend_([u'    <script type="text/javascript">\n'])
     extend_([u'      (function() {\n'])
     extend_([u"        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;\n"])
@@ -593,7 +594,10 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'          <p>', escape_((post.description), True), u'</p>\n'])
     extend_([u'      </div>\n'])
     extend_([u'      <div>\n'])
-    extend_([u'          ', escape_(safemarkdown(post.body), False), u'\n'])
+    if post.is_markdown():
+        extend_(['      ', escape_(safemarkdown(post.body), False), u'\n'])
+    if post.is_html():
+        extend_(['      ', escape_((post.body), False), u'\n'])
     extend_([u'      </div>\n'])
     extend_([u'      <div>\n'])
     extend_([u'          ', escape_(content_discovered, False), u'\n'])

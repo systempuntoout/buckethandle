@@ -21,6 +21,7 @@ class Post(db.Model):
     description = db.StringProperty()
     tags = db.ListProperty(str, required = True)
     category = db.StringProperty(choices = CATEGORIES)
+    markup = db.StringProperty(choices = MARKUPS)
     body = db.TextProperty()
     slug = db.StringProperty()
     thumbnail = db.BlobProperty()
@@ -112,7 +113,17 @@ class Post(db.Model):
     def is_featured(self):
         if self.featured:
            return self.featured
-            
+    
+    def is_markdown(self):
+       if self.markup:
+          return self.markup == 'Markdown'
+       else:
+          return True #Default
+    
+    def is_html(self):
+       return self.markup == 'Html'
+
+                  
     @staticmethod
     @memcached('get_prev_next', 3600*24, lambda post: post.key())
     def get_prev_next(post):

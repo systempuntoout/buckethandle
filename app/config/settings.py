@@ -67,6 +67,8 @@ GENERIC_ERROR = "Ooooops, it works on my machine. Please try again later."
 NOT_FOUND_ERROR = "Not found!"
 SERVER_ERROR = "Server problem"
 BOTS=['Googlebot','Slurp','Twiceler','msnbot','KaloogaBot','YodaoBot','Baiduspider','googlebot','Speedy Spider','DotBot']
+MARKUPS = ['Markdown','Html']
+DEFAULT_MARKUP = ['Markdown']
 
 #Mapping Discovery
 AUTO_CONTENT_BY_LINK = {

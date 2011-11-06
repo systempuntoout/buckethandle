@@ -35,13 +35,14 @@ function feeditemRemove(feedItemKey) {
 }
 
 jQuery(document).ready(function() {
+            jQuery("input:radio").uniform();
             jQuery('#content').embedly({
               maxWidth: 600,
               wmode: 'transparent',
               method: 'after'
             });
-            jQuery('#post_body').markItUp(mySettings);
-            jQuery("input:radio").uniform();
+            jQuery('#post_body').markItUp(mymarkdownSettings);
+            jQuery('#post_body_html').markItUp(myhtmlSettings);
             jQuery("#message_box").fadeOut(6000);
             jQuery(".toggle").click(function () {
                 jQuery(".totoggle").toggle();
@@ -54,6 +55,29 @@ jQuery(document).ready(function() {
             jQuery("#link").typeWatch( {wait: 500,captureLength: -1, callback:linkCheck } );
             jQuery('#tagcloud_filter').keyup(function() {
                 jQuery('#main_tag_cloud span.tag_info').hide().filter('span.tag_info:contains("'+this.value+'")').show();
+                
+            });
+            
+            selected = jQuery("#markup option:selected").text();
+            if (selected == 'Html') {
+                jQuery('#markItUpPost_body_html').show();
+                jQuery('#markItUpPost_body').hide();
+            }
+            if (selected == 'Markdown') {
+                jQuery('#markItUpPost_body_html').hide();
+                jQuery('#markItUpPost_body').show();
+            }
+            
+            jQuery("#markup").change(function () {
+                selected = jQuery("#markup option:selected").text();
+                if (selected == 'Html') {
+                    jQuery('#markItUpPost_body_html').show();
+                    jQuery('#markItUpPost_body').hide();
+                }
+                if (selected == 'Markdown') {
+                    jQuery('#markItUpPost_body_html').hide();
+                    jQuery('#markItUpPost_body').show();
+                } 
                 
             });
             

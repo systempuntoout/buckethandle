@@ -49,6 +49,19 @@ class Admin:
         elif action =='memcacheflush':
             memcache.flush_all()
             result['result'] = "Done"
+        elif action =='start_fix':
+            taskqueue.add(url='/admin?action=fix',
+                         method = 'GET',
+                         queue_name = 'populate',
+                         countdown = 5,
+                         headers = {'X-AppEngine-FailFast' : True})
+            result['result'] = "Done"
+        elif action =='fix':
+            entities = models.Post.all().fetch(10000)
+            for entity in entities:
+                entity.markup = 'Markdown'
+                entity.put()
+            result['result'] = "Done"
         elif action =='start_cacherefresh':
             taskqueue.add(url='/admin?action=cacherefresh',
                          method = 'GET',
@@ -182,7 +195,8 @@ class Admin:
             description = web.input(description = None)['description']
             tags = web.input(tags = None)['tags']
             category = web.input(category = None)['category']
-            body = web.input(body = None)['body']
+            markup = web.input(markup = None)['markup']
+            body = web.input()['body_%s' % str(markup)]
             featured = web.input(featured = False)['featured']
             thumbnail = web.input(img = None)['img']
             thumbnail_url = web.input(url_img = None)['url_img']
@@ -212,7 +226,8 @@ class Admin:
                                                     category = category,
                                                     body = body,
                                                     url_img = thumbnail_url,
-                                                    featured = featured)
+                                                    featured = featured,
+                                                    markup = markup)
                                        )
             #Preparing for datastore
             if thumbnail_url:
@@ -238,11 +253,12 @@ class Admin:
                                description = description,
                                tags = tags,
                                category = category,
+                               markup = markup,
                                thumbnail = thumbnail_for_db,
                                slug = utils.slugify(title),
                                author_name = AUTHOR_NAME,
                                featured = True if featured else False,
-                               body = body  )
+                               body = body)
             
             post.put()
             counter.increment("Posts_Count")
@@ -268,7 +284,8 @@ class Admin:
                                                         img_path = entity.get_image_path(),
                                                         body = entity.body,
                                                         post_id = post_id,
-                                                        featured = entity.featured)
+                                                        featured = entity.featured,
+                                                        markup = entity.markup)
                                             )
                 else:
                     result[action] = "Post Id Not found"
@@ -287,7 +304,8 @@ class Admin:
                 description = web.input(description = None)['description']
                 tags = web.input(tags = None)['tags']
                 category = web.input(category = None)['category']
-                body = web.input(body = None)['body']
+                markup = web.input(markup = None)['markup']
+                body = web.input(body = None)['body_%s' % str(markup)]
                 featured = web.input(featured = False)['featured']
                 thumbnail = web.input(img = None)['img']
                 delete_img = web.input(delete_img = None)['delete_img']
@@ -317,7 +335,8 @@ class Admin:
                                                        category = category,
                                                        body = body,
                                                        url_img = thumbnail_url,
-                                                       featured = featured)
+                                                       featured = featured,
+                                                       markup = markup)
                                            )
                 
                 if thumbnail_url:
@@ -343,6 +362,7 @@ class Admin:
                 entity_post.description = description
                 entity_post.tags = tags
                 entity_post.category = category
+                entity_post.markup = markup
                 entity_post.slug = utils.slugify(title)
                 entity_post.body = body
                 entity_post.featured = True if featured else False
