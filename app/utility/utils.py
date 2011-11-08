@@ -1,8 +1,3 @@
-from datetime import datetime, timedelta
-from google.appengine.api import memcache
-from google.appengine.api import urlfetch
-from app.config.settings import *
-from app.lib import pyso
 import unicodedata
 import re
 import logging
@@ -10,6 +5,14 @@ import time
 import urlparse
 import math
 import web
+from datetime import datetime, timedelta
+
+from google.appengine.api import memcache
+from google.appengine.api import urlfetch
+
+from app.config.settings import *
+from app.lib import pyso
+
 
 
 def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
@@ -26,6 +29,7 @@ def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
                     if key_suffix:
                         key_with_suffix = '%s:%s' % (key, key_suffix)
 
+                logging.info(key_with_suffix)
                 value = memcache.get(key_with_suffix, namespace)
                 if not value:
                     value = func(*args, **kw)

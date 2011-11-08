@@ -48,18 +48,34 @@ $def render_catqs(selected_category, front_char):
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>
-                         $if settings.ADSENSE_ID and loop.index<=2:
-                                   <script type="text/javascript"><!--
-                                   google_ad_client = "$settings.ADSENSE_ID";
-                                   /* 468x60, created 9/11/11 */
-                                   google_ad_slot = "9166906893";
-                                   google_ad_width = 468;
-                                   google_ad_height = 60;
-                                   //-->
-                                   </script>
-                                   <script type="text/javascript"
-                                   src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
-                                   </script>
+                         $if settings.ADSENSE_ID and loop.index==1:
+                                   <div id="adsense" style="margin-bottom:10px">
+                                         <script type="text/javascript"><!--
+                                         google_ad_client = "$settings.ADSENSE_ID";
+                                         /* 728x90, created 9/8/11 */
+                                         google_ad_slot = "2341185460";
+                                         google_ad_width = 728;
+                                         google_ad_height = 90;
+                                         //-->
+                                         </script>
+                                         <script type="text/javascript"
+                                         src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                                         </script>
+                                     </div>                                     
+                        $if settings.ADSENSE_ID and loop.index==2:
+                                     <div id="adsense" style="margin-bottom:10px">
+                                     <script type="text/javascript"><!--
+                                        google_ad_client = "$settings.ADSENSE_ID";
+                                        /* 468x60, created 9/11/11 */
+                                        google_ad_slot = "9166906893";
+                                        google_ad_width = 468;
+                                        google_ad_height = 60;
+                                        //-->
+                                        </script>
+                                        <script type="text/javascript"
+                                        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                                        </script> 
+                                     </div>
                         <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
                         <p>$(post.description)</p>
                     </div>

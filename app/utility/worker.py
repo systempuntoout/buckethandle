@@ -1,6 +1,7 @@
 import logging
 import app.db.models as models
 import app.utility.utils as utils
+from google.appengine.api import memcache
 
 def deferred_update_last_sitemap(post_key):
     models.Sitemap.update_last_sitemap(post_key)
@@ -23,3 +24,8 @@ def deferred_update_tags_counter(tags_new , tags_old = []):
 
 def deferred_update_category_counter(category_new, category_old = None ):
     models.Category.update_category(category_new, category_old)
+    
+def deferred_flush_cache_light():
+    memcache.delete('get_posts:10_0__') #Delete first page cached posts
+    memcache.delete('get_recent_posts') #Delete recent posts used for generating feed
+    

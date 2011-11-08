@@ -266,6 +266,7 @@ class Admin:
             deferred.defer(worker.deferred_update_tags_counter,tags)
             deferred.defer(worker.deferred_update_category_counter,category)
             deferred.defer(worker.deferred_ping_sitemap)
+            deferred.defer(worker.deferred_flush_cache_light)
             result[action] = "Done"
 
         elif action =='editpost_init':
