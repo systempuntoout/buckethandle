@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #Meta
-VERSION = '0.9.0.6'
+VERSION = '0.9.0.7'
 CMS_NAME = u"GAE Cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
@@ -28,7 +28,7 @@ Try with:
     - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category  
     - [pricing](http://www.gaecupboard.com/tag/pricing?category=Articles)  in the _Articles_ category  
 
-You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/search?q=user%3A130929+%5Bgoogle-app-engine%5D) or at the following mail address:  
+You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/search?q=user%3A130929+%5Bgoogle-app-engine%5D), on [twitter](https://twitter.com/#!/systempuntoout) or at the following mail address:  
 
 ![test](/images/systempuntooutmail.jpg "mail")
 """
@@ -188,8 +188,16 @@ AUTO_CONTENT_BY_CATEGORY = {
         }
 }
 
-#Bookmarklets
+ITEMS_TO_SHOW = [
+'<a target="_blank" href="http://www.amazon.com/gp/product/059652272X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=059652272X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=059652272X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=059652272X&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
+'<a target="_blank" href="http://www.amazon.com/gp/product/1934356638/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=1934356638"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=1934356638&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=1934356638&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
+'<a target="_blank" href="http://www.amazon.com/gp/product/059680069X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=059680069X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=059680069X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=059680069X&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
+'<a target="_blank" href="http://www.amazon.com/gp/product/032174263X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399373&creativeASIN=032174263X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=032174263X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=032174263X&camp=217145&creative=399373" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />'
 
+
+]
+
+#Bookmarklets
 ADMIN_BOOKMARKLET = """
 javascript:(function(){var s=window.document.createElement('script');s.setAttribute('src','http://code.jquery.com/jquery-latest.min.js');
 window.document.body.appendChild(s);f='http://%s/admin?action=newpost_init&link='+encodeURIComponent(window.location.href)+'&tags='+encodeURIComponent(jQuery.map(jQuery('.post-taglist a,#eow-tags a,.post-info a').not('#edit-tags'),function(x){return encodeURIComponent(x.text)}).join(' '))+'&title='+encodeURIComponent(document.title)+'&description='+encodeURIComponent(''+(window.getSelection?window.getSelection():document.getSelection?document.getSelection():document.selection.createRange().text))+'&';a=function(){location.href=f};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})()

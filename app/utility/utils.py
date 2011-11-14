@@ -28,8 +28,7 @@ def memcached(key, cache_time, key_suffix_calc_func=None, namespace=None):
                     key_suffix = key_suffix_calc_func(*args, **kw)
                     if key_suffix:
                         key_with_suffix = '%s:%s' % (key, key_suffix)
-
-                logging.info(key_with_suffix)
+                        
                 value = memcache.get(key_with_suffix, namespace)
                 if not value:
                     value = func(*args, **kw)

@@ -78,6 +78,7 @@ class Post(db.Model):
                 fetched_post = posts.fetch(limit = limit) 
                 memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
             else:
+                memcache.delete('get_posts:%s_%s_%s_%s' % (limit,POSTS_PER_PAGE - offset,'.'.join(sorted(tags_filter)), category_filter))
                 #Offset consumes a lot of Datastore reads, without bookmark I return nothing
                 fetched_post = []
             

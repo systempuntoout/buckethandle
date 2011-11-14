@@ -56,12 +56,6 @@ class Admin:
                          countdown = 5,
                          headers = {'X-AppEngine-FailFast' : True})
             result['result'] = "Done"
-        elif action =='fix':
-            entities = models.Post.all().fetch(10000)
-            for entity in entities:
-                entity.markup = 'Markdown'
-                entity.put()
-            result['result'] = "Done"
         elif action =='start_cacherefresh':
             taskqueue.add(url='/admin?action=cacherefresh',
                          method = 'GET',

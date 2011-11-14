@@ -307,7 +307,7 @@ class Submit:
                  """ % (title, link, description, tags, category, users.get_current_user()))
                  title = link = description = tags = ""
                  submitted = True
-                 message = "Thanks for your submission"
+                 message = "Thanks for your submission, we'll review it soon."
              else:
                  submitted = False
                  message = "Please fill in all required fields (*)"
