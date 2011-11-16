@@ -3,8 +3,8 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">
 <head>
-    <meta name="google-site-verification" content="m05zkgXk41nY4dXLheGpLdTiTnx-JduC2XOamAra_6Q" />
-    <META name="y_key" content="88698ce39daf8603" />
+    <meta name="google-site-verification" content="$settings.GOOGLE_SITE_VERIFICATION_KEY" />
+    <META name="y_key" content="$settings.YAHOO_SITE_VERIFICATION_KEY" />
     $if settings.FEED_PROXY:
         <link rel="alternate" type="application/atom+xml" href="$settings.FEED_PROXY" />
     $else:
@@ -12,9 +12,9 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     <meta http-equiv="content-type" content="$settings.HTML_MIME_TYPE"/>
     <meta name="description" content="$(meta_description != '' and meta_description or settings.META_DESCRIPTION)"/>
     <meta name="keywords" content="$settings.META_KEYWORDS"/>
-    $if title == 'Tag cloud':
+    $if title == i18ns['TITLE_TAGCLOUD']:
         <meta name="robots" content="noindex">
-    $if title == 'Home':
+    $if title == i18ns['TITLE_HOME']:
         <title>$settings.CMS_NAME</title> 
     $else:
         <title> $(title) - $settings.CMS_NAME</title> 
@@ -61,11 +61,11 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     <h1>$settings.CMS_NAME <img src="/images/logo_header.png" alt="Logo"/></h1>
     <h2>$(settings.SLOGAN)</h2>
     <ul>
-        <li><a href="/" $:(title=='Home' and 'class="active"' or '')>Home</a></li>
-        <li><a href="/featured" $:(title=='Featured' and 'class="active"' or '')>Featured</a></li>
-        <li><a href="/post" $:((title not in ('Home','Tag cloud','Featured','About','Admin')) and 'class="active"' or '')>Posts</a></li>
-        <li><a href="/tagcloud" $:(title=='Tag cloud' and 'class="active"' or '')>Tag cloud</a></li>
-        <li><a href="/about" $:(title=='About' and 'class="active"' or '')>About</a></li>
+        <li><a href="/" $:(title==i18ns['TITLE_HOME'] and 'class="active"' or '')>$i18ns['TITLE_HOME']</a></li>
+        <li><a href="/$i18ns['ROUTE_FEATURED']" $:(title==i18ns['TITLE_FEATURED'] and 'class="active"' or '')>$i18ns['TITLE_FEATURED']</a></li>
+        <li><a href="/$i18ns['ROUTE_POST']" $:((title not in (i18ns['TITLE_HOME'],i18ns['TITLE_TAGCLOUD'],i18ns['TITLE_FEATURED'],i18ns['TITLE_ABOUT'],'Admin')) and 'class="active"' or '')>$i18ns['TITLE_POST']</a></li>
+        <li><a href="/$i18ns['ROUTE_TAGCLOUD']" $:(title==i18ns['TITLE_TAGCLOUD'] and 'class="active"' or '')>$i18ns['TITLE_TAGCLOUD']</a></li>
+        <li><a href="/$i18ns['ROUTE_ABOUT']" $:(title==i18ns['TITLE_ABOUT'] and 'class="active"' or '')>$i18ns['TITLE_ABOUT']</a></li>
         $if is_user_admin:
             <li><a href="/admin" $:(title=='Admin' and 'class="active"' or '')>Admin</a></li>
     </ul>
@@ -74,7 +74,7 @@ $ max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
             <input type="hidden" name="ie" value="UTF-8" />
             <input type="hidden" name="cref" value="$(settings.HOST)/cse.xml" />
             <input type="hidden" name="cof" value="FORID:11" />
-        	<input id="search_box" name="q" tabindex="1" onfocus="if (this.value=='search') this.value = ''" type="text" maxlength="140" size="32" value="search"/>
+        	<input id="search_box" name="q" tabindex="1" onfocus="if (this.value=='$i18ns['SEARCH']') this.value = ''" type="text" maxlength="140" size="32" value="$i18ns['SEARCH']"/>
             </p>
         </form>
         
@@ -107,7 +107,7 @@ $if navbar:
                     <tr>
                         <td width="40%">
                            
-                                <p>Posts: <span class="summarycount">$commify(posts_total_count)</span></p>
+                                <p>$i18ns['POSTS']: <span class="summarycount">$commify(posts_total_count)</span></p>
                         </td>
                         <td>
                             <ul class="like-buttons">
@@ -131,24 +131,24 @@ $if navbar:
                     </tr>
                 </table>
                 $if settings.CATEGORIES:
-                    <h2>Categories</h2>
+                    <h2>$i18ns['CATEGORIES']</h2>
                     <ul>
                     $for category in categories:
                         <li><a href="/?category=$category.name">$category.name</a><span class="counter"> ($commify(category.counter))</span></li>
                     </ul>
                 $if settings.ITEMS_TO_SHOW:
-                    <h2>Books</h2>
+                    <h2>$i18ns['BOOKS']</h2>
                     $for item in settings.ITEMS_TO_SHOW:
                         $:item
                     <ul><li><a href="/?category=Books">Google App Engine Books</a></li></ul>
                 $if title != 'Tag cloud':
-                    <h2>Tags</h2>
+                    <h2>$i18ns['TAGS']</h2>
                     <p>
                         $for tag in tag_cloud:
                                 <span class="tag_info"><a class="tag_cloud_nav_$utils.get_tag_weight(tag.counter,max_occurrencies)" href="/tag/$(tag.name)"> $(tag.name)</a><span class="counter"> ($commify(tag.counter))</span>&nbsp;</span>
 
                         $if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
-                            <br/><span class="more_tag"><a  href="/tagcloud">more »</a></span>
+                            <br/><span class="more_tag"><a  href="/$i18ns['ROUTE_TAGCLOUD']">more »</a></span>
                     </p>
                 <div id="img" style="margin-top:10px">
                     <p style="text-align:center">
@@ -190,7 +190,7 @@ $else:
     </div>
     
 <div id="footer">
-    <p>© $settings.AUTHOR_NAME | $settings.CMS_NAME | Powered by Google App Engine | BucketHandle v. $settings.VERSION</p>
+    <p>$settings.FOOTER</p>
 </div>
 
 $if settings.ANALYTICS_ID and not development and not is_user_admin:

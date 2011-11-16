@@ -12,6 +12,7 @@ from google.appengine.api import urlfetch
 
 from app.config.settings import *
 from app.lib import pyso
+import app.config.translate as translate
 
 
 
@@ -174,3 +175,14 @@ def cachepage():
            return CACHE[url]
        return proxyfunc
    return decorator   
+   
+
+def get_i18ns(language):
+   """
+     Return a dictionary with i18n strings of a given language (english by default)
+   """    
+   if hasattr(translate,language):
+       i18ns=getattr(translate,language)
+   else:
+       i18ns=translate.en
+   return i18ns

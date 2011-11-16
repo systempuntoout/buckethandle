@@ -76,16 +76,16 @@ def featured (posts, is_user_admin = False):
         extend_(['      ', u'        <td>\n'])
         extend_(['      ', u'          <div style="overflow: hidden;">\n'])
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
-        extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
+        extend_(['      ', u'              <p>', escape_(post.created.strftime(settings.DATE_FORMAT), True), u'\n'])
         if is_user_admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
         if post.is_featured():
-            extend_(['                    ', u'<a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>\n'])
-        extend_(['      ', u'              | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
+            extend_(['                    ', u'<a href="/', escape_(i18ns['ROUTE_FEATURED'], True), u'"><img src="/images/featured.png" title="', escape_(i18ns['TITLE_FEATURED'], True), u'" alt="', escape_(i18ns['TITLE_FEATURED'], True), u'"/></a>\n'])
+        extend_(['      ', u'              | <a style="font-size:90%" href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(post.get_path(), True), u'">', escape_(i18ns['DETAILS'], True), u'</a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p>\n'])
         if post.link:
-            extend_(['                    ', u'<span class="main_link"><a href="/post/', escape_(post.get_path(), True), u'">', escape_((post.title), True), u'</a></span>\n'])
+            extend_(['                    ', u'<span class="main_link"><a href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(post.get_path(), True), u'">', escape_((post.title), True), u'</a></span>\n'])
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
@@ -127,7 +127,7 @@ def featured (posts, is_user_admin = False):
             extend_(['         ', u'   </table>\n'])
             extend_(['         ', u'   <table class="pagination">\n'])
             extend_(['         ', u'       <tr>\n'])
-            extend_(['         ', u'           <td class="pagination_found">Posts: ', escape_(commify(len(posts)), True), u'</td>\n'])
+            extend_(['         ', u'           <td class="pagination_found">', escape_(i18ns['POSTS'], True), u': ', escape_(commify(len(posts)), True), u'</td>\n'])
             extend_(['         ', u'       </tr>\n'])
             extend_(['         ', u'   </table>\n'])
     else:
@@ -135,7 +135,7 @@ def featured (posts, is_user_admin = False):
             extend_(['        ', u'<tr>\n'])
             extend_(['        ', u'    <td>\n'])
             extend_(['        ', u'   <p id="not_found">\n'])
-            extend_(['        ', u'       No posts found\n'])
+            extend_(['        ', u'       ', escape_(i18ns['POST_NOT_FOUND_ERROR'], True), u'\n'])
             extend_(['        ', u'    </p>\n'])
             extend_(['        ', u'    </td>\n'])
             extend_(['        ', u'</tr>\n'])
@@ -166,8 +166,8 @@ def feed (posts, site_updated):
     for post in loop.setup(posts):
         extend_([u'<entry>\n'])
         extend_([u'    <title>', escape_((post.title), True), u' - ', escape_((post.category), True), u'</title>\n'])
-        extend_([u'    <link rel="alternate" type="text/html" href="http://', escape_((settings.HOST), True), u'/post/', escape_(post.get_path(), True), u'" />\n'])
-        extend_([u'    <id>tag:', escape_((settings.HOST), True), u',', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u':/post/', escape_((post.key()), True), u'</id>\n'])
+        extend_([u'    <link rel="alternate" type="text/html" href="http://', escape_((settings.HOST), True), u'/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(post.get_path(), True), u'" />\n'])
+        extend_([u'    <id>tag:', escape_((settings.HOST), True), u',', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u':/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_((post.key()), True), u'</id>\n'])
         extend_([u'    <published>', escape_((post.created.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u'</published>\n'])
         extend_([u'    <updated>', escape_((post.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ")), True), u'</updated>\n'])
         extend_([u'    <author>\n'])
@@ -198,7 +198,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
     extend_([u'<div id="box_tags">\n'])
     extend_([u'     <form action = "/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'" method="post">  \n'])
     extend_([u'       <p>\n'])
-    extend_([u'       <b>Tags:</b>\n'])
+    extend_([u'       <b>', escape_(i18ns['TAGS'], True), u':</b>\n'])
     for tag in loop.setup(selected_tags):
         extend_(['       ', u'<a class="tag dark" href="/tag/', escape_(urlquote('/'.join(selected_tags)), True), u'?removetag=', escape_(urlquote(tag), True), escape_((render_catqs(selected_category,"&")), True), u'">', escape_(tag, True), u' x</a>&raquo;\n'])
     extend_([u'       <input id="search" type="text" size="35" name="addtag"/>\n'])
@@ -228,16 +228,16 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         extend_(['      ', u'        <td>\n'])
         extend_(['      ', u'          <div style="overflow: hidden;">\n'])
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
-        extend_(['      ', u'              <p>', escape_(post.created.strftime("%d %B, %Y"), True), u'\n'])
+        extend_(['      ', u'              <p>', escape_(post.created.strftime(settings.DATE_FORMAT), True), u'\n'])
         if is_user_admin:
             extend_(['                    ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
         if post.is_featured():
-            extend_(['                    ', u'<a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>\n'])
-        extend_(['      ', u'              | <a style="font-size:90%" href="/post/', escape_(post.get_path(), True), u'">DETAILS</a>\n'])
+            extend_(['                    ', u'<a href="/', escape_(i18ns['ROUTE_FEATURED'], True), u'"><img src="/images/featured.png" title="', escape_(i18ns['TITLE_FEATURED'], True), u'" alt="', escape_(i18ns['TITLE_FEATURED'], True), u'"/></a>\n'])
+        extend_(['      ', u'              | <a style="font-size:90%" href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(post.get_path(), True), u'">', escape_(i18ns['DETAILS'], True), u'</a>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p>\n'])
         if post.link:
-            extend_(['                    ', u'<span class="main_link"><a href="/post/', escape_(post.get_path(), True), u'">', escape_((post.title), True), u'</a></span>\n'])
+            extend_(['                    ', u'<span class="main_link"><a href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(post.get_path(), True), u'">', escape_((post.title), True), u'</a></span>\n'])
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>                                     \n'])
@@ -286,14 +286,14 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             extend_(['         ', u'       <tr>\n'])
             extend_(['         ', u'           <td class="pagination_page">\n'])
             if pagination.has_previous_entries():
-                extend_(['                        ', u'    <a href="?page=', escape_((pagination.page-1), True), escape_((render_catqs(selected_category,"&")), True), u'">&laquo; prev&nbsp;&nbsp;</a>\n'])
+                extend_(['                        ', u'    <a href="?page=', escape_((pagination.page-1), True), escape_((render_catqs(selected_category,"&")), True), u'">&laquo; ', escape_(i18ns['PREV'], True), u'&nbsp;&nbsp;</a>\n'])
             extend_(['         ', u'               [ ', escape_(pagination.page, True), u' ]\n'])
             if pagination.has_more_entries():
-                extend_(['                        ', u'       <a href="?page=', escape_((pagination.page+1), True), escape_((render_catqs(selected_category,"&")), True), u'">&nbsp;&nbsp;next &raquo;</a>\n'])
+                extend_(['                        ', u'       <a href="?page=', escape_((pagination.page+1), True), escape_((render_catqs(selected_category,"&")), True), u'">&nbsp;&nbsp;', escape_(i18ns['NEXT'], True), u' &raquo;</a>\n'])
             extend_(['         ', u'           </td>\n'])
             extend_(['         ', u'       </tr>\n'])
             extend_(['         ', u'       <tr>\n'])
-            extend_(['         ', u'           <td class="pagination_found">Posts: ', escape_(commify(pagination.total), True), u'</td>\n'])
+            extend_(['         ', u'           <td class="pagination_found">', escape_(i18ns['POSTS'], True), u': ', escape_(commify(pagination.total), True), u'</td>\n'])
             extend_(['         ', u'       </tr>\n'])
             extend_(['         ', u'   </table>\n'])
     else:
@@ -301,7 +301,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             extend_(['        ', u'<tr>\n'])
             extend_(['        ', u'    <td>\n'])
             extend_(['        ', u'   <p id="not_found">\n'])
-            extend_(['        ', u'       No posts found\n'])
+            extend_(['        ', u'       ', escape_(i18ns['POST_NOT_FOUND_ERROR'], True), u'\n'])
             extend_(['        ', u'    </p>\n'])
             extend_(['        ', u'    </td>\n'])
             extend_(['        ', u'</tr>\n'])
@@ -324,8 +324,8 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">\n'])
     extend_([u'<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US">\n'])
     extend_([u'<head>\n'])
-    extend_([u'    <meta name="google-site-verification" content="m05zkgXk41nY4dXLheGpLdTiTnx-JduC2XOamAra_6Q" />\n'])
-    extend_([u'    <META name="y_key" content="88698ce39daf8603" />\n'])
+    extend_([u'    <meta name="google-site-verification" content="', escape_(settings.GOOGLE_SITE_VERIFICATION_KEY, True), u'" />\n'])
+    extend_([u'    <META name="y_key" content="', escape_(settings.YAHOO_SITE_VERIFICATION_KEY, True), u'" />\n'])
     if settings.FEED_PROXY:
         extend_(['    ', u'<link rel="alternate" type="application/atom+xml" href="', escape_(settings.FEED_PROXY, True), u'" />\n'])
     else:
@@ -333,9 +333,9 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <meta http-equiv="content-type" content="', escape_(settings.HTML_MIME_TYPE, True), u'"/>\n'])
     extend_([u'    <meta name="description" content="', escape_((meta_description != '' and meta_description or settings.META_DESCRIPTION), True), u'"/>\n'])
     extend_([u'    <meta name="keywords" content="', escape_(settings.META_KEYWORDS, True), u'"/>\n'])
-    if title == 'Tag cloud':
+    if title == i18ns['TITLE_TAGCLOUD']:
         extend_(['    ', u'<meta name="robots" content="noindex">\n'])
-    if title == 'Home':
+    if title == i18ns['TITLE_HOME']:
         extend_(['    ', u'<title>', escape_(settings.CMS_NAME, True), u'</title> \n'])
     else:
         extend_(['    ', u'<title> ', escape_((title), True), u' - ', escape_(settings.CMS_NAME, True), u'</title> \n'])
@@ -382,11 +382,11 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'    <h1>', escape_(settings.CMS_NAME, True), u' <img src="/images/logo_header.png" alt="Logo"/></h1>\n'])
     extend_([u'    <h2>', escape_((settings.SLOGAN), True), u'</h2>\n'])
     extend_([u'    <ul>\n'])
-    extend_([u'        <li><a href="/" ', escape_((title=='Home' and 'class="active"' or ''), False), u'>Home</a></li>\n'])
-    extend_([u'        <li><a href="/featured" ', escape_((title=='Featured' and 'class="active"' or ''), False), u'>Featured</a></li>\n'])
-    extend_([u'        <li><a href="/post" ', escape_(((title not in ('Home','Tag cloud','Featured','About','Admin')) and 'class="active"' or ''), False), u'>Posts</a></li>\n'])
-    extend_([u'        <li><a href="/tagcloud" ', escape_((title=='Tag cloud' and 'class="active"' or ''), False), u'>Tag cloud</a></li>\n'])
-    extend_([u'        <li><a href="/about" ', escape_((title=='About' and 'class="active"' or ''), False), u'>About</a></li>\n'])
+    extend_([u'        <li><a href="/" ', escape_((title==i18ns['TITLE_HOME'] and 'class="active"' or ''), False), u'>', escape_(i18ns['TITLE_HOME'], True), u'</a></li>\n'])
+    extend_([u'        <li><a href="/', escape_(i18ns['ROUTE_FEATURED'], True), u'" ', escape_((title==i18ns['TITLE_FEATURED'] and 'class="active"' or ''), False), u'>', escape_(i18ns['TITLE_FEATURED'], True), u'</a></li>\n'])
+    extend_([u'        <li><a href="/', escape_(i18ns['ROUTE_POST'], True), u'" ', escape_(((title not in (i18ns['TITLE_HOME'],i18ns['TITLE_TAGCLOUD'],i18ns['TITLE_FEATURED'],i18ns['TITLE_ABOUT'],'Admin')) and 'class="active"' or ''), False), u'>', escape_(i18ns['TITLE_POST'], True), u'</a></li>\n'])
+    extend_([u'        <li><a href="/', escape_(i18ns['ROUTE_TAGCLOUD'], True), u'" ', escape_((title==i18ns['TITLE_TAGCLOUD'] and 'class="active"' or ''), False), u'>', escape_(i18ns['TITLE_TAGCLOUD'], True), u'</a></li>\n'])
+    extend_([u'        <li><a href="/', escape_(i18ns['ROUTE_ABOUT'], True), u'" ', escape_((title==i18ns['TITLE_ABOUT'] and 'class="active"' or ''), False), u'>', escape_(i18ns['TITLE_ABOUT'], True), u'</a></li>\n'])
     if is_user_admin:
         extend_(['        ', u'<li><a href="/admin" ', escape_((title=='Admin' and 'class="active"' or ''), False), u'>Admin</a></li>\n'])
     extend_([u'    </ul>\n'])
@@ -395,7 +395,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     extend_([u'            <input type="hidden" name="ie" value="UTF-8" />\n'])
     extend_([u'            <input type="hidden" name="cref" value="', escape_((settings.HOST), True), u'/cse.xml" />\n'])
     extend_([u'            <input type="hidden" name="cof" value="FORID:11" />\n'])
-    extend_([u'                <input id="search_box" name="q" tabindex="1" onfocus="if (this.value==\'search\') this.value = \'\'" type="text" maxlength="140" size="32" value="search"/>\n'])
+    extend_([u'                <input id="search_box" name="q" tabindex="1" onfocus="if (this.value==\'', escape_(i18ns['SEARCH'], True), u'\') this.value = \'\'" type="text" maxlength="140" size="32" value="', escape_(i18ns['SEARCH'], True), u'"/>\n'])
     extend_([u'            </p>\n'])
     extend_([u'        </form>\n'])
     extend_([u'        \n'])
@@ -428,7 +428,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                <tr>\n'])
         extend_([u'                    <td width="40%">\n'])
         extend_([u'\n'])
-        extend_([u'                            <p>Posts: <span class="summarycount">', escape_(commify(posts_total_count), True), u'</span></p>\n'])
+        extend_([u'                            <p>', escape_(i18ns['POSTS'], True), u': <span class="summarycount">', escape_(commify(posts_total_count), True), u'</span></p>\n'])
         extend_([u'                    </td>\n'])
         extend_([u'                    <td>\n'])
         extend_([u'                        <ul class="like-buttons">\n'])
@@ -452,24 +452,24 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'                </tr>\n'])
         extend_([u'            </table>\n'])
         if settings.CATEGORIES:
-            extend_(['            ', u'<h2>Categories</h2>\n'])
+            extend_(['            ', u'<h2>', escape_(i18ns['CATEGORIES'], True), u'</h2>\n'])
             extend_(['            ', u'<ul>\n'])
             for category in loop.setup(categories):
                 extend_(['            ', u'<li><a href="/?category=', escape_(category.name, True), u'">', escape_(category.name, True), u'</a><span class="counter"> (', escape_(commify(category.counter), True), u')</span></li>\n'])
             extend_(['            ', u'</ul>\n'])
         if settings.ITEMS_TO_SHOW:
-            extend_(['            ', u'<h2>Books</h2>\n'])
+            extend_(['            ', u'<h2>', escape_(i18ns['BOOKS'], True), u'</h2>\n'])
             for item in loop.setup(settings.ITEMS_TO_SHOW):
                 extend_(['            ', escape_(item, False), u'\n'])
             extend_(['            ', u'<ul><li><a href="/?category=Books">Google App Engine Books</a></li></ul>\n'])
         if title != 'Tag cloud':
-            extend_(['            ', u'<h2>Tags</h2>\n'])
+            extend_(['            ', u'<h2>', escape_(i18ns['TAGS'], True), u'</h2>\n'])
             extend_(['            ', u'<p>\n'])
             for tag in loop.setup(tag_cloud):
                 extend_(['                ', u'    <span class="tag_info"><a class="tag_cloud_nav_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'"> ', escape_((tag.name), True), u'</a><span class="counter"> (', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
                 extend_(['                ', u'\n'])
             if len(tag_cloud)>=settings.NAVBAR_CLOUDSIZE:
-                extend_(['                ', u'<br/><span class="more_tag"><a  href="/tagcloud">more \xbb</a></span>\n'])
+                extend_(['                ', u'<br/><span class="more_tag"><a  href="/', escape_(i18ns['ROUTE_TAGCLOUD'], True), u'">more \xbb</a></span>\n'])
             extend_(['            ', u'</p>\n'])
         extend_([u'            <div id="img" style="margin-top:10px">\n'])
         extend_([u'                <p style="text-align:center">\n'])
@@ -511,7 +511,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_([u'</div>\n'])
         extend_([u'\n'])
     extend_([u'<div id="footer">\n'])
-    extend_([u'    <p>\xa9 ', escape_(settings.AUTHOR_NAME, True), u' | ', escape_(settings.CMS_NAME, True), u' | Powered by Google App Engine | BucketHandle v. ', escape_(settings.VERSION, True), u'</p>\n'])
+    extend_([u'    <p>', escape_(settings.FOOTER, True), u'</p>\n'])
     extend_([u'</div>\n'])
     extend_([u'\n'])
     if settings.ANALYTICS_ID and not development and not is_user_admin:
@@ -548,7 +548,7 @@ def oops (message):
     self = TemplateResult(); extend_ = self.extend
     extend_([u'\n'])
     extend_([u'<div id="oops">                                                    \n'])
-    extend_([u'          <p>', escape_(settings.RELAXING_MESSAGE_ERROR, True), u'</p>\n'])
+    extend_([u'          <p>', escape_(i18ns['RELAXING_MESSAGE_ERROR'], True), u'</p>\n'])
     extend_([u'          <p><img src="/images/oops.png" alt="Error"/></p>\n'])
     extend_([u'          <p>', escape_((message), True), u' </p>\n'])
     extend_([u'</div>\n'])
@@ -570,9 +570,9 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'              <tr>\n'])
     extend_([u'                  <td class="pagination_page" style="text-align:left">\n'])
     if prev_post:
-        extend_(['                      ', u'<a href="/post/', escape_(prev_post.get_path(), True), u'">&laquo; prev</a>\n'])
+        extend_(['                      ', u'<a href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(prev_post.get_path(), True), u'">&laquo; ', escape_(i18ns['PREV'], True), u'</a>\n'])
     if next_post:
-        extend_(['                      ', u' &nbsp;<a href="/post/', escape_(next_post.get_path(), True), u'">next &raquo;</a>\n'])
+        extend_(['                      ', u' &nbsp;<a href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(next_post.get_path(), True), u'">', escape_(i18ns['NEXT'], True), u' &raquo;</a>\n'])
     extend_([u'                  </td>\n'])
     extend_([u'              </tr>\n'])
     extend_([u'          </table>\n'])
@@ -584,9 +584,9 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'                <img src="', escape_(post.get_image_path(), True), u'" width="', escape_(settings.THUMBNAIL_WIDTH, True), u'" height="', escape_(settings.THUMBNAIL_HEIGHT, True), u'" title="', escape_(post.category, True), u'" alt="', escape_(post.category, True), u'"/>\n'])
     extend_([u'              </div>\n'])
     extend_([u'          </div>\n'])
-    extend_([u'          <p>', escape_(post.created.strftime("%d %B, %Y"), True), u' | <strong>', escape_(settings.CMS_NAME, True), u'</strong>\n'])
+    extend_([u'          <p>', escape_(post.created.strftime(settings.DATE_FORMAT), True), u' | <strong>', escape_(settings.CMS_NAME, True), u'</strong>\n'])
     if post.is_featured():
-        extend_(['              ', u'<a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>\n'])
+        extend_(['              ', u'<a href="/', escape_(i18ns['ROUTE_FEATURED'], True), u'"><img src="/images/featured.png" title="', escape_(i18ns['TITLE_FEATURED'], True), u'" alt="', escape_(i18ns['TITLE_FEATURED'], True), u'"/></a>\n'])
     extend_([u'              <a href="/post/', escape_(post.get_path(), True), u'"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>\n'])
     if is_user_admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
@@ -738,7 +738,7 @@ def sitemap_posts (posts):
     extend_([u'http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">\n'])
     for post in loop.setup(posts):
         extend_(['  ', u'<url>\n'])
-        extend_(['  ', u'  <loc>http://', escape_((settings.HOST), True), u'/post/', escape_((post.get_path()), True), u'</loc>\n'])
+        extend_(['  ', u'  <loc>http://', escape_((settings.HOST), True), u'/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_((post.get_path()), True), u'</loc>\n'])
         extend_(['  ', u'</url>\n'])
     extend_([u'</urlset>\n'])
 
@@ -796,13 +796,13 @@ def tagcloud (tag_cloud, show_all = False):
     self = TemplateResult(); extend_ = self.extend
     max_occurrencies =  tag_cloud[0].counter if len(tag_cloud)>0 else 1
     extend_([u'\n'])
-    extend_([u'<p>Tags shown: <b>', escape_(commify(len(tag_cloud)), True), u'</b></p>\n'])
-    extend_([u'<p>Filter: <input type="text" id="tagcloud_filter" maxlength="20" size="20"/></p>\n'])
+    extend_([u'<p>', escape_(i18ns['TAGS_SHOWN'], True), u': <b>', escape_(commify(len(tag_cloud)), True), u'</b></p>\n'])
+    extend_([u'<p>', escape_(i18ns['FILTER'], True), u': <input type="text" id="tagcloud_filter" maxlength="20" size="20"/></p>\n'])
     extend_([u'<div id="main_tag_cloud">\n'])
     for tag in loop.setup(tag_cloud):
         extend_(['    ', u'    <span class="tag_info"><a class="tag_cloud_', escape_(utils.get_tag_weight(tag.counter,max_occurrencies), True), u'" href="/tag/', escape_((tag.name), True), u'">', escape_((tag.name), True), u'</a><span class="counter">(', escape_(commify(tag.counter), True), u')</span>&nbsp;</span>\n'])
     if len(tag_cloud)>=settings.MAIN_CLOUDSIZE and not show_all:
-        extend_(['    ', u'    <br/><span class="more_tag"><a  href="/tagcloud?showall=true">even more \xbb</a></span>\n'])
+        extend_(['    ', u'    <br/><span class="more_tag"><a  href="/tagcloud?showall=true">', escape_(i18ns['EVEN_MORE'], True), u' \xbb</a></span>\n'])
     extend_([u'</div>\n'])
 
     return self

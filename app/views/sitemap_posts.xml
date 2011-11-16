@@ -7,6 +7,6 @@ $def with (posts)
 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   $for post in posts:
     <url>
-      <loc>http://$(settings.HOST)/post/$(post.get_path())</loc>
+      <loc>http://$(settings.HOST)/$i18ns['ROUTE_POST']/$(post.get_path())</loc>
     </url>
 </urlset>

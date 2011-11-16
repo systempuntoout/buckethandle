@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 #Meta
-VERSION = '0.9.0.7'
 CMS_NAME = u"GAE Cupboard"
 AUTHOR_NAME = u"systempuntoout"
 SLOGAN = u"Ingredients for your Google App Engine recipes"
@@ -33,6 +32,7 @@ You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/s
 ![test](/images/systempuntooutmail.jpg "mail")
 """
 
+FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine"])
 
 
 #Views
@@ -59,17 +59,15 @@ ADSENSE_ID = 'pub-3296756901484166'
 ADSENSE_CHANNEL_ID = '2124691773'
 FEED_PROXY = 'http://feeds.feedburner.com/gaecupboard/fb'
 FEED_PROXY_USER_AGENT = 'FeedBurner'
+GOOGLE_SITE_VERIFICATION_KEY = "m05zkgXk41nY4dXLheGpLdTiTnx-JduC2XOamAra_6Q"
+YAHOO_SITE_VERIFICATION_KEY = "88698ce39daf8603"
 
-
-#Errors
-RELAXING_MESSAGE_ERROR = "..cumulus clouds are white, puffy clouds that look like pieces of floating cotton.. "
-GENERIC_ERROR = "Ooooops, it works on my machine. Please try again later."
-NOT_FOUND_ERROR = "Not found!"
-SERVER_ERROR = "Server problem"
+#Stuff
 BOTS=['Googlebot','Slurp','Twiceler','msnbot','KaloogaBot','YodaoBot','Baiduspider','googlebot','Speedy Spider','DotBot']
 MARKUPS = ['Markdown','Html']
 DEFAULT_MARKUP = ['Markdown']
-
+DEFAULT_LANGUAGE = 'en'
+DATE_FORMAT = '%d %B, %Y'
 #Mapping Discovery
 AUTO_CONTENT_BY_LINK = {
 'http://stackoverflow.com':{

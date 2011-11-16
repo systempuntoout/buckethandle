@@ -10,9 +10,10 @@ from google.appengine.api import users
 
 import web
 import app.utility.utils as utils
-from app.config.urls import urls
 import app.config.settings as settings
 from app.config.settings import *
+
+web.i18ns = utils.get_i18ns(DEFAULT_LANGUAGE)
 
 global_template = {
             'safemarkdown':web.safemarkdown,
@@ -21,16 +22,20 @@ global_template = {
             'htmlquote':web.net.htmlquote,
             'settings': settings,
             'utils': utils,
+            'i18ns': web.i18ns,
             'development' : os.environ['SERVER_SOFTWARE'].startswith('Dev')
           }
 
 web.render = render = web.template.render('app/views/', globals = global_template, cache = True)
+
+
                                                
 def notfound():
-    return web.notfound(render.layout(render.oops(settings.NOT_FOUND_ERROR), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
+    return web.notfound(render.layout(render.oops(web.i18ns['PAGE_NOT_FOUND_ERROR']), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
 def internalerror():
-    return web.internalerror(render.layout(render.oops(settings.SERVER_ERROR), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
+    return web.internalerror(render.layout(render.oops(web.i18ns['SERVER_ERROR']), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
 
+from app.config.urls import urls
 app = web.application(urls, globals())
 app.notfound = notfound
 app.internalerror = internalerror

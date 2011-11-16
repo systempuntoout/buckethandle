@@ -11,8 +11,8 @@ $def with (posts, site_updated)
 $for post in posts:
     <entry>
         <title>$(post.title) - $(post.category)</title>
-        <link rel="alternate" type="text/html" href="http://$(settings.HOST)/post/$post.get_path()" />
-        <id>tag:$(settings.HOST),$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ")):/post/$(post.key())</id>
+        <link rel="alternate" type="text/html" href="http://$(settings.HOST)/$i18ns['ROUTE_POST']/$post.get_path()" />
+        <id>tag:$(settings.HOST),$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ")):/$i18ns['ROUTE_POST']/$(post.key())</id>
         <published>$(post.created.strftime("%Y-%m-%dT%H:%M:%SZ"))</published>
         <updated>$(post.last_modified.strftime("%Y-%m-%dT%H:%M:%SZ"))</updated>
         <author>

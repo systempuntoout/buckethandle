@@ -19,6 +19,7 @@ from app.utility.utils import cachepage
 ereporter.register_logger()
 
 render = web.render 
+i18ns = web.i18ns
 
 def render_template(content, **kwargs):
     """
@@ -41,7 +42,7 @@ def render_error(error, **kwargs):
     """
      Renders the error page
     """
-    return render.layout(render.oops(error), title ='Error', navbar = False)
+    return render.layout(render.oops(error), title = i18ns['TITLE_ERROR'], navbar = False)
 
     
 class Index:
@@ -59,7 +60,7 @@ class Index:
                                             selected_category = category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = "%s" % (category if category else 'Home'))
+                                            title = "%s" % (category if category else i18ns['TITLE_HOME']))
 
 
 class Post:
@@ -72,7 +73,7 @@ class Post:
             if post_id and not slug:
                 post = models.Post.get(post_id)
                 if post:
-                    return web.seeother('/post/%s/%s' % (post_id, post.slug))
+                    return web.seeother('/%s/%s/%s' % (i18ns['ROUTE_POST'], post_id, post.slug))
                 else:
                     raise web.notfound()
             #Get post 
@@ -84,7 +85,7 @@ class Post:
             if post:
                 #Return to canonical if the slug is truncated
                 if slug and slug.strip() != post.slug:
-                    return web.seeother('/post/%s/%s' % (post_id, post.slug))
+                    return web.seeother('/%s/%s/%s' % (i18ns['ROUTE_POST'],post_id, post.slug))
                     
                 prev_post, next_post = models.Post.get_prev_next(post)
             else:
@@ -96,7 +97,7 @@ class Post:
                                                utils.ContentDiscoverer(post.link, post.category).get_content_block(),
                                                is_user_admin = users.is_current_user_admin()), 
                                                title = post.title,
-                                               canonical = "post/%s" % (post.get_path()),
+                                               canonical = "%s/%s" % (i18ns['ROUTE_POST'],post.get_path()),
                                                meta_description = utils.get_metadescription(post))
         except BadKeyError:
                 raise web.notfound()
@@ -143,7 +144,7 @@ class Tags:
                                             category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else ('Posts' if not category else '')))
+                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else (i18ns['TITLE_POST'] if not category else '')))
         
 
 class TagCloud:
@@ -158,8 +159,8 @@ class TagCloud:
         else:
             tag_cloud = models.Tag.get_tags(MAIN_CLOUDSIZE)
         return render_template(render.tagcloud(tag_cloud, show_all),
-                               title = 'Tag cloud',
-                               meta_description = 'Weighted tags list that can be filtered')
+                               title = i18ns['TITLE_TAGCLOUD'],
+                               meta_description = i18ns['META_TAGCLOUD'])
 
 class Featured:
    """
@@ -169,21 +170,21 @@ class Featured:
        featured_posts = models.Post.get_featured_posts()
 
        return render_template(render.featured(featured_posts, is_user_admin = users.is_current_user_admin()),
-                              title = 'Featured')
+                              title = i18ns['TITLE_FEATURED'])
 class About:
     """
     About
     """
     @cachepage()
     def GET(self):
-        return render_template(render.about(), title = 'About')
+        return render_template(render.about(), title = i18ns['TITLE_ABOUT'])
 
 class Search:
     """
     Search
     """
     def GET(self):
-        return render_template(render.search(), title = 'Search')
+        return render_template(render.search(), title = i18ns['TITLE_SEARCH'])
 
 class Feed:
      """

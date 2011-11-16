@@ -1,3 +1,6 @@
+import web
+i18ns = web.i18ns
+
 """
  Routes to controllers
 """
@@ -5,13 +8,13 @@
 urls = (
   '/tag', 'app.controllers.main.Tags',
   '/tag/(.*)', 'app.controllers.main.Tags',
-  '/featured', 'app.controllers.main.Featured',
-  '/tagcloud','app.controllers.main.TagCloud',
+  '/%s' % i18ns['ROUTE_FEATURED'], 'app.controllers.main.Featured',
+  '/%s' % i18ns['ROUTE_TAGCLOUD'],'app.controllers.main.TagCloud',
   '/submit','app.controllers.main.Submit',
-  '/post', 'app.controllers.main.Post',
-  '/post/([\w_-]+)(?:/([\w-]+))?/?', 'app.controllers.main.Post',
-  '/about', 'app.controllers.main.About',
-  '/search', 'app.controllers.main.Search',
+  '/%s' % i18ns['ROUTE_POST'], 'app.controllers.main.Post',
+  '/%s/([\w_-]+)(?:/([\w-]+))?/?' % i18ns['ROUTE_POST'], 'app.controllers.main.Post',
+  '/%s' % i18ns['ROUTE_ABOUT'], 'app.controllers.main.About',
+  '/%s' % i18ns['ROUTE_SEARCH'], 'app.controllers.main.Search',
   '/img/([\w_-]+)(?:/.*)?', 'app.controllers.main.Image',
   '/ajax/tags','app.controllers.ajax.Tags',
   '/ajax/links','app.controllers.ajax.Links',
@@ -37,6 +40,6 @@ urls = (
 
 sitemap_urls = ('/',
                 '/tag',
-                '/post',
+                '/%s' % i18ns['ROUTE_POST'],
                 '/featured',
-                '/about')
+                '/%s' % i18ns['ROUTE_ABOUT'])

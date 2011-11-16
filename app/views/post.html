@@ -6,9 +6,9 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
               <tr>
                   <td class="pagination_page" style="text-align:left">
                       $if prev_post:
-              	        <a href="/post/$prev_post.get_path()">&laquo; prev</a>
+              	        <a href="/$i18ns['ROUTE_POST']/$prev_post.get_path()">&laquo; $i18ns['PREV']</a>
                       $if next_post:
-              	           &nbsp;<a href="/post/$next_post.get_path()">next &raquo;</a>
+              	           &nbsp;<a href="/$i18ns['ROUTE_POST']/$next_post.get_path()">$i18ns['NEXT'] &raquo;</a>
                   </td>
               </tr>
           </table>
@@ -20,9 +20,9 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
                 <img src="$post.get_image_path()" width="$settings.THUMBNAIL_WIDTH" height="$settings.THUMBNAIL_HEIGHT" title="$post.category" alt="$post.category"/>
               </div>
           </div>
-          <p>$post.created.strftime("%d %B, %Y") | <strong>$settings.CMS_NAME</strong>
+          <p>$post.created.strftime(settings.DATE_FORMAT) | <strong>$settings.CMS_NAME</strong>
               $if post.is_featured():
-                <a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>
+                <a href="/$i18ns['ROUTE_FEATURED']"><img src="/images/featured.png" title="$i18ns['TITLE_FEATURED']" alt="$i18ns['TITLE_FEATURED']"/></a>
               <a href="/post/$post.get_path()"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>
               $if is_user_admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>

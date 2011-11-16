@@ -6,16 +6,16 @@ $def with (posts, is_user_admin = False)
                   <td>
                     <div style="overflow: hidden;">
                     <div style="float:left;width:90%">
-                        <p>$post.created.strftime("%d %B, %Y")
+                        <p>$post.created.strftime(settings.DATE_FORMAT)
                         $if is_user_admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
                         $if post.is_featured():
-                            <a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>
-                        | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
+                            <a href="/$i18ns['ROUTE_FEATURED']"><img src="/images/featured.png" title="$i18ns['TITLE_FEATURED']" alt="$i18ns['TITLE_FEATURED']"/></a>
+                        | <a style="font-size:90%" href="/$i18ns['ROUTE_POST']/$post.get_path()">$i18ns['DETAILS']</a>
                         </p>
                         <p>
                         $if post.link:
-                            <span class="main_link"><a href="/post/$post.get_path()">$(post.title)</a></span>
+                            <span class="main_link"><a href="/$i18ns['ROUTE_POST']/$post.get_path()">$(post.title)</a></span>
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>
@@ -57,7 +57,7 @@ $def with (posts, is_user_admin = False)
                     </table>
                     <table class="pagination">
                         <tr>
-                            <td class="pagination_found">Posts: $commify(len(posts))</td>
+                            <td class="pagination_found">$i18ns['POSTS']: $commify(len(posts))</td>
                         </tr>
                     </table>
         $else:
@@ -65,7 +65,7 @@ $def with (posts, is_user_admin = False)
                 <tr>
                     <td>
                    <p id="not_found">
-                       No posts found
+                       $i18ns['POST_NOT_FOUND_ERROR']
                     </p>
                     </td>
                 </tr>

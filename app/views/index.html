@@ -5,7 +5,7 @@ $def render_catqs(selected_category, front_char):
 <div id="box_tags">
      <form action = "/tag/$urlquote('/'.join(selected_tags))" method="post">  
        <p>
-       <b>Tags:</b>
+       <b>$i18ns['TAGS']:</b>
        $for tag in selected_tags:
            <a class="tag dark" href="/tag/$urlquote('/'.join(selected_tags))?removetag=$urlquote(tag)$(render_catqs(selected_category,"&"))">$tag x</a>&raquo;
        <input id="search" type="text" size="35" name="addtag"/>
@@ -35,16 +35,16 @@ $def render_catqs(selected_category, front_char):
                   <td>
                     <div style="overflow: hidden;">
                     <div style="float:left;width:90%">
-                        <p>$post.created.strftime("%d %B, %Y")
+                        <p>$post.created.strftime(settings.DATE_FORMAT)
                         $if is_user_admin:
                             <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
                         $if post.is_featured():
-                          <a href="/featured"><img src="/images/featured.png" title="Featured" alt="Featured"/></a>
-                        | <a style="font-size:90%" href="/post/$post.get_path()">DETAILS</a>
+                          <a href="/$i18ns['ROUTE_FEATURED']"><img src="/images/featured.png" title="$i18ns['TITLE_FEATURED']" alt="$i18ns['TITLE_FEATURED']"/></a>
+                        | <a style="font-size:90%" href="/$i18ns['ROUTE_POST']/$post.get_path()">$i18ns['DETAILS']</a>
                         </p>
                         <p>
                         $if post.link:
-                            <span class="main_link"><a href="/post/$post.get_path()">$(post.title)</a></span>
+                            <span class="main_link"><a href="/$i18ns['ROUTE_POST']/$post.get_path()">$(post.title)</a></span>
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>                                     
@@ -93,14 +93,14 @@ $def render_catqs(selected_category, front_char):
                         <tr>
                             <td class="pagination_page">
                                 $if pagination.has_previous_entries():
-                        	        <a href="?page=$(pagination.page-1)$(render_catqs(selected_category,"&"))">&laquo; prev&nbsp;&nbsp;</a>
+                        	        <a href="?page=$(pagination.page-1)$(render_catqs(selected_category,"&"))">&laquo; $i18ns['PREV']&nbsp;&nbsp;</a>
                                 [ $pagination.page ]
                                 $if pagination.has_more_entries():
-                        	           <a href="?page=$(pagination.page+1)$(render_catqs(selected_category,"&"))">&nbsp;&nbsp;next &raquo;</a>
+                        	           <a href="?page=$(pagination.page+1)$(render_catqs(selected_category,"&"))">&nbsp;&nbsp;$i18ns['NEXT'] &raquo;</a>
                             </td>
                         </tr>
                         <tr>
-                            <td class="pagination_found">Posts: $commify(pagination.total)</td>
+                            <td class="pagination_found">$i18ns['POSTS']: $commify(pagination.total)</td>
                         </tr>
                     </table>
         $else:
@@ -108,7 +108,7 @@ $def render_catqs(selected_category, front_char):
                 <tr>
                     <td>
                    <p id="not_found">
-                       No posts found
+                       $i18ns['POST_NOT_FOUND_ERROR']
                     </p>
                     </td>
                 </tr>

@@ -1,5 +1,4 @@
 from google.appengine.api import memcache
-from app.config.settings import GENERIC_ERROR, NOT_FOUND_ERROR
 import logging, web
 import app.db.models as models
 from google.appengine.ext import ereporter
