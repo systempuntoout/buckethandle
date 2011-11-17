@@ -390,7 +390,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
     if is_user_admin:
         extend_(['        ', u'<li><a href="/admin" ', escape_((title=='Admin' and 'class="active"' or ''), False), u'>Admin</a></li>\n'])
     extend_([u'    </ul>\n'])
-    extend_([u'        <form id="form" action="/search" method="get">\n'])
+    extend_([u'        <form id="form" action="/', escape_(i18ns['ROUTE_SEARCH'], True), u'" method="get">\n'])
     extend_([u'          <p id="layoutdims">  \n'])
     extend_([u'            <input type="hidden" name="ie" value="UTF-8" />\n'])
     extend_([u'            <input type="hidden" name="cref" value="', escape_((settings.HOST), True), u'/cse.xml" />\n'])
