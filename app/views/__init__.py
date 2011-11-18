@@ -462,7 +462,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
             for item in loop.setup(settings.ITEMS_TO_SHOW):
                 extend_(['            ', escape_(item, False), u'\n'])
             extend_(['            ', u'<ul><li><a href="/?category=Books">Google App Engine Books</a></li></ul>\n'])
-        if title != 'Tag cloud':
+        if title != i18ns['TITLE_TAGCLOUD']:
             extend_(['            ', u'<h2>', escape_(i18ns['TAGS'], True), u'</h2>\n'])
             extend_(['            ', u'<p>\n'])
             for tag in loop.setup(tag_cloud):

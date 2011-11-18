@@ -141,7 +141,7 @@ $if navbar:
                     $for item in settings.ITEMS_TO_SHOW:
                         $:item
                     <ul><li><a href="/?category=Books">Google App Engine Books</a></li></ul>
-                $if title != 'Tag cloud':
+                $if title != i18ns['TITLE_TAGCLOUD']:
                     <h2>$i18ns['TAGS']</h2>
                     <p>
                         $for tag in tag_cloud:
