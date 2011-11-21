@@ -74,7 +74,7 @@ def featured (posts, is_user_admin = False):
     for post in loop.setup(posts):
         extend_(['      ', u'  <tr>\n'])
         extend_(['      ', u'        <td>\n'])
-        extend_(['      ', u'          <div style="overflow: hidden;">\n'])
+        extend_(['      ', u'          <div style="overflow: hidden;word-wrap: break-word">\n'])
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
         extend_(['      ', u'              <p>', escape_(post.created.strftime(settings.DATE_FORMAT), True), u'\n'])
         if is_user_admin:
@@ -226,7 +226,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
     for post in loop.setup(posts):
         extend_(['      ', u'  <tr>\n'])
         extend_(['      ', u'        <td>\n'])
-        extend_(['      ', u'          <div style="overflow: hidden;">\n'])
+        extend_(['      ', u'          <div style="overflow: hidden;word-wrap: break-word">\n'])
         extend_(['      ', u'          <div style="float:left;width:90%">\n'])
         extend_(['      ', u'              <p>', escape_(post.created.strftime(settings.DATE_FORMAT), True), u'\n'])
         if is_user_admin:
@@ -339,7 +339,7 @@ def layout (content, title = None , tag_cloud = [], categories = [], navbar = Tr
         extend_(['    ', u'<title>', escape_(settings.CMS_NAME, True), u'</title> \n'])
     else:
         extend_(['    ', u'<title> ', escape_((title), True), u' - ', escape_(settings.CMS_NAME, True), u'</title> \n'])
-    extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css?000003"/>\n'])
+    extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/screen.css?000004"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/jquery.autocomplete.css"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/stylesheets/uniform.default.css"/>\n'])
     extend_([u'    <link rel="stylesheet" type="text/css" href="/javascripts/markitup/skins/markitup/style.css" />\n'])

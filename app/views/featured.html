@@ -4,7 +4,7 @@ $def with (posts, is_user_admin = False)
       $for post in posts:
             <tr>
                   <td>
-                    <div style="overflow: hidden;">
+                    <div style="overflow: hidden;word-wrap: break-word">
                     <div style="float:left;width:90%">
                         <p>$post.created.strftime(settings.DATE_FORMAT)
                         $if is_user_admin:
