@@ -49,9 +49,9 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
                       </script> 
                    </div>
           <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
-          <p>$(post.description)</p>
+          <p style="text-align:justify">$(post.description)</p>
       </div>
-      <div>
+      <div style="text-align:justify">
       $if post.is_markdown():    
           $:safemarkdown(post.body)
       $if post.is_html():    
