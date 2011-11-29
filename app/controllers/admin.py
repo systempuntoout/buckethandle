@@ -18,6 +18,7 @@ import random
 
 
 render = web.render
+i18ns = web.i18ns
 
 
 def render_template(content):

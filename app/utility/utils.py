@@ -1,15 +1,19 @@
 import unicodedata
 import re
+import os
 import logging
 import time
 import urlparse
 import math
-import web
+import app.lib.xmlrpc as xmlrpc
+import xmlrpclib
+from urllib import unquote as urldecode
 from datetime import datetime, timedelta
 
 from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
+import web
 from app.config.settings import *
 from app.lib import pyso
 import app.config.translate as translate
@@ -135,12 +139,13 @@ def link_is_valid(link):
        return True
        
 def ping_googlesitemap():
-    google_url = 'http://www.google.com/webmasters/tools/ping?sitemap=http://' + HOST + '/sitemap_index.xml'
-    response = urlfetch.fetch(google_url, '', urlfetch.GET)
-    if response.status_code / 100 != 2:
-       logging.warning("Google Sitemap ping failed %s", response.status_code)
-    else:
-       logging.info("Google Sitemap ping done!")
+    if not os.environ['SERVER_SOFTWARE'].startswith('Dev'):
+        google_url = 'http://www.google.com/webmasters/tools/ping?sitemap=http://' + HOST + '/sitemap_index.xml'
+        response = urlfetch.fetch(google_url, '', urlfetch.GET)
+        if response.status_code / 100 != 2:
+           logging.warning("Google Sitemap ping failed %s", response.status_code)
+        else:
+           logging.info("Google Sitemap ping done!")
 
 
 def check_link_weight(link):
@@ -186,3 +191,48 @@ def get_i18ns(language):
    else:
        i18ns=translate.en
    return i18ns
+
+def get_pingback_uri(url_to_ping):
+   """
+    Get Pingback url for RPC
+   """
+   pingback_uri = ''
+   try:
+       response = urlfetch.fetch(url_to_ping, method=urlfetch.GET, deadline = 10)
+   except:
+      pass  
+   try:
+       pingback_uri = response.headers['X-Pingback']
+   except KeyError:
+       _pingback_re = re.compile(r'<link rel="pingback" href="([^"]+)" ?/?>(?i)')
+       match = _pingback_re.search(response.content)
+       if match:
+           pingback_uri =urldecode(match.group(1))
+   return pingback_uri
+
+def ping(url_to_ping, url_canonical):
+   """
+     Ping url_to_ping 
+   """
+   pingback_uri = get_pingback_uri(url_to_ping)
+   if pingback_uri:
+       logging.debug('Pinging: %s' % pingback_uri)
+       transport = xmlrpc.GoogleXMLRPCTransport()
+       rpc_server = xmlrpclib.ServerProxy(pingback_uri, transport=transport)
+       try:
+           rpc_server.weblogUpdates.ping(CMS_NAME,
+                                         url_canonical)
+       except Exception, ex:
+           logging.debug(ex)
+           try:
+               rpc_server.weblogUpdates.extendedPing(CMS_NAME,
+                                                     "http://%s" % HOST,    
+                                                      url_canonical,
+                                                      "http://%s/index.xml" % HOST)
+           except Exception, ex:
+               logging.debug(ex)
+               
+               logging.error('Failed to Ping url: ' + pingback_uri)
+               return
+       logging.info('Ping done')
+

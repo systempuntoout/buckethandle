@@ -58,7 +58,7 @@ def redirect_from_appspot(wsgi_app):
     return redirect_if_needed
 
 def main():
-    logging.getLogger().setLevel(logging.DEBUG)
+    logging.getLogger().setLevel(logging.INFO)
     application = app.wsgifunc()
     application = redirect_from_appspot(application)
     run_wsgi_app(application)
