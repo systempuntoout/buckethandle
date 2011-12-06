@@ -630,6 +630,9 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     if settings.DISQUS and not development:
         extend_([' ', u'<h3 id="comments">Comments</h3>\n'])
         extend_([' ', u'<div id="disqus_thread"></div>\n'])
+        extend_([' ', u'<script type="text/javascript">\n'])
+        extend_([' ', u"     var disqus_identifier = '", escape_(post.key(), True), u"';\n"])
+        extend_([' ', u'</script>\n'])
         if development:
             extend_([' ', u'<script type="text/javascript">\n'])
             extend_([' ', u'  var disqus_developer = 1;\n'])

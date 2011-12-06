@@ -7,7 +7,7 @@ DESCRIPTION = u"""**GAE Cupboard**
                 *App Engine knowledge base directory*"""             
 META_DESCRIPTION = u"GAE Cupboard - Ingredients for your Google App Engine recipes"
 META_KEYWORDS = u"Gae appengine Google App Engine  libraries tutorial videos projects stackoverflow "
-CATEGORIES = [u"Libraries",u"Articles",u"Books", u"Questions", u"Videos", u"Applications"]
+CATEGORIES = [u"Libraries",u"Articles",u"Books", u"Questions", u"Videos", u"Applications", u"Jobs"]
 MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com" #Insert your host here: foo.appspot.com or in case of custom domain www.foo.com
 REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True 
@@ -21,15 +21,24 @@ I've coded up this tool that is a sort of mix among Reddit, Delicious and a Cms/
 Do you want some good tags/categories combo to start with?  
 
 Try with:  
-    - [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
-    - [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
-    - [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
-    - [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category  
-    - [pricing](http://www.gaecupboard.com/tag/pricing?category=Articles)  in the _Articles_ category  
+
+- [web-frameworks+python](http://www.gaecupboard.com/tag/web-frameworks/python?category=Libraries) in the _Libraries_ category  
+- [reviews](http://www.gaecupboard.com/tag/reviews?category=Articles) in the _Articles_ category  
+- [rants](http://www.gaecupboard.com/tag/rants?category=Articles)  in the _Articles_ category  
+- [java](http://www.gaecupboard.com/tag/java?category=Books)  in the _Books_ category  
+- [pricing](http://www.gaecupboard.com/tag/pricing?category=Articles)  in the _Articles_ category  
 
 You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/search?q=user%3A130929+%5Bgoogle-app-engine%5D), on [twitter](https://twitter.com/#!/systempuntoout) or at the following mail address:  
 
 ![test](/images/systempuntooutmail.jpg "mail")
+
+Sponsors:  
+
+-[Link slot #1](#)  
+-[Link slot #2](#)  
+-[Link slot #3](#)  
+-[Link slot #4](#)  
+-[Link slot #5](#)  
 """
 
 FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine"])
@@ -178,6 +187,15 @@ AUTO_CONTENT_BY_LINK = {
                               "scrolling="no"marginwidth="0"marginheight="0"frameborder="0">
                              </iframe>"""
                             },
+'https://www.odesk.com':{
+                        'image':'odesk.png',
+                        'category':'Jobs',
+                        },
+'http://careers.stackoverflow.com':{
+                        'image':'careers.png',
+                        'category':'Jobs',
+                        },
+
 }
 
 AUTO_CONTENT_BY_CATEGORY = {

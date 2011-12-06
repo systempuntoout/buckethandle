@@ -60,30 +60,32 @@ class Post(db.Model):
         return posts.count(limit = None)
 
     @staticmethod
-    @memcached('get_posts', 3600*24, lambda page, limit, offset, tags_filter  = [], category_filter = '': "%s_%s_%s_%s" % (limit,offset,'.'.join(sorted(tags_filter)), category_filter))
     def get_posts(page, limit, offset, tags_filter = [], category_filter = ''):
-        posts =  Post.all()
-        if category_filter:
-            posts.filter('category', category_filter )
-        for tag in tags_filter:
-          if tag:
-              posts.filter('tags', tag)
-        bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page-1,'.'.join(sorted(tags_filter)), category_filter))
-        if bookmark:
-            posts.with_cursor(start_cursor = bookmark)
-            fetched_post = posts.fetch(limit = limit)
-            memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
-        else:
-            if offset ==  0:
-                fetched_post = posts.fetch(limit = limit) 
+        fetched_posts = memcache.get("%s:%s_%s_%s_%s" % ('get_posts',limit,page,'.'.join(sorted(tags_filter)), category_filter))
+        bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter))
+        if not fetched_posts or not bookmark:
+            posts =  Post.all()
+            if category_filter:
+                posts.filter('category', category_filter )
+            for tag in tags_filter:
+              if tag:
+                  posts.filter('tags', tag)
+                  
+            bookmark = memcache.get("%s:%s_%s_%s" % ('get_posts_cursor', page-1,'.'.join(sorted(tags_filter)), category_filter))
+            if bookmark:
+                posts.with_cursor(start_cursor = bookmark)
+                fetched_posts = posts.fetch(limit = limit)
                 memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
             else:
-                memcache.delete('get_posts:%s_%s_%s_%s' % (limit,POSTS_PER_PAGE - offset,'.'.join(sorted(tags_filter)), category_filter))
-                #Offset consumes a lot of Datastore reads, without bookmark I return nothing
-                fetched_post = []
-            
-        
-        return fetched_post
+                if page ==  1:
+                    fetched_posts = posts.fetch(limit = limit) 
+                    memcache.set("%s:%s_%s_%s" % ('get_posts_cursor', page,'.'.join(sorted(tags_filter)), category_filter), posts.cursor())
+                else:
+                    #Offset consumes a lot of Datastore reads, without bookmark you get nothing
+                    fetched_posts = []
+            if fetched_posts:
+                memcache.set("%s:%s_%s_%s_%s" % ('get_posts',limit,page,'.'.join(sorted(tags_filter)), category_filter), fetched_posts)
+        return fetched_posts
     
     @staticmethod
     @memcached('get_recent_posts', 3600*24)

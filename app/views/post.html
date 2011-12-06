@@ -66,6 +66,9 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
  $if settings.DISQUS and not development:
      <h3 id="comments">Comments</h3>
      <div id="disqus_thread"></div>
+     <script type="text/javascript">
+          var disqus_identifier = '$post.key()';
+     </script>
      $if development:
        <script type="text/javascript">
          var disqus_developer = 1;
