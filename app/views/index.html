@@ -48,6 +48,7 @@ $def render_catqs(selected_category, front_char):
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>                                     
+                        <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
                         $if settings.ADSENSE_ID and loop.index<=2:
                                      <div id="adsense" style="margin-bottom:10px">
                                      <script type="text/javascript"><!--
@@ -62,7 +63,6 @@ $def render_catqs(selected_category, front_char):
                                         src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                                         </script> 
                                      </div>
-                        <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
                         <p style="text-align:justify">$(post.description)</p>
                     </div>
                     <div style="float:right">

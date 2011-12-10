@@ -19,6 +19,7 @@ $def with (posts, is_user_admin = False)
                         $else:
                             <span class="main_title">$(post.title)</span>
                         </p>
+                        <p><a target="_blank" href="$(post.link)">$(post.link)</a></p>
                         $if settings.ADSENSE_ID and loop.index<=2:
                                    <script type="text/javascript"><!--
                                    google_ad_client = "$settings.ADSENSE_ID";
@@ -31,7 +32,6 @@ $def with (posts, is_user_admin = False)
                                    <script type="text/javascript"
                                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                                    </script>
-                        <p><a target="_blank" href="$(post.link)">$(post.link)</a></p>
                         <p style="text-align:justify">$(post.description)</p>
                     </div>
                     <div style="float:right">

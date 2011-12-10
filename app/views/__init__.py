@@ -89,6 +89,7 @@ def featured (posts, is_user_admin = False):
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
+        extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         if settings.ADSENSE_ID and loop.index<=2:
             extend_(['                    ', u'       <script type="text/javascript"><!--\n'])
             extend_(['                    ', u'       google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
@@ -101,7 +102,6 @@ def featured (posts, is_user_admin = False):
             extend_(['                    ', u'       <script type="text/javascript"\n'])
             extend_(['                    ', u'       src="http://pagead2.googlesyndication.com/pagead/show_ads.js">\n'])
             extend_(['                    ', u'       </script>\n'])
-        extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         extend_(['      ', u'              <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
@@ -241,6 +241,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         else:
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>                                     \n'])
+        extend_(['      ', u'              <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         if settings.ADSENSE_ID and loop.index<=2:
             extend_(['                    ', u'         <div id="adsense" style="margin-bottom:10px">\n'])
             extend_(['                    ', u'         <script type="text/javascript"><!--\n'])
@@ -255,7 +256,6 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             extend_(['                    ', u'            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">\n'])
             extend_(['                    ', u'            </script> \n'])
             extend_(['                    ', u'         </div>\n'])
-        extend_(['      ', u'              <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
         extend_(['      ', u'              <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])

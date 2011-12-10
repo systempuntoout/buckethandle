@@ -31,14 +31,6 @@ Try with:
 You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/search?q=user%3A130929+%5Bgoogle-app-engine%5D), on [twitter](https://twitter.com/#!/systempuntoout) or at the following mail address:  
 
 ![test](/images/systempuntooutmail.jpg "mail")
-
-Sponsors:  
-
--[Link slot #1](#)  
--[Link slot #2](#)  
--[Link slot #3](#)  
--[Link slot #4](#)  
--[Link slot #5](#)  
 """
 
 FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine"])
