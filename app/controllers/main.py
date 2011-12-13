@@ -27,6 +27,7 @@ def render_template(content, **kwargs):
     """
     posts_total_count = models.Post.get_posts_count()  
     tag_cloud = models.Tag.get_tags(limit = NAVBAR_CLOUDSIZE)
+    featured_posts = models.Post.get_featured_posts()
     categories = models.Category.get_categories()
     return render.layout(content, 
                          tag_cloud = tag_cloud, 
@@ -36,6 +37,7 @@ def render_template(content, **kwargs):
                          is_user_admin = users.is_current_user_admin() ,
                          login_url = users.create_login_url("/"),
                          logout_url = users.create_logout_url("/"),
+                         featured_posts = featured_posts,
                           **kwargs)
 
 def render_error(error, **kwargs):

@@ -316,7 +316,7 @@ index = CompiledTemplate(index, 'app/views/index.html')
 join_ = index._join; escape_ = index._escape
 
 # coding: utf-8
-def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', canonical = '', meta_description = ''):
+def layout (content, title = None , tag_cloud = [], categories = [], navbar = True, posts_total_count = 0, user = None, is_user_admin = False, login_url = '', logout_url = '', featured_posts = [], canonical = '', meta_description = ''):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
