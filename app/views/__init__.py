@@ -587,7 +587,7 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     extend_([u'          <p>', escape_(post.created.strftime(settings.DATE_FORMAT), True), u' | <strong>', escape_(settings.CMS_NAME, True), u'</strong>\n'])
     if post.is_featured():
         extend_(['              ', u'<a href="/', escape_(i18ns['ROUTE_FEATURED'], True), u'"><img src="/images/featured.png" title="', escape_(i18ns['TITLE_FEATURED'], True), u'" alt="', escape_(i18ns['TITLE_FEATURED'], True), u'"/></a>\n'])
-    extend_([u'              <a href="/post/', escape_(post.get_path(), True), u'"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>\n'])
+    extend_([u'              <a href="/', escape_(i18ns['ROUTE_POST'], True), u'/', escape_(post.get_path(), True), u'"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>\n'])
     if is_user_admin:
         extend_(['              ', u'<a href="/admin?action=editpost_init&amp;post_id=', escape_(post.key(), True), u'"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>\n'])
         extend_(['              ', u'\n'])

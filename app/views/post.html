@@ -23,7 +23,7 @@ $def with (post, prev_post = None, next_post = None, content_discovered = '', is
           <p>$post.created.strftime(settings.DATE_FORMAT) | <strong>$settings.CMS_NAME</strong>
               $if post.is_featured():
                 <a href="/$i18ns['ROUTE_FEATURED']"><img src="/images/featured.png" title="$i18ns['TITLE_FEATURED']" alt="$i18ns['TITLE_FEATURED']"/></a>
-              <a href="/post/$post.get_path()"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>
+              <a href="/$i18ns['ROUTE_POST']/$post.get_path()"><img src="/images/permalink.png" title="Permalink" alt="Permalink"/></a>
               $if is_user_admin:
                   <a href="/admin?action=editpost_init&amp;post_id=$post.key()"><img src="/images/edit.png" title="Edit" alt="Edit"/></a>
               

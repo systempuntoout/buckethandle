@@ -181,6 +181,14 @@ class About:
     def GET(self):
         return render_template(render.about(), title = i18ns['TITLE_ABOUT'])
 
+class Privacy:
+    """
+    Privacy
+    """
+    @cachepage()
+    def GET(self):
+        return render_template(render.privacy(), title = i18ns['TITLE_PRIVACY'])
+
 class Search:
     """
     Search
