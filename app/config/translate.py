@@ -21,6 +21,9 @@ it['POST_NOT_FOUND_ERROR']=u"Nessun articolo trovato"
 en['ROUTE_ABOUT']=u"about"
 it['ROUTE_ABOUT']=u"chisiamo"
 
+en['ROUTE_PRIVACY']=u"privacy"
+it['ROUTE_PRIVACY']=u"privacy"
+
 en['ROUTE_POST']=u"post"
 it['ROUTE_POST']=u"articolo"
 
@@ -53,6 +56,9 @@ it['TITLE_TAGCLOUD']=u"Tags"
 
 en['TITLE_HOME']=u"Home"
 it['TITLE_HOME']=u"Home"
+
+en['TITLE_PRIVACY']=u"Privacy"
+it['TITLE_PRIVACY']=u"Privacy"
 
 en['META_TAGCLOUD']=u"Weighted tags list that can be filtered"
 it['META_TAGCLOUD']=u"Lista di tag che consentono di filtrare gli articoli in base all'argomento"

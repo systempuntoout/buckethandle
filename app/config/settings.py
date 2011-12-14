@@ -33,7 +33,7 @@ You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/s
 ![test](/images/systempuntooutmail.jpg "mail")
 """
 
-FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine"])
+FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine",'<span class="black"><a href="/privacy">Privacy</a></span>'])
 
 
 #Views
@@ -197,9 +197,9 @@ AUTO_CONTENT_BY_CATEGORY = {
 }
 
 ITEMS_TO_SHOW = [
-'<a target="_blank" href="http://www.amazon.com/gp/product/059652272X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=059652272X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=059652272X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=059652272X&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
-'<a target="_blank" href="http://www.amazon.com/gp/product/1934356638/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=1934356638"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=1934356638&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=1934356638&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
-'<a target="_blank" href="http://www.amazon.com/gp/product/032174263X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399373&creativeASIN=032174263X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=032174263X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=032174263X&camp=217145&creative=399373" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />'
+'<a rel="nofollow" target="_blank" href="http://www.amazon.com/gp/product/059652272X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=059652272X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=059652272X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=059652272X&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
+'<a rel="nofollow" target="_blank" href="http://www.amazon.com/gp/product/1934356638/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399369&creativeASIN=1934356638"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=1934356638&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=1934356638&camp=217145&creative=399369" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />',
+'<a rel="nofollow" target="_blank" href="http://www.amazon.com/gp/product/032174263X/ref=as_li_ss_il?ie=UTF8&tag=syst-20&linkCode=as2&camp=217145&creative=399373&creativeASIN=032174263X"><img border="0" src="http://ws.assoc-amazon.com/widgets/q?_encoding=UTF8&Format=_SL95_&ASIN=032174263X&MarketPlace=US&ID=AsinImage&WS=1&tag=syst-20&ServiceVersion=20070822" ></a><img src="http://www.assoc-amazon.com/e/ir?t=syst-20&l=as2&o=1&a=032174263X&camp=217145&creative=399373" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />'
 
 
 ]

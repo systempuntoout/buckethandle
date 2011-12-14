@@ -504,3 +504,18 @@ ul.like-buttons li{
     margin-top:10px;
     
 }
+
+.black a:link {
+ text-decoration: none;
+ color:#000000;
+}
+
+.black a:visited {
+ text-decoration: underline;
+ color:#000000;
+}
+
+.black a:hover {
+ background:#ffffff;
+ text-decoration:underline;
+}

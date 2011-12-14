@@ -14,6 +14,7 @@ urls = (
   '/%s' % i18ns['ROUTE_POST'], 'app.controllers.main.Post',
   '/%s/([\w_-]+)(?:/([\w-]+))?/?' % i18ns['ROUTE_POST'], 'app.controllers.main.Post',
   '/%s' % i18ns['ROUTE_ABOUT'], 'app.controllers.main.About',
+  '/%s' % i18ns['ROUTE_PRIVACY'], 'app.controllers.main.Privacy',
   '/%s' % i18ns['ROUTE_SEARCH'], 'app.controllers.main.Search',
   '/img/([\w_-]+)(?:/.*)?', 'app.controllers.main.Image',
   '/ajax/tags','app.controllers.ajax.Tags',
