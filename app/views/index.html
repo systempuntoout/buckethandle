@@ -27,6 +27,18 @@ $def render_catqs(selected_category, front_char):
             </ul>
             </div>
      </form>
+     $if settings.ADSENSE_ID:
+         <script type="text/javascript"><!--
+         google_ad_client = "$settings.ADSENSE_ID";
+         /* 728 x 90 - Leaderboard */
+         google_ad_slot = "8473249796";
+         google_ad_width = 728;
+         google_ad_height = 90;
+         //-->
+         </script>
+         <script type="text/javascript"
+         src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+         </script>
 </div>
 <div>      
       <table class="result">          
@@ -49,7 +61,7 @@ $def render_catqs(selected_category, front_char):
                             <span class="main_title">$(post.title)</span>
                         </p>                                     
                         <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
-                        $if settings.ADSENSE_ID and loop.index<=2:
+                        $if settings.ADSENSE_ID and loop.index<=0:
                                      <div id="adsense" style="margin-bottom:10px">
                                      <script type="text/javascript"><!--
                                         google_ad_client = "$settings.ADSENSE_ID";

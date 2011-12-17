@@ -90,7 +90,7 @@ def featured (posts, is_user_admin = False):
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
-        if settings.ADSENSE_ID and loop.index<=2:
+        if settings.ADSENSE_ID and loop.index<=1:
             extend_(['                    ', u'       <script type="text/javascript"><!--\n'])
             extend_(['                    ', u'       google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
             extend_(['                    ', u'       /* 468x60, created 9/11/11 */\n'])
@@ -220,6 +220,18 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         extend_(['       ', u' </ul>\n'])
         extend_(['       ', u' </div>\n'])
     extend_([u'     </form>\n'])
+    if settings.ADSENSE_ID:
+        extend_(['     ', u'<script type="text/javascript"><!--\n'])
+        extend_(['     ', u'google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
+        extend_(['     ', u'/* 728 x 90 - Leaderboard */\n'])
+        extend_(['     ', u'google_ad_slot = "8473249796";\n'])
+        extend_(['     ', u'google_ad_width = 728;\n'])
+        extend_(['     ', u'google_ad_height = 90;\n'])
+        extend_(['     ', u'//-->\n'])
+        extend_(['     ', u'</script>\n'])
+        extend_(['     ', u'<script type="text/javascript"\n'])
+        extend_(['     ', u'src="http://pagead2.googlesyndication.com/pagead/show_ads.js">\n'])
+        extend_(['     ', u'</script>\n'])
     extend_([u'</div>\n'])
     extend_([u'<div>      \n'])
     extend_([u'      <table class="result">          \n'])
@@ -242,7 +254,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>                                     \n'])
         extend_(['      ', u'              <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
-        if settings.ADSENSE_ID and loop.index<=2:
+        if settings.ADSENSE_ID and loop.index<=0:
             extend_(['                    ', u'         <div id="adsense" style="margin-bottom:10px">\n'])
             extend_(['                    ', u'         <script type="text/javascript"><!--\n'])
             extend_(['                    ', u'            google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
