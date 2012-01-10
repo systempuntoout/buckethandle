@@ -141,12 +141,18 @@ class Tags:
         posts_count = models.Post.get_posts_count(tags_filter = tags, category_filter= category)
         posts = models.Post.get_posts(page, limit = POSTS_PER_PAGE, offset = POSTS_PER_PAGE * (page - 1), tags_filter = tags, category_filter= category)
         
+        if category:
+            canonical= 'tag/%s?category=%s' % (web.urlquote('/'.join(sorted(tags))), category)
+        else:
+            canonical= 'tag/%s' % web.urlquote('/'.join(sorted(tags)))
+        
         return render_template(render.index(posts, 
                                             tags, 
                                             category, 
                                             pagination = utils.Pagination(posts_count, page, POSTS_PER_PAGE),
                                             is_user_admin = users.is_current_user_admin()),
-                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else (i18ns['TITLE_POST'] if not category else '')))
+                                            title = "%s %s" % (category if category else '',' '.join(tags) if tags else (i18ns['TITLE_POST'] if not category else '')),
+                                            canonical = canonical)
         
 
 class TagCloud:
