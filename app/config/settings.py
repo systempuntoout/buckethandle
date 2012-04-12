@@ -11,7 +11,7 @@ CATEGORIES = [u"Libraries",u"Articles",u"Books", u"Questions", u"Videos", u"Appl
 MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com" #Insert your host here: foo.appspot.com or in case of custom domain www.foo.com
 REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True 
-APPENGINE_HOST = "gaecupboard.appspot.com" #Mandatory if REDIRECT_FROM_APPENGINE_HOST_TO_HOST is set to True
+APPENGINE_HOST = "gaecupboard-hrd.appspot.com" #Mandatory if REDIRECT_FROM_APPENGINE_HOST_TO_HOST is set to True
 
 ABOUT =u"""
 GAE Cupboard is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
@@ -33,7 +33,7 @@ You can find me on Stack Overflow as [Systempuntoout](http://stackoverflow.com/s
 ![test](/images/systempuntooutmail.jpg "mail")
 """
 
-FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine",'<span class="black"><a href="/privacy">Privacy</a></span>'])
+FOOTER = " | ".join([u"© "+ AUTHOR_NAME, CMS_NAME,"Powered by Google App Engine",'<span class="black"><a href="/privacy">Privacy</a></span>','Coins: <span class="black"><a href="http://www.dentidelgiudizio.net">Denti del giudizio</a></span>'])
 
 
 #Views

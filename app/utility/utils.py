@@ -151,9 +151,13 @@ def ping_googlesitemap():
 def check_link_weight(link):
    base_link = get_base_link(link)
    if base_link == 'http://stackoverflow.com':
-       pyso.install_site(pyso.APISite("api.stackoverflow.com", "1.0"))
-       question = pyso.get_question(ContentDiscoverer(link).get_id())
-       return (question['score']) >= 3
+       question_id = ContentDiscoverer(link).get_id()
+       if question_id:
+           pyso.install_site(pyso.APISite("api.stackoverflow.com", "1.0", api_key ="EV_DN87MaUq8Mr9tAtVSNQ"))
+           question = pyso.get_question(question_id)
+           return (question['score']) >= 3
+       else:
+           return False
    return True    
 
 def check_useragent_for_bots(useragent):

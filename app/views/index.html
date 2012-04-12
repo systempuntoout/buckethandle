@@ -27,6 +27,7 @@ $def render_catqs(selected_category, front_char):
             </ul>
             </div>
      </form>
+     <!--<a target="_blank" href="http://www.campasoft.com/fingerpdf-pdforganizer.html"><img alt="FingerPDF - Pdf Organizer" title="FingerPDF - Pdf Organizer" src="/images/fingerpdf-pdforganizer-l.png" style="border:0"/></a>-->
      $if settings.ADSENSE_ID:
          <script type="text/javascript"><!--
          google_ad_client = "$settings.ADSENSE_ID";
@@ -61,7 +62,8 @@ $def render_catqs(selected_category, front_char):
                             <span class="main_title">$(post.title)</span>
                         </p>                                     
                         <p><a target="_blank" rel="nofollow" href="$(post.link)">$(post.link)</a></p>
-                        $if settings.ADSENSE_ID and loop.index<=0:
+                        <p style="text-align:justify">$(post.description)</p>
+                        $if settings.ADSENSE_ID and loop.index<=1:
                                      <div id="adsense" style="margin-bottom:10px">
                                      <script type="text/javascript"><!--
                                         google_ad_client = "$settings.ADSENSE_ID";
@@ -75,7 +77,6 @@ $def render_catqs(selected_category, front_char):
                                         src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                                         </script> 
                                      </div>
-                        <p style="text-align:justify">$(post.description)</p>
                     </div>
                     <div style="float:right">
                         <p style="text-align:right;">

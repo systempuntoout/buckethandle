@@ -69,7 +69,11 @@ def featured (posts, is_user_admin = False):
     __lineoffset__ = -4
     loop = ForLoop()
     self = TemplateResult(); extend_ = self.extend
-    extend_([u'<div>      \n'])
+    extend_([u'<div> \n'])
+    extend_([u'      <br/>\n'])
+    extend_([u'      <center>\n'])
+    extend_([u'          <a target="_blank" href="http://www.campasoft.com/fingerpdf-pdforganizer.html"><img alt="FingerPDF - Pdf Organizer" title="FingerPDF - Pdf Organizer" src="/images/fingerpdf-pdforganizer-l.png" style="border:0"/></a>\n'])
+    extend_([u'      </center>     \n'])
     extend_([u'      <table class="result" style="margin-top:40px">          \n'])
     for post in loop.setup(posts):
         extend_(['      ', u'  <tr>\n'])
@@ -90,6 +94,7 @@ def featured (posts, is_user_admin = False):
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>\n'])
         extend_(['      ', u'              <p><a target="_blank" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+        extend_(['      ', u'              <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
         if settings.ADSENSE_ID and loop.index<=1:
             extend_(['                    ', u'       <script type="text/javascript"><!--\n'])
             extend_(['                    ', u'       google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
@@ -102,7 +107,6 @@ def featured (posts, is_user_admin = False):
             extend_(['                    ', u'       <script type="text/javascript"\n'])
             extend_(['                    ', u'       src="http://pagead2.googlesyndication.com/pagead/show_ads.js">\n'])
             extend_(['                    ', u'       </script>\n'])
-        extend_(['      ', u'              <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
         extend_(['      ', u'              <p style="text-align:right;">\n'])
@@ -220,6 +224,7 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
         extend_(['       ', u' </ul>\n'])
         extend_(['       ', u' </div>\n'])
     extend_([u'     </form>\n'])
+    extend_([u'     <!--<a target="_blank" href="http://www.campasoft.com/fingerpdf-pdforganizer.html"><img alt="FingerPDF - Pdf Organizer" title="FingerPDF - Pdf Organizer" src="/images/fingerpdf-pdforganizer-l.png" style="border:0"/></a>-->\n'])
     if settings.ADSENSE_ID:
         extend_(['     ', u'<script type="text/javascript"><!--\n'])
         extend_(['     ', u'google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
@@ -254,7 +259,8 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             extend_(['                    ', u'<span class="main_title">', escape_((post.title), True), u'</span>\n'])
         extend_(['      ', u'              </p>                                     \n'])
         extend_(['      ', u'              <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
-        if settings.ADSENSE_ID and loop.index<=0:
+        extend_(['      ', u'              <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
+        if settings.ADSENSE_ID and loop.index<=1:
             extend_(['                    ', u'         <div id="adsense" style="margin-bottom:10px">\n'])
             extend_(['                    ', u'         <script type="text/javascript"><!--\n'])
             extend_(['                    ', u'            google_ad_client = "', escape_(settings.ADSENSE_ID, True), u'";\n'])
@@ -268,7 +274,6 @@ def index (posts, selected_tags = [], selected_category = '', pagination = None,
             extend_(['                    ', u'            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">\n'])
             extend_(['                    ', u'            </script> \n'])
             extend_(['                    ', u'         </div>\n'])
-        extend_(['      ', u'              <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
         extend_(['      ', u'          </div>\n'])
         extend_(['      ', u'          <div style="float:right">\n'])
         extend_(['      ', u'              <p style="text-align:right;">\n'])
@@ -610,6 +615,8 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
     for tag in loop.setup(post.tags):
         extend_(['              ', u'  <a class="tag" href="/tag/', escape_(tag, True), u'">', escape_((tag), True), u'</a> \n'])
     extend_([u'          </p>\n'])
+    extend_([u'          <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
+    extend_([u'          <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
     if settings.ADSENSE_ID:
         extend_(['          ', u'    <div id="adsense" style="margin-bottom:10px">\n'])
         extend_(['          ', u'     <script type="text/javascript"><!--\n'])
@@ -624,8 +631,6 @@ def post (post, prev_post = None, next_post = None, content_discovered = '', is_
         extend_(['          ', u'        src="http://pagead2.googlesyndication.com/pagead/show_ads.js">\n'])
         extend_(['          ', u'        </script> \n'])
         extend_(['          ', u'     </div>\n'])
-    extend_([u'          <p><a target="_blank" rel="nofollow" href="', escape_((post.link), True), u'">', escape_((post.link), True), u'</a></p>\n'])
-    extend_([u'          <p style="text-align:justify">', escape_((post.description), True), u'</p>\n'])
     extend_([u'      </div>\n'])
     extend_([u'      <div style="text-align:justify">\n'])
     if post.is_markdown():

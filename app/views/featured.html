@@ -1,5 +1,9 @@
 $def with (posts, is_user_admin = False)
-<div>      
+<div> 
+      <br/>
+      <center>
+          <a target="_blank" href="http://www.campasoft.com/fingerpdf-pdforganizer.html"><img alt="FingerPDF - Pdf Organizer" title="FingerPDF - Pdf Organizer" src="/images/fingerpdf-pdforganizer-l.png" style="border:0"/></a>
+      </center>     
       <table class="result" style="margin-top:40px">          
       $for post in posts:
             <tr>
@@ -20,6 +24,7 @@ $def with (posts, is_user_admin = False)
                             <span class="main_title">$(post.title)</span>
                         </p>
                         <p><a target="_blank" href="$(post.link)">$(post.link)</a></p>
+                        <p style="text-align:justify">$(post.description)</p>
                         $if settings.ADSENSE_ID and loop.index<=1:
                                    <script type="text/javascript"><!--
                                    google_ad_client = "$settings.ADSENSE_ID";
@@ -32,7 +37,6 @@ $def with (posts, is_user_admin = False)
                                    <script type="text/javascript"
                                    src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
                                    </script>
-                        <p style="text-align:justify">$(post.description)</p>
                     </div>
                     <div style="float:right">
                         <p style="text-align:right;">
