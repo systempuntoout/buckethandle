@@ -17,6 +17,7 @@ import web
 from app.config.settings import *
 from app.lib import pyso
 import app.config.translate as translate
+import app.lib.simplejson as simplejson
 
 
 
@@ -153,8 +154,9 @@ def check_link_weight(link):
    if base_link == 'http://stackoverflow.com':
        question_id = ContentDiscoverer(link).get_id()
        if question_id:
-           pyso.install_site(pyso.APISite("api.stackoverflow.com", "1.0", api_key ="EV_DN87MaUq8Mr9tAtVSNQ"))
-           question = pyso.get_question(question_id)
+           results = urlfetch.fetch('https://api.stackexchange.com/2.0/questions/%s?order=desc&sort=activity&site=stackoverflow&filter=!-T4d7xQ6' % question_id, headers = {'User-Agent': 'StackPrinter'}, deadline = 10)
+           response = simplejson.loads(results.content)
+           question = response['items'][0]
            return (question['score']) >= 3
        else:
            return False

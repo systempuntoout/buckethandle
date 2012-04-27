@@ -36,9 +36,6 @@ def internalerror():
     return web.internalerror(render.layout(render.oops(web.i18ns['SERVER_ERROR']), title ='Error', navbar = False, is_user_admin = users.is_current_user_admin()))
 
 from app.config.urls import urls
-app = web.application(urls, globals())
-app.notfound = notfound
-app.internalerror = internalerror
 
 def redirect_from_appspot(wsgi_app):
     """Handle redirect to my domain if called from appspot (and not SSL)"""
@@ -57,13 +54,10 @@ def redirect_from_appspot(wsgi_app):
         return wsgi_app(env, start_response)
     return redirect_if_needed
 
-def main():
-    logging.getLogger().setLevel(logging.INFO)
-    application = app.wsgifunc()
-    application = redirect_from_appspot(application)
-    run_wsgi_app(application)
-
-if __name__ == '__main__':
-    main()
-
+app = web.application(urls, globals())
+app.notfound = notfound
+app.internalerror = internalerror
+app = app.wsgifunc() 
+logging.getLogger().setLevel(logging.ERROR)
+app = redirect_from_appspot(app)
 
