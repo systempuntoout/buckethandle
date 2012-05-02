@@ -12,7 +12,7 @@ MAIL_ADMIN = u"systempuntoout@gmail.com"
 HOST = "www.gaecupboard.com" #Insert your host here: foo.appspot.com or in case of custom domain www.foo.com
 REDIRECT_FROM_APPENGINE_HOST_TO_HOST = True 
 APPENGINE_HOST = "gaecupboard-hrd.appspot.com" #Mandatory if REDIRECT_FROM_APPENGINE_HOST_TO_HOST is set to True
-
+APPENGINE_HOST_OLDMS = "gaecupboard.appspot.com" #In case you've migrated from MS
 ABOUT =u"""
 GAE Cupboard is a five days hack project made after a meniscus surgery ([buckethandle](http://www.leadingmd.com/patientEd/assets/buckethandle_tear.gif "buckethandle")).  
 Having some time to spare, I've tried to implement something to store and organize part of the public knowledge around Google App Engine.  

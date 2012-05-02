@@ -40,10 +40,14 @@ from app.config.urls import urls
 def redirect_from_appspot(wsgi_app):
     """Handle redirect to my domain if called from appspot (and not SSL)"""
     from_server = APPENGINE_HOST
+    try:
+        from_server_migrated = APPENGINE_HOST_OLDMS
+    except:
+        from_server_migrated = ' '
     to_server = HOST
 
     def redirect_if_needed(env, start_response):
-        if REDIRECT_FROM_APPENGINE_HOST_TO_HOST and env["HTTP_HOST"].endswith(from_server) and env.get("HTTPS") == "off":
+        if REDIRECT_FROM_APPENGINE_HOST_TO_HOST and (env["HTTP_HOST"].endswith(from_server) or env["HTTP_HOST"].endswith(from_server_migrated) ) and env.get("HTTPS") == "off":
             # Parse the URL
             request = webob.Request(env)
             scheme, netloc, path, query, fragment = urlparse.urlsplit(request.url)
